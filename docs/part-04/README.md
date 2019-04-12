@@ -1,6 +1,6 @@
 # Install Harbor
 
-Generate certificate:
+Generate certificate using cert-manager:
 
 ```bash
 kubectl create namespace harbor-system
@@ -91,7 +91,7 @@ Events:
   Normal  CertIssued     38s    cert-manager  Certificate issued successfully
 ```
 
-The Kubernetes `secret` should contain the certificates:
+The Kubernetes "secret" should contain the certificates:
 
 ```bash
 kubectl describe secret ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n harbor-system
@@ -263,7 +263,8 @@ Events:
   Normal  UPDATE  3m1s   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
 ```
 
-Open the [https://core.mylabs.dev](https://core.mylabs.dev) and log in as `admin`/`admin`.
+Open the [https://core.mylabs.dev](https://core.mylabs.dev) and log in as
+user `admin` with `admin` password.
 
 You should see the Web UI:
 

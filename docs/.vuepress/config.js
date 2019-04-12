@@ -21,6 +21,7 @@ module.exports = {
           { text: 'Harbor Blog', link: 'https://goharbor.io/blogs/' },
           { text: 'Harbor Docs', link: 'https://goharbor.io/docs/' },
           { text: 'Harbor GitHub', link: 'https://github.com/goharbor/harbor/' },
+          { text: 'Harbor Community', link: 'https://goharbor.io/community/' },
         ]
       }
     ],
