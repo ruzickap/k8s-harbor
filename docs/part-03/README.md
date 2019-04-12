@@ -11,15 +11,11 @@ Install the CRDs resources separately:
 kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
 ```
 
-Create the namespace for cert-manager:
+Create the namespace for cert-manager and label it to disable resource
+validation:
 
 ```bash
 kubectl create namespace cert-manager
-```
-
-Label the cert-manager namespace to disable resource validation:
-
-```bash
 kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
 ```
 
