@@ -13,6 +13,7 @@ cannot use a public or cloud-based registry, or want a consistent experience
 across clouds.
 
 * GitHub repository: [https://github.com/ruzickap/k8s-harbor](https://github.com/ruzickap/k8s-harbor)
+* Web Pages: [https://ruzickap.github.io/k8s-harbor](https://ruzickap.github.io/k8s-harbor)
 
 ## Requirements
 
