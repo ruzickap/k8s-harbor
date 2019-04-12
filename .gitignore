@@ -1,0 +1,12 @@
+# demo-magic.sh script
+demo-magic.sh
+# Kubernetes kubeconfig file
+kubeconfig.conf
+# Ignore temporary README.sh script
+README.sh
+# ignore builded pages by Vuepress
+docs/.vuepress/dist
+# ignore tmp directory
+tmp
+# cloned git repo
+k8s-harbor

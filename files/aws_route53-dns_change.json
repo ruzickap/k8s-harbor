@@ -1,0 +1,29 @@
+{
+    "Comment": "A new record set for the zone.",
+    "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "*.${MY_DOMAIN}.",
+          "Type": "A",
+          "AliasTarget":{
+            "HostedZoneId": "${CANONICAL_HOSTED_ZONE_NAME_ID}",
+            "DNSName": "dualstack.${LOADBALANCER_HOSTNAME}",
+            "EvaluateTargetHealth": false
+          }
+        }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "${MY_DOMAIN}.",
+          "Type": "A",
+          "AliasTarget":{
+            "HostedZoneId": "${CANONICAL_HOSTED_ZONE_NAME_ID}",
+            "DNSName": "dualstack.${LOADBALANCER_HOSTNAME}",
+            "EvaluateTargetHealth": false
+          }
+        }
+      }
+    ]
+}

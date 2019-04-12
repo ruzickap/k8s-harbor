@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  namespace: harbor-system
+spec:
+  secretName: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-${LETSENCRYPT_ENVIRONMENT}-dns
+  commonName: "*.${MY_DOMAIN}"
+  dnsNames:
+  - "*.${MY_DOMAIN}"
+  - ${MY_DOMAIN}
+  acme:
+    config:
+    - dns01:
+        provider: aws-route53
+      domains:
+      - "*.${MY_DOMAIN}"
+      - ${MY_DOMAIN}
