@@ -36,6 +36,11 @@ spec:
       - ${MY_DOMAIN}
 ```
 
+![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
+"ACME DNS Challenge")
+
+([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
+
 You should see the following output form cert-manager:
 
 ```bash
@@ -263,8 +268,64 @@ Events:
   Normal  UPDATE  3m1s   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
 ```
 
-Open the [https://core.mylabs.dev](https://core.mylabs.dev) and log in as
-user `admin` with `admin` password.
+Check the SSL certificate:
+
+```bash
+echo | openssl s_client -showcerts -connect core.${MY_DOMAIN}:443 2>/dev/null | openssl x509 -inform pem -noout -text
+```
+
+Output:
+
+```text
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            03:ba:eb:a2:34:43:0c:ae:7b:63:64:4d:4a:ee:c1:25:b4:35
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+        Validity
+            Not Before: Mar 29 08:46:52 2019 GMT
+            Not After : Jun 27 08:46:52 2019 GMT
+        Subject: CN = *.mylabs.dev
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+...
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                AB:60:E9:ED:3F:40:72:83:7D:62:08:F9:EB:8F:EA:1C:42:CC:76:4E
+            X509v3 Authority Key Identifier:
+                keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
+
+            Authority Information Access:
+                OCSP - URI:http://ocsp.int-x3.letsencrypt.org
+                CA Issuers - URI:http://cert.int-x3.letsencrypt.org/
+
+            X509v3 Subject Alternative Name:
+                DNS:*.mylabs.dev, DNS:mylabs.dev
+            X509v3 Certificate Policies:
+                Policy: 2.23.140.1.2.1
+                Policy: 1.3.6.1.4.1.44947.1.1.1
+                  CPS: http://cps.letsencrypt.org
+...
+```
+
+Open the [https://core.mylabs.dev](https://core.mylabs.dev):
+
+![Harbor login page](./harbor_login_page.png "Harbor login page")
+
+Log in:
+
+* User: admin
+* Password: admin
 
 You should see the Web UI:
 

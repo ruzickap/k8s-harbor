@@ -134,14 +134,9 @@ from Let's Encrypt must be used to create wildcard certificate `*.mylabs.dev`
 
 ```bash
 export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64=$(echo -n "$EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY" | base64)
-cat files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
 envsubst < files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml | kubectl apply -f -
+cat files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
 ```
-
-![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
-"ACME DNS Challenge")
-
-([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
 
 ## Install Nginx
 
