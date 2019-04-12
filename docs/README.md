@@ -40,6 +40,8 @@ across clouds.
 * Video:
 
   * [Intro to Harbor](https://youtu.be/Rs3zByxI8aY)
+  * [Intro: Harbor - James Zabala & Henry Zhang, VMware](https://youtu.be/RZQVBWwGa2s)
+  * [Deep Dive: Harbor - Tan Jiang & Jia Zou, VMware](https://youtu.be/OKj1XxtsTCo)
 
 * Pages:
 
