@@ -142,6 +142,7 @@ helm install --wait --name harbor --namespace harbor-system . \
   --set persistence.enabled=false \
   --set externalURL=https://core.${MY_DOMAIN} \
   --set harborAdminPassword=admin
+cd ..
 ```
 
 Output:

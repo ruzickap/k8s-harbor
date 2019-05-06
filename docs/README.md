@@ -34,6 +34,7 @@ across clouds.
 * [Part 02 - Install Helm](part-02/README.md)
 * [Part 03 - Nginx + cert-manager installation](part-03/README.md)
 * [Part 04 - Harbor installation](part-04/README.md)
+* [Part 05 - Initial Harbor tasks](part-05/README.md)
 
 ## Links
 

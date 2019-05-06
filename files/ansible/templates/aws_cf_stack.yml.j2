@@ -28,6 +28,10 @@ Resources:
       VpcId: "{{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['VPC'] }}"
       SecurityGroupIngress:
         - IpProtocol: tcp
+          FromPort: '389'
+          ToPort: '389'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
           FromPort: '3389'
           ToPort: '3389'
           CidrIp: 0.0.0.0/0

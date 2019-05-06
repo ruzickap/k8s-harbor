@@ -29,7 +29,7 @@ Install necessary software:
 ```bash
 test -x /usr/bin/apt && \
 apt update -qq && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl gettext-base git openssh-client sudo > /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git ldap-utils openssh-client sudo > /dev/null
 ```
 
 Install [kubectl](https://github.com/kubernetes/kubectl) binary:
