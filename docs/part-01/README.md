@@ -183,6 +183,22 @@ Output:
 ![EKS Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-architecture.svg?sanitize=true
 "EKS Architecture")
 
+Create CloudFormation stack with Windows Server 2016, which will serve as
+Active Directory:
+
+```bash
+ansible-playbook --connection=local -i "127.0.0.1," -e "ansible_python_interpreter=/usr/bin/python3" files/ansible/site.yml
+```
+
+You should be able to access Windows Server using RDP:
+
+```bash
+xfreerdp '/u:Administrator' '/p:really_long_secret_windows_password' /size:1400x900 -wallpaper /cert-tofu /dynamic-resolution /v:winad01.mylabs.dev
+```
+
+If you check the AD Users you should see users `aduser{01..06}` distributed into
+three groups `adgoup{01.03}` with password `user123,.`.
+
 Check if the new EKS cluster is available:
 
 ```bash

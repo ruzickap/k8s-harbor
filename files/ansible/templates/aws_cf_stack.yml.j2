@@ -1,0 +1,156 @@
+---
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+
+Description:
+  AWS CloudFormation Windows Server 2016 Template ({{ ansible_user_id }})
+
+Parameters:
+  InstanceType :
+    Description: WebServer EC2 instance type
+    Type : String
+    Default: t2.medium
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base'
+  KeyName :
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type : AWS::EC2::KeyPair::KeyName
+    Default: {{ aws_cf_keyname }}
+
+Resources:
+
+  MySecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable WinRM, RDP + ICMP
+      VpcId: "{{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['VPC'] }}"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '3389'
+          ToPort: '3389'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5986'
+          ToPort: '5986'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: 8
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: "{{ aws_cf_stack_name }}-sg"
+{% for (key, value) in aws_cf_tags.items() %}
+        - Key: {{ key }}
+          Value: {{ value }}
+{% endfor %}
+
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          files:
+            c:\cfn\cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack=${AWS::StackId}
+                region=${AWS::Region}
+            c:\cfn\hooks.d\cfn-auto-reloader.conf:
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.MyEC2Instance.Metadata.AWS::CloudFormation::Init
+                action=cfn-init.exe -v -s ${AWS::StackId} -r MyEC2Instance --region ${AWS::Region}
+            c:\cfn\hooks.d\enable_winrm.ps1:
+              content: !Sub |
+                #Disable password complexity
+                secedit /export /cfg {{ system_security_settings_tmp_file }}
+                (gc {{ system_security_settings_tmp_file }}).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File {{ system_security_settings_tmp_file }}
+                secedit /configure /db c:\windows\security\local.sdb /cfg {{ system_security_settings_tmp_file }} /areas SECURITYPOLICY
+                rm -force {{ system_security_settings_tmp_file }} -confirm:$false
+
+                #Add user ansible and add it to group 'Remote Management Users'+'Administrators' to enable WinRM
+                $Computer = [ADSI]"WinNT://$Env:COMPUTERNAME"
+                $User = $Computer.Create("User", "{{ windows_machines_ansible_user }}")
+                $User.SetPassword("{{ windows_machines_ansible_pass }}")
+                $User.SetInfo()
+                $User.FullName = "Ansible WinRM user"
+                $User.SetInfo()
+                $User.UserFlags = 65536 # Password never Expires
+                $User.SetInfo()
+                $Group = $Computer.Children.Find('Administrators')
+                $Group.Add(("WinNT://$Env:COMPUTERNAME/{{ windows_machines_ansible_user }}"))
+                $Group = $Computer.Children.Find('Remote Management Users')
+                $Group.Add(("WinNT://$Env:COMPUTERNAME/{{ windows_machines_ansible_user }}"))
+
+                #Enable WinRM
+                Invoke-Expression ((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+
+          commands:
+            enable_winrm:
+              command: powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File c:\cfn\hooks.d\enable_winrm.ps1 -SkipNetworkProfileCheck -CertValidityDays 3650
+          services:
+            windows:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                  - c:\cfn\cfn-hup.conf
+                  - c:\cfn\hooks.d\cfn-auto-reloader.conf
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref LatestAmiId
+      KeyName: !Ref KeyName
+      SubnetId: {{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['SubnetsPublic'].split(',')[0] }}
+      SecurityGroupIds:
+        - {{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['SecurityGroup'] }}
+        - {{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['SharedNodeSecurityGroup'] }}
+        - !Ref MySecurityGroup
+      UserData:
+        "Fn::Base64":
+          !Sub |
+            <script>
+            cfn-init.exe -v -s ${AWS::StackId} -r MyEC2Instance --region ${AWS::Region}
+            </script>
+      Tags:
+        - Key: Name
+          Value: {{ ansible_user_id }}-winad01.{{ domain }}
+        - Key: Hostname
+          Value: winad01.{{ domain }}
+        - Key: Role
+          Value: Windows Server 2016 - Active Directory
+{% for (key, value) in aws_cf_tags.items() %}
+        - Key: {{ key }}
+          Value: {{ value }}
+{% endfor %}
+
+  IPAddress:
+    Type: AWS::EC2::EIP
+
+  IPAssoc:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref 'MyEC2Instance'
+      EIP: !Ref 'IPAddress'
+
+  myDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: '{{ domain }}.'
+      Comment: DNS name for Windows Active Directory Server
+      Name: 'winad01.{{ domain }}.'
+      Type: A
+      TTL: '60'
+      ResourceRecords:
+        - !Ref 'IPAddress'
+
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref 'MyEC2Instance'
+  InstanceIPAddress:
+    Description: IP address of the newly created EC2 instance
+    Value: !Ref 'IPAddress'
