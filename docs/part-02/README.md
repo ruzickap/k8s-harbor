@@ -70,5 +70,5 @@ Output:
 
 ```text
 NAME                             READY   STATUS    RESTARTS   AGE
-tiller-deploy-54fc6d9ccc-42gzp   1/1     Running   0          19s
+tiller-deploy-7b65c7bff9-26x84   1/1     Running   0          16s
 ```

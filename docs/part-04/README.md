@@ -11,8 +11,6 @@ cat files/cert-manager-letsencrypt-aws-route53-certificate.yaml
 Output:
 
 ```text
-namespace/harbor-system created
-certificate.certmanager.k8s.io/ingress-cert-staging created
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
@@ -58,11 +56,11 @@ Annotations:  kubectl.kubernetes.io/last-applied-configuration:
 API Version:  certmanager.k8s.io/v1alpha1
 Kind:         Certificate
 Metadata:
-  Creation Timestamp:  2019-04-12T07:06:44Z
+  Creation Timestamp:  2019-05-06T09:30:35Z
   Generation:          1
-  Resource Version:    14320
+  Resource Version:    5435
   Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/harbor-system/certificates/ingress-cert-staging
-  UID:                 87f89871-5cf1-11e9-9a4a-0ab920a68c36
+  UID:                 9a1cda81-6fe1-11e9-a6e8-06a736553d32
 Spec:
   Acme:
     Config:
@@ -81,19 +79,20 @@ Spec:
   Secret Name:  ingress-cert-staging
 Status:
   Conditions:
-    Last Transition Time:  2019-04-12T07:10:35Z
+    Last Transition Time:  2019-05-06T09:34:28Z
     Message:               Certificate is up to date and has not expired
     Reason:                Ready
     Status:                True
     Type:                  Ready
-  Not After:               2019-07-11T06:10:33Z
+  Not After:               2019-08-04T08:34:27Z
 Events:
-  Type    Reason         Age    From          Message
-  ----    ------         ----   ----          -------
-  Normal  Generated      4m28s  cert-manager  Generated new private key
-  Normal  OrderCreated   4m28s  cert-manager  Created Order resource "ingress-cert-staging-3500457514"
-  Normal  OrderComplete  38s    cert-manager  Order "ingress-cert-staging-3500457514" completed successfully
-  Normal  CertIssued     38s    cert-manager  Certificate issued successfully
+  Type    Reason              Age    From          Message
+  ----    ------              ----   ----          -------
+  Normal  Generated           9m9s   cert-manager  Generated new private key
+  Normal  GenerateSelfSigned  9m9s   cert-manager  Generated temporary self signed certificate
+  Normal  OrderCreated        9m9s   cert-manager  Created Order resource "ingress-cert-staging-3500457514"
+  Normal  OrderComplete       5m16s  cert-manager  Order "ingress-cert-staging-3500457514" completed successfully
+  Normal  CertIssued          5m16s  cert-manager  Certificate issued successfully
 ```
 
 The Kubernetes "secret" should contain the certificates:
@@ -110,6 +109,7 @@ Namespace:    harbor-system
 Labels:       certmanager.k8s.io/certificate-name=ingress-cert-staging
 Annotations:  certmanager.k8s.io/alt-names: *.mylabs.dev,mylabs.dev
               certmanager.k8s.io/common-name: *.mylabs.dev
+              certmanager.k8s.io/ip-sans:
               certmanager.k8s.io/issuer-kind: ClusterIssuer
               certmanager.k8s.io/issuer-name: letsencrypt-staging-dns
 
@@ -118,7 +118,7 @@ Type:  kubernetes.io/tls
 Data
 ====
 ca.crt:   0 bytes
-tls.crt:  3558 bytes
+tls.crt:  3553 bytes
 tls.key:  1679 bytes
 ```
 
@@ -148,78 +148,78 @@ Output:
 
 ```text
 NAME:   harbor
-LAST DEPLOYED: Fri Apr 12 09:12:12 2019
+LAST DEPLOYED: Mon May  6 11:41:06 2019
 NAMESPACE: harbor-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                         DATA  AGE
-harbor-harbor-adminserver    39    2m7s
-harbor-harbor-chartmuseum    24    2m7s
-harbor-harbor-clair          1     2m7s
-harbor-harbor-core           1     2m7s
-harbor-harbor-jobservice     1     2m7s
-harbor-harbor-notary-server  5     2m7s
-harbor-harbor-registry       2     2m7s
+harbor-harbor-adminserver    39    2m25s
+harbor-harbor-chartmuseum    24    2m25s
+harbor-harbor-clair          1     2m25s
+harbor-harbor-core           1     2m25s
+harbor-harbor-jobservice     1     2m25s
+harbor-harbor-notary-server  5     2m25s
+harbor-harbor-registry       2     2m25s
 
 ==> v1/Deployment
 NAME                         READY  UP-TO-DATE  AVAILABLE  AGE
-harbor-harbor-adminserver    1/1    1           1          2m7s
-harbor-harbor-chartmuseum    1/1    1           1          2m7s
-harbor-harbor-clair          1/1    1           1          2m7s
-harbor-harbor-core           1/1    1           1          2m7s
-harbor-harbor-jobservice     1/1    1           1          2m7s
-harbor-harbor-notary-server  1/1    1           1          2m7s
-harbor-harbor-notary-signer  1/1    1           1          2m7s
-harbor-harbor-portal         1/1    1           1          2m7s
-harbor-harbor-registry       1/1    1           1          2m7s
+harbor-harbor-adminserver    1/1    1           1          2m25s
+harbor-harbor-chartmuseum    1/1    1           1          2m25s
+harbor-harbor-clair          1/1    1           1          2m25s
+harbor-harbor-core           1/1    1           1          2m25s
+harbor-harbor-jobservice     1/1    1           1          2m25s
+harbor-harbor-notary-server  1/1    1           1          2m25s
+harbor-harbor-notary-signer  1/1    1           1          2m25s
+harbor-harbor-portal         1/1    1           1          2m25s
+harbor-harbor-registry       1/1    1           1          2m25s
 
 ==> v1/Pod(related)
-NAME                                          READY  STATUS   RESTARTS  AGE
-harbor-harbor-adminserver-77948f97dc-jkqnm    1/1    Running  0         2m7s
-harbor-harbor-chartmuseum-79c67b57d4-8zj8s    1/1    Running  0         2m7s
-harbor-harbor-clair-66c4947d5b-ghgbk          1/1    Running  1         2m7s
-harbor-harbor-core-7454f4cfd4-6l8ws           1/1    Running  0         2m7s
-harbor-harbor-database-0                      1/1    Running  0         2m7s
-harbor-harbor-jobservice-784cfb6586-t89dj     1/1    Running  0         2m7s
-harbor-harbor-notary-server-986f5cf9d-mpqcl   1/1    Running  1         2m7s
-harbor-harbor-notary-signer-6477c86486-5d9xs  1/1    Running  1         2m7s
-harbor-harbor-portal-86458876fd-dg6tr         1/1    Running  0         2m6s
-harbor-harbor-redis-0                         1/1    Running  0         2m7s
-harbor-harbor-registry-7b69c8cb6-jcjxn        2/2    Running  0         2m6s
+NAME                                         READY  STATUS   RESTARTS  AGE
+harbor-harbor-adminserver-5bd466b57f-vftrk   1/1    Running  1         2m25s
+harbor-harbor-chartmuseum-dbcb6c5db-9gxm8    1/1    Running  0         2m25s
+harbor-harbor-clair-6cb966575d-pmdmq         1/1    Running  1         2m25s
+harbor-harbor-core-bdc64bc65-hclfw           1/1    Running  0         2m25s
+harbor-harbor-database-0                     1/1    Running  0         2m24s
+harbor-harbor-jobservice-6d74d76bdf-84bpt    1/1    Running  0         2m25s
+harbor-harbor-notary-server-857d5c7c5-tspqn  1/1    Running  1         2m25s
+harbor-harbor-notary-signer-7cbd9967f-m4qqh  1/1    Running  0         2m25s
+harbor-harbor-portal-5c57c5dfcb-2lz2t        1/1    Running  0         2m24s
+harbor-harbor-redis-0                        1/1    Running  0         2m24s
+harbor-harbor-registry-74c5bf8598-hpvx9      2/2    Running  0         2m24s
 
 ==> v1/Secret
 NAME                       TYPE    DATA  AGE
-harbor-harbor-adminserver  Opaque  4     2m7s
-harbor-harbor-chartmuseum  Opaque  1     2m7s
-harbor-harbor-core         Opaque  4     2m7s
-harbor-harbor-database     Opaque  1     2m7s
-harbor-harbor-jobservice   Opaque  1     2m7s
-harbor-harbor-registry     Opaque  1     2m7s
+harbor-harbor-adminserver  Opaque  4     2m25s
+harbor-harbor-chartmuseum  Opaque  1     2m25s
+harbor-harbor-core         Opaque  4     2m25s
+harbor-harbor-database     Opaque  1     2m25s
+harbor-harbor-jobservice   Opaque  1     2m25s
+harbor-harbor-registry     Opaque  1     2m25s
 
 ==> v1/Service
 NAME                         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
-harbor-harbor-adminserver    ClusterIP  10.100.204.195  <none>       80/TCP             2m7s
-harbor-harbor-chartmuseum    ClusterIP  10.100.30.159   <none>       80/TCP             2m7s
-harbor-harbor-clair          ClusterIP  10.100.63.103   <none>       6060/TCP           2m7s
-harbor-harbor-core           ClusterIP  10.100.245.179  <none>       80/TCP             2m7s
-harbor-harbor-database       ClusterIP  10.100.28.121   <none>       5432/TCP           2m7s
-harbor-harbor-jobservice     ClusterIP  10.100.49.48    <none>       80/TCP             2m7s
-harbor-harbor-notary-server  ClusterIP  10.100.46.37    <none>       4443/TCP           2m7s
-harbor-harbor-notary-signer  ClusterIP  10.100.213.224  <none>       7899/TCP           2m7s
-harbor-harbor-portal         ClusterIP  10.100.152.224  <none>       80/TCP             2m7s
-harbor-harbor-redis          ClusterIP  10.100.69.123   <none>       6379/TCP           2m7s
-harbor-harbor-registry       ClusterIP  10.100.211.253  <none>       5000/TCP,8080/TCP  2m7s
+harbor-harbor-adminserver    ClusterIP  10.100.157.29   <none>       80/TCP             2m25s
+harbor-harbor-chartmuseum    ClusterIP  10.100.209.244  <none>       80/TCP             2m25s
+harbor-harbor-clair          ClusterIP  10.100.7.4      <none>       6060/TCP           2m25s
+harbor-harbor-core           ClusterIP  10.100.111.152  <none>       80/TCP             2m25s
+harbor-harbor-database       ClusterIP  10.100.15.103   <none>       5432/TCP           2m25s
+harbor-harbor-jobservice     ClusterIP  10.100.191.184  <none>       80/TCP             2m25s
+harbor-harbor-notary-server  ClusterIP  10.100.186.231  <none>       4443/TCP           2m25s
+harbor-harbor-notary-signer  ClusterIP  10.100.6.37     <none>       7899/TCP           2m25s
+harbor-harbor-portal         ClusterIP  10.100.228.126  <none>       80/TCP             2m25s
+harbor-harbor-redis          ClusterIP  10.100.70.201   <none>       6379/TCP           2m25s
+harbor-harbor-registry       ClusterIP  10.100.86.196   <none>       5000/TCP,8080/TCP  2m25s
 
 ==> v1/StatefulSet
 NAME                    READY  AGE
-harbor-harbor-database  1/1    2m7s
-harbor-harbor-redis     1/1    2m7s
+harbor-harbor-database  1/1    2m25s
+harbor-harbor-redis     1/1    2m24s
 
 ==> v1beta1/Ingress
-NAME                   HOSTS                              ADDRESS        PORTS    AGE
-harbor-harbor-ingress  core.mylabs.dev,notary.mylabs.dev  18.194.224.42  80, 443  2m7s
+NAME                   HOSTS                              ADDRESS         PORTS    AGE
+harbor-harbor-ingress  core.mylabs.dev,notary.mylabs.dev  18.195.168.215  80, 443  2m24s
 
 
 NOTES:
@@ -239,7 +239,7 @@ Output:
 ```text
 Name:             harbor-harbor-ingress
 Namespace:        harbor-system
-Address:          18.194.224.42
+Address:          18.195.168.215
 Default backend:  default-http-backend:80 (<none>)
 TLS:
   ingress-cert-staging terminates core.mylabs.dev
@@ -257,16 +257,16 @@ Rules:
   notary.mylabs.dev
                      /   harbor-harbor-notary-server:4443 (<none>)
 Annotations:
+  ingress.kubernetes.io/proxy-body-size:        0
   ingress.kubernetes.io/ssl-redirect:           true
   nginx.ingress.kubernetes.io/proxy-body-size:  0
   nginx.ingress.kubernetes.io/ssl-redirect:     true
-  ingress.kubernetes.io/proxy-body-size:        0
 Events:
-  Type    Reason  Age    From                      Message
-  ----    ------  ----   ----                      -------
-  Normal  CREATE  3m11s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
-  Normal  UPDATE  3m1s   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
-```
+  Type    Reason  Age   From                      Message
+  ----    ------  ----  ----                      -------
+  Normal  CREATE  14m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Normal  UPDATE  13m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  ```
 
 Check the SSL certificate:
 

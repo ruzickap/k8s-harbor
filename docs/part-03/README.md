@@ -8,7 +8,7 @@ It's also handy to install cert-manager for managing TLS certificates.
 Install the CRDs resources separately:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/00-crds.yaml
 ```
 
 Create the namespace for cert-manager and label it to disable resource
@@ -22,89 +22,79 @@ kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
 Install the cert-manager Helm chart:
 
 ```bash
-helm install --name cert-manager --namespace cert-manager --version v0.6.6 --wait stable/cert-manager
+helm repo add jetstack https://charts.jetstack.io
+helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.7.2
 ```
 
 Output:
 
 ```text
 NAME:   cert-manager
-LAST DEPLOYED: Fri Apr 12 08:58:39 2019
+LAST DEPLOYED: Mon May  6 11:28:20 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME                                    AGE
-cert-manager-edit                       2m23s
-cert-manager-view                       2m23s
-cert-manager-webhook:webhook-requester  2m23s
-
-==> v1/ConfigMap
-NAME                          DATA  AGE
-cert-manager-webhook-ca-sync  1     2m23s
-
-==> v1/Job
-NAME                          COMPLETIONS  DURATION  AGE
-cert-manager-webhook-ca-sync  1/1          99s       2m23s
+cert-manager-edit                       24s
+cert-manager-view                       24s
+cert-manager-webhook:webhook-requester  24s
 
 ==> v1/Pod(related)
-NAME                                   READY  STATUS     RESTARTS  AGE
-cert-manager-6d47b6c444-6h7dw          1/1    Running    0         2m23s
-cert-manager-webhook-84cfc4d76f-cjjwz  1/1    Running    0         2m23s
-cert-manager-webhook-ca-sync-mp9d7     0/1    Completed  4         2m23s
+NAME                                     READY  STATUS   RESTARTS  AGE
+cert-manager-86c45c86c8-c774g            1/1    Running  0         24s
+cert-manager-cainjector-6885996d5-nsb8z  1/1    Running  0         24s
+cert-manager-webhook-59dfddccfd-wc6j4    1/1    Running  0         24s
 
 ==> v1/Service
-NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
-cert-manager-webhook  ClusterIP  10.100.17.138  <none>       443/TCP  2m23s
+NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
+cert-manager-webhook  ClusterIP  10.100.194.147  <none>       443/TCP  24s
 
 ==> v1/ServiceAccount
-NAME                          SECRETS  AGE
-cert-manager                  1        2m23s
-cert-manager-webhook          1        2m23s
-cert-manager-webhook-ca-sync  1        2m23s
+NAME                     SECRETS  AGE
+cert-manager             1        24s
+cert-manager-cainjector  1        24s
+cert-manager-webhook     1        24s
 
 ==> v1alpha1/Certificate
 NAME                              AGE
-cert-manager-webhook-ca           2m23s
-cert-manager-webhook-webhook-tls  2m23s
+cert-manager-webhook-ca           24s
+cert-manager-webhook-webhook-tls  24s
 
 ==> v1alpha1/Issuer
 NAME                           AGE
-cert-manager-webhook-ca        2m23s
-cert-manager-webhook-selfsign  2m23s
+cert-manager-webhook-ca        24s
+cert-manager-webhook-selfsign  24s
 
 ==> v1beta1/APIService
 NAME                                  AGE
-v1beta1.admission.certmanager.k8s.io  2m23s
+v1beta1.admission.certmanager.k8s.io  24s
 
 ==> v1beta1/ClusterRole
-NAME                          AGE
-cert-manager                  2m23s
-cert-manager-webhook-ca-sync  2m23s
+NAME                     AGE
+cert-manager             24s
+cert-manager-cainjector  24s
 
 ==> v1beta1/ClusterRoleBinding
 NAME                                 AGE
-cert-manager                         2m23s
-cert-manager-webhook-ca-sync         2m23s
-cert-manager-webhook:auth-delegator  2m23s
-
-==> v1beta1/CronJob
-NAME                          SCHEDULE  SUSPEND  ACTIVE  LAST SCHEDULE  AGE
-cert-manager-webhook-ca-sync  @weekly   False    0       <none>         2m23s
+cert-manager                         24s
+cert-manager-cainjector              24s
+cert-manager-webhook:auth-delegator  24s
 
 ==> v1beta1/Deployment
-NAME                  READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager          1/1    1           1          2m23s
-cert-manager-webhook  1/1    1           1          2m23s
+NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
+cert-manager             1/1    1           1          24s
+cert-manager-cainjector  1/1    1           1          24s
+cert-manager-webhook     1/1    1           1          24s
 
 ==> v1beta1/RoleBinding
 NAME                                                AGE
-cert-manager-webhook:webhook-authentication-reader  2m23s
+cert-manager-webhook:webhook-authentication-reader  24s
 
 ==> v1beta1/ValidatingWebhookConfiguration
 NAME                  AGE
-cert-manager-webhook  2m23s
+cert-manager-webhook  24s
 
 
 NOTES:
@@ -116,13 +106,13 @@ or Issuer resource (for example, by creating a 'letsencrypt-staging' issuer).
 More information on the different types of issuers and how to configure them
 can be found in our documentation:
 
-https://cert-manager.readthedocs.io/en/latest/reference/issuers.html
+https://docs.cert-manager.io/en/latest/reference/issuers.html
 
 For information on how to configure cert-manager to automatically provision
 Certificates for Ingress resources, take a look at the `ingress-shim`
 documentation:
 
-https://cert-manager.readthedocs.io/en/latest/reference/ingress-shim.html
+https://docs.cert-manager.io/en/latest/reference/ingress-shim.html
 ```
 
 ### Create ClusterIssuer for Let's Encrypt
@@ -138,62 +128,166 @@ envsubst < files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml | kubec
 cat files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
 ```
 
+Output:
+
+```text
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-route53-secret-access-key-secret
+  namespace: cert-manager
+data:
+  secret-access-key: $EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-dns
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: petr.ruzicka@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-staging-dns
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      providers:
+      - name: aws-route53
+        route53:
+          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+          region: eu-central-1
+          secretAccessKeySecretRef:
+            name: aws-route53-secret-access-key-secret
+            key: secret-access-key
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production-dns
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: petr.ruzicka@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-production-dns
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      # https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/index.html
+      providers:
+      - name: aws-route53
+        route53:
+          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+          region: eu-central-1
+          secretAccessKeySecretRef:
+            name: aws-route53-secret-access-key-secret
+            key: secret-access-key
+```
+
 ## Install Nginx
 
 Install Nginx which will also create a new loadbalancer:
 
 ```bash
-helm install stable/nginx-ingress --name nginx-ingress --namespace nginx-ingress-system --set rbac.create=true
+helm install stable/nginx-ingress --wait --name nginx-ingress --namespace nginx-ingress-system --set rbac.create=true
 ```
 
 Output:
 
 ```text
 NAME:   nginx-ingress
-LAST DEPLOYED: Fri Apr 12 09:04:21 2019
+LAST DEPLOYED: Mon May  6 11:29:31 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                      DATA  AGE
-nginx-ingress-controller  1     1s
+nginx-ingress-controller  1     2s
 
 ==> v1/Pod(related)
-NAME                                            READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-7476b9c767-k8gd7       0/1    ContainerCreating  0         0s
-nginx-ingress-default-backend-544cfb69fc-6627d  0/1    ContainerCreating  0         0s
+NAME                                           READY  STATUS             RESTARTS  AGE
+nginx-ingress-controller-ffc964cd-6npjn        0/1    ContainerCreating  0         2s
+nginx-ingress-default-backend-56768c457-nj6jd  0/1    ContainerCreating  0         2s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP  PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.227.94   <pending>    80:31951/TCP,443:32106/TCP  0s
-nginx-ingress-default-backend  ClusterIP     10.100.117.118  <none>       80/TCP                      0s
+NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.82.132   a73fdbe796fe1...  80:32424/TCP,443:30456/TCP  2s
+nginx-ingress-default-backend  ClusterIP     10.100.252.170  <none>            80/TCP                      2s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
-nginx-ingress  1        1s
+nginx-ingress  1        2s
 
 ==> v1beta1/ClusterRole
 NAME           AGE
-nginx-ingress  1s
+nginx-ingress  2s
 
 ==> v1beta1/ClusterRoleBinding
 NAME           AGE
-nginx-ingress  1s
+nginx-ingress  2s
 
 ==> v1beta1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-nginx-ingress-controller       0/1    1           0          0s
-nginx-ingress-default-backend  0/1    1           0          0s
+nginx-ingress-controller       0/1    1           0          2s
+nginx-ingress-default-backend  0/1    1           0          2s
 
 ==> v1beta1/Role
 NAME           AGE
-nginx-ingress  1s
+nginx-ingress  2s
 
 ==> v1beta1/RoleBinding
 NAME           AGE
-nginx-ingress  1s
-...
+nginx-ingress  2s
+
+
+NOTES:
+The nginx-ingress controller has been installed.
+It may take a few minutes for the LoadBalancer IP to be available.
+You can watch the status by running 'kubectl --namespace nginx-ingress-system get services -o wide -w nginx-ingress-controller'
+
+An example Ingress that makes use of the controller:
+
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    name: example
+    namespace: foo
+  spec:
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - backend:
+                serviceName: exampleService
+                servicePort: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.example.com
+          secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: <base64 encoded cert>
+    tls.key: <base64 encoded key>
+  type: kubernetes.io/tls
 ```
 
 ## Create DNS records
