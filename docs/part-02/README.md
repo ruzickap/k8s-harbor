@@ -72,3 +72,10 @@ Output:
 NAME                             READY   STATUS    RESTARTS   AGE
 tiller-deploy-7b65c7bff9-26x84   1/1     Running   0          16s
 ```
+
+Add [Helm plugin](https://github.com/chartmuseum/helm-push) to push chart
+package to [ChartMuseum](https://chartmuseum.com/):
+
+```bash
+helm plugin install https://github.com/chartmuseum/helm-push
+```
