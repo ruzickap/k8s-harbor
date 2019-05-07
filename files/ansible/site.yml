@@ -10,12 +10,12 @@
     windows_machines_ansible_user: ansible
     windows_machines_ansible_pass: ansible
     aws_region: eu-central-1
-    aws_cf_eksctl_stack_name: "eksctl-{{ ansible_user_id }}-k8s-harbor-cluster"
+    aws_cf_eksctl_stack_name: "eksctl-{{ lookup('env','USER') }}-k8s-harbor-cluster"
     aws_cf_stack_name: "{{ aws_cf_eksctl_stack_name }}-windows-server-2016"
-    aws_cf_keyname: "{{ ansible_user_id }}"
+    aws_cf_keyname: "{{ lookup('env','USER') }}"
     aws_cf_tags:
       Application: Harbor
-      Consumer: "{{ ansible_user_id }}"
+      Consumer: "{{ lookup('env','USER') }}"
       Environment: Test
 
   tasks:
@@ -178,5 +178,5 @@
       when: win_domain_result.reboot_required
 
     - name: Windows credentials
-      debug: msg="xfreerdp '/u:Administrator' '/p:{{ master_password }}' /size:1400x900 -wallpaper /cert-tofu /dynamic-resolution /v:{{ hostvars[item].inventory_hostname }}"
+      debug: msg="xfreerdp '/u:Administrato'r '/p:{{ master_password }}' /size:1440x810 -wallpaper /cert-ignore /dynamic-resolution /v:{{ hostvars[item].inventory_hostname }}"
       loop: "{{ groups['winservers'] }}"

@@ -4,7 +4,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 
 Description:
-  AWS CloudFormation Windows Server 2016 Template ({{ ansible_user_id }})
+  AWS CloudFormation Windows Server 2016 Template ({{ lookup('env','USER') }})
 
 Parameters:
   InstanceType :
@@ -120,7 +120,7 @@ Resources:
             </script>
       Tags:
         - Key: Name
-          Value: {{ ansible_user_id }}-winad01.{{ domain }}
+          Value: {{ lookup('env','USER') }}-winad01.{{ domain }}
         - Key: Hostname
           Value: winad01.{{ domain }}
         - Key: Role
@@ -157,3 +157,6 @@ Outputs:
   InstanceIPAddress:
     Description: IP address of the newly created EC2 instance
     Value: !Ref 'IPAddress'
+  InstanceDNS:
+    Description: IP address of the newly created EC2 instance
+    Value: winad01.{{ domain }}

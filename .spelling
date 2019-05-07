@@ -1,5 +1,6 @@
 Auth
 awscli
+ChartMuseum
 Cleanup
 CloudFormation
 ClusterIssuer
@@ -14,6 +15,7 @@ Kubernetes
 loadbalancer
 nameservers
 Nginx
+plugin
 Route53
 VMware
 Weaveworks
