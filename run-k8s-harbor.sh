@@ -52,7 +52,7 @@ if [ -z ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID+x} ] || [ -z ${EKS_CERT_MAN
   exit 1
 fi
 
-sed '/^## Prepare the local working environment/,/^Check if the new EKS cluster is available:/d' docs/part-{01..04}/README.md | \
+sed '/^## Prepare the local working environment/,/^Check if the new EKS cluster is available:/d' docs/part-{01..06}/README.md | \
 sed -n '/^```bash$/,/^```$/p;/^-----$/p'  | \
 sed -e 's/^-----$/\
 p  ""\
