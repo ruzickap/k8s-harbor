@@ -43,7 +43,7 @@ jobs:
         # Start Web server
         - python3 -m http.server 8080 &> /dev/null &
         # Check links on generated pages
-        - docker run -it --rm linkchecker/linkchecker --check-extern --no-status --ignore-url "(http|https)://localhost" --ignore-url "(http|https)://.*${MY_DOMAIN}" http://${HOST_IP_ADDRESS}:8080/${TRAVIS_REPO_SLUG##*/}
+        - docker run -it --rm linkchecker/linkchecker --pause=1 --check-extern --no-status --ignore-url "(http|https)://localhost" --ignore-url "(http|https)://.*${MY_DOMAIN}" http://${HOST_IP_ADDRESS}:8080/${TRAVIS_REPO_SLUG##*/}
 
     - stage: Build & Deploy
       name: "Build and Deploy to GitHub pages"
@@ -71,4 +71,4 @@ jobs:
       services:
         - docker
       script:
-        - docker run -it --rm linkchecker/linkchecker --check-extern --no-status --ignore-url "(http|https)://localhost" --ignore-url "(http|https)://.*${MY_DOMAIN}" https://${TRAVIS_REPO_SLUG%/*}.github.io/${TRAVIS_REPO_SLUG##*/}
+        - docker run -it --rm linkchecker/linkchecker --pause=1 --check-extern --no-status --ignore-url "(http|https)://localhost" --ignore-url "(http|https)://.*${MY_DOMAIN}" https://${TRAVIS_REPO_SLUG%/*}.github.io/${TRAVIS_REPO_SLUG##*/}
