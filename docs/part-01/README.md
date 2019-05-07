@@ -197,7 +197,7 @@ xfreerdp '/u:Administrator' '/p:really_long_secret_windows_password' /size:1400x
 ```
 
 If you check the AD Users you should see users `aduser{01..06}` distributed into
-three groups `adgoup{01.03}` with password `user123,.`.
+three groups `adgoup{01.03}` with password `admin`.
 
 Check if the new EKS cluster is available:
 

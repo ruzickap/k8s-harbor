@@ -99,7 +99,7 @@ Open a new tab with Harbor login page
 ([https://core.mylabs.dev](https://core.mylabs.dev)) and login as:
 
 * User: `aduser01`
-* Password: `user123,.`
+* Password: `admin`
 
 You should see limited view on the right side containing only `Projects`
 and `Logs`:
@@ -111,7 +111,7 @@ Open a new tab with Harbor login page
 ([https://core.mylabs.dev](https://core.mylabs.dev)) and login as:
 
 * User: `aduser06` and `aduser05`
-* Password: `user123,.`
+* Password: `admin`
 
 This user belongs to group `adgroup03` which is group containing Harbor
 Administrators. You should be able to see much more details in Harbor now

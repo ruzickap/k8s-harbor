@@ -24,11 +24,6 @@
       cloudformation_facts:
         stack_name: "{{ aws_cf_eksctl_stack_name }}"
 
-    - name: Create temporary CloudFormation temaplte
-      template:
-        src: templates/aws_cf_stack.yml.j2
-        dest: /tmp/aws_cf_stack.yml
-
     - name: Create/update stack
       cloudformation:
         region: "{{ aws_region }}"
@@ -36,6 +31,8 @@
         state: present
         disable_rollback: true
         template_body: "{{ lookup('template', 'templates/aws_cf_stack.yml.j2') }}"
+        template_parameters:
+          KeyName: "{{ aws_cf_keyname }}"
         tags: "{{ aws_cf_tags }}"
       register: cloudformation_result
 
@@ -76,7 +73,7 @@
     master_password: really_long_secret_windows_password
     netbios_name: "{{ domain.split('.')[0] | upper }}"
     number_of_test_groups: 3
-    test_user_password: user123,.
+    test_user_password: admin
 
   tasks:
     - name: Enable ICMP
@@ -121,10 +118,33 @@
       raw: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
       changed_when: False
 
+    - name: Disable password complexity
+      win_security_policy:
+        section: System Access
+        key: PasswordComplexity
+        value: 0
+
     - name: Change Administrator password
       win_user:
         name: Administrator
         password: "{{ master_password }}"
+
+    - name: Create groups
+      win_group:
+        name: "{{ 'adgroup%02x' | format(item) }}"
+        description: "{{ 'AD User Group  %02x' | format(item) }}"
+      loop: "{{ range(1, number_of_test_groups + 1, 1)|list }}"
+
+    - name: Add users
+      win_user:
+        name: "{{ 'aduser%02x' | format(item) }}"
+        description: "{{ 'User %02x - Group %02x' | format(item, (item / 2) | round(0,'ceil') | int) }}"
+        password: "{{ test_user_password }}"
+        groups: ["{{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"]
+      changed_when: False
+      loop: "{{ range(1, number_of_test_groups * 2 + 1, 1)|list }}"
+      loop_control:
+        label: "{{ item }} - {{ 'aduser%02x' | format(item) }} - {{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"
 
     - name: Change computer name
       win_hostname:
@@ -156,24 +176,6 @@
         post_reboot_delay: 3
         msg: "Server config in progress; rebooting..."
       when: win_domain_result.reboot_required
-
-    - name: Create Windows group
-      win_domain_group:
-        name: "{{ 'adgroup%02x' | format(item) }}"
-        scope: global
-        description: "{{ 'AD User Group  %02x' | format(item) }}"
-      loop: "{{ range(1, number_of_test_groups + 1, 1)|list }}"
-
-    - name: Add Users
-      win_domain_user:
-        name: "{{ 'aduser%02x' | format(item) }}"
-        description: "{{ 'User %02x - Group %02x' | format(item, (item / 2) | round(0,'ceil') | int) }}"
-        password: "{{ test_user_password }}"
-        groups: ["{{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"]
-      changed_when: False
-      loop: "{{ range(1, number_of_test_groups * 2 + 1, 1)|list }}"
-      loop_control:
-        label: "{{ item }} - {{ 'aduser%02x' | format(item) }} - {{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"
 
     - name: Windows credentials
       debug: msg="xfreerdp '/u:Administrator' '/p:{{ master_password }}' /size:1400x900 -wallpaper /cert-tofu /dynamic-resolution /v:{{ hostvars[item].inventory_hostname }}"
