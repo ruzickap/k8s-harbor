@@ -11,6 +11,8 @@ cat files/cert-manager-letsencrypt-aws-route53-certificate.yaml
 Output:
 
 ```text
+namespace/harbor-system created
+certificate.certmanager.k8s.io/ingress-cert-staging created
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:

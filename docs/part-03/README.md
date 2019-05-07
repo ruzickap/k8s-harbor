@@ -11,12 +11,29 @@ Install the CRDs resources separately:
 kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/00-crds.yaml
 ```
 
+Output:
+
+```text
+customresourcedefinition.apiextensions.k8s.io/certificates.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/challenges.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/issuers.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/orders.certmanager.k8s.io created
+```
+
 Create the namespace for cert-manager and label it to disable resource
 validation:
 
 ```bash
 kubectl create namespace cert-manager
 kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
+```
+
+Output:
+
+```text
+namespace/cert-manager created
+namespace/cert-manager labeled
 ```
 
 Install the cert-manager Helm chart:
@@ -29,72 +46,73 @@ helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-m
 Output:
 
 ```text
+"jetstack" has been added to your repositories
 NAME:   cert-manager
-LAST DEPLOYED: Mon May  6 11:28:20 2019
+LAST DEPLOYED: Tue May  7 13:00:50 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME                                    AGE
-cert-manager-edit                       24s
-cert-manager-view                       24s
-cert-manager-webhook:webhook-requester  24s
+cert-manager-edit                       23s
+cert-manager-view                       23s
+cert-manager-webhook:webhook-requester  23s
 
 ==> v1/Pod(related)
 NAME                                     READY  STATUS   RESTARTS  AGE
-cert-manager-86c45c86c8-c774g            1/1    Running  0         24s
-cert-manager-cainjector-6885996d5-nsb8z  1/1    Running  0         24s
-cert-manager-webhook-59dfddccfd-wc6j4    1/1    Running  0         24s
+cert-manager-86c45c86c8-5c5rw            1/1    Running  0         23s
+cert-manager-cainjector-6885996d5-44gbz  1/1    Running  0         23s
+cert-manager-webhook-59dfddccfd-xjpld    1/1    Running  0         23s
 
 ==> v1/Service
-NAME                  TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
-cert-manager-webhook  ClusterIP  10.100.194.147  <none>       443/TCP  24s
+NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
+cert-manager-webhook  ClusterIP  10.100.140.68  <none>       443/TCP  23s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
-cert-manager             1        24s
-cert-manager-cainjector  1        24s
-cert-manager-webhook     1        24s
+cert-manager             1        23s
+cert-manager-cainjector  1        23s
+cert-manager-webhook     1        23s
 
 ==> v1alpha1/Certificate
 NAME                              AGE
-cert-manager-webhook-ca           24s
-cert-manager-webhook-webhook-tls  24s
+cert-manager-webhook-ca           23s
+cert-manager-webhook-webhook-tls  23s
 
 ==> v1alpha1/Issuer
 NAME                           AGE
-cert-manager-webhook-ca        24s
-cert-manager-webhook-selfsign  24s
+cert-manager-webhook-ca        23s
+cert-manager-webhook-selfsign  23s
 
 ==> v1beta1/APIService
 NAME                                  AGE
-v1beta1.admission.certmanager.k8s.io  24s
+v1beta1.admission.certmanager.k8s.io  23s
 
 ==> v1beta1/ClusterRole
 NAME                     AGE
-cert-manager             24s
-cert-manager-cainjector  24s
+cert-manager             23s
+cert-manager-cainjector  23s
 
 ==> v1beta1/ClusterRoleBinding
 NAME                                 AGE
-cert-manager                         24s
-cert-manager-cainjector              24s
-cert-manager-webhook:auth-delegator  24s
+cert-manager                         23s
+cert-manager-cainjector              23s
+cert-manager-webhook:auth-delegator  23s
 
 ==> v1beta1/Deployment
 NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager             1/1    1           1          24s
-cert-manager-cainjector  1/1    1           1          24s
-cert-manager-webhook     1/1    1           1          24s
+cert-manager             1/1    1           1          23s
+cert-manager-cainjector  1/1    1           1          23s
+cert-manager-webhook     1/1    1           1          23s
 
 ==> v1beta1/RoleBinding
 NAME                                                AGE
-cert-manager-webhook:webhook-authentication-reader  24s
+cert-manager-webhook:webhook-authentication-reader  23s
 
 ==> v1beta1/ValidatingWebhookConfiguration
 NAME                  AGE
-cert-manager-webhook  24s
+cert-manager-webhook  23s
 
 
 NOTES:
@@ -131,6 +149,9 @@ cat files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
 Output:
 
 ```text
+secret/aws-route53-secret-access-key-secret created
+clusterissuer.certmanager.k8s.io/letsencrypt-staging-dns created
+clusterissuer.certmanager.k8s.io/letsencrypt-production-dns created
 apiVersion: v1
 kind: Secret
 metadata:

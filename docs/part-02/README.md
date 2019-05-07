@@ -28,7 +28,6 @@ Install Tiller (the Helm server-side component) into the Kubernetes cluster:
 kubectl create serviceaccount tiller --namespace kube-system
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 helm init --wait --service-account tiller
-helm repo update
 ```
 
 Output:
@@ -78,4 +77,12 @@ package to [ChartMuseum](https://chartmuseum.com/):
 
 ```bash
 helm plugin install https://github.com/chartmuseum/helm-push
+```
+
+Output:
+
+```text
+Downloading and installing helm-push v0.7.1 ...
+https://github.com/chartmuseum/helm-push/releases/download/v0.7.1/helm-push_0.7.1_linux_amd64.tar.gz
+Installed plugin: push
 ```
