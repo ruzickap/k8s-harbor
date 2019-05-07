@@ -29,7 +29,8 @@ Install necessary software:
 ```bash
 test -x /usr/bin/apt && \
 apt update -qq && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git gnupg2 ldap-utils openssh-client sudo > /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git gnupg2 ldap-utils openssh-client python3-pip sudo > /dev/null && \
+pip3 install ansible boto3 pywinrm
 ```
 
 Install [kubectl](https://github.com/kubernetes/kubectl) binary:
@@ -193,7 +194,7 @@ ansible-playbook --connection=local -i "127.0.0.1," -e "ansible_python_interpret
 You should be able to access Windows Server using RDP:
 
 ```bash
-xfreerdp '/u:Administrator' '/p:really_long_secret_windows_password' /size:1400x900 -wallpaper /cert-tofu /dynamic-resolution /v:winad01.mylabs.dev
+xfreerdp /u:Administrator /p:really_long_secret_windows_password /size:1440x810 -wallpaper /cert-ignore /dynamic-resolution /v:winad01.mylabs.dev &> /dev/null &
 ```
 
 If you check the AD Users you should see users `aduser{01..06}` distributed into
