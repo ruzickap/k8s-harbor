@@ -35,7 +35,7 @@ clear
 ### Please run these commands before running the script
 
 # mkdir /var/tmp/test && cd /var/tmp/test
-# git clone https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
+# git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 
 # export LETSENCRYPT_ENVIRONMENT="staging" # production
 # export MY_DOMAIN="mylabs.dev"
@@ -52,7 +52,7 @@ if [ -z ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID+x} ] || [ -z ${EKS_CERT_MAN
   exit 1
 fi
 
-sed '/^## Prepare the local working environment/,/^Check if the new EKS cluster is available:/d' docs/part-{01..06}/README.md | \
+sed '/^## Prepare the local working environment/,/^You should be able to access Windows Server using RDP/d' docs/part-{01..06}/README.md | \
 sed -n '/^```bash$/,/^```$/p;/^-----$/p'  | \
 sed -e 's/^-----$/\
 p  ""\

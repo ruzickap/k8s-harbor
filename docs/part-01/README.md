@@ -29,8 +29,8 @@ Install necessary software:
 ```bash
 test -x /usr/bin/apt && \
 apt update -qq && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git gnupg2 ldap-utils openssh-client python3-pip sudo > /dev/null && \
-pip3 install ansible boto3 pywinrm
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git gnupg2 jq ldap-utils openssh-client python3-pip sudo wget > /dev/null && \
+pip3 install --quiet ansible boto3 pywinrm
 ```
 
 Install [kubectl](https://github.com/kubernetes/kubectl) binary:
@@ -121,11 +121,10 @@ Generate SSH keys if not exists:
 test -f $HOME/.ssh/id_rsa || ( install -m 0700 -d $HOME/.ssh && ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N "" )
 ```
 
-Clone the Git repository:
+Clone the `k8s-harbor` Git repository if it wasn't done already:
 
 ```bash
-git clone https://github.com/ruzickap/k8s-harbor
-cd k8s-harbor
+[ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 ```
 
 ![EKS](https://raw.githubusercontent.com/aws-samples/eks-workshop/e2c437de2815dd0b69ada81895ea5d5144362c21/static/images/introduction/eks-product-page.png
@@ -185,7 +184,7 @@ Output:
 "EKS Architecture")
 
 Create CloudFormation stack with Windows Server 2016, which will serve as
-Active Directory:
+Active Directory to use LDAP connection from Harbor:
 
 ```bash
 ansible-playbook --connection=local -i "127.0.0.1," -e "ansible_python_interpreter=/usr/bin/python3" files/ansible/site.yml
@@ -198,7 +197,7 @@ xfreerdp /u:Administrator /p:really_long_secret_windows_password /size:1440x810 
 ```
 
 If you check the AD Users you should see users `aduser{01..06}` distributed into
-three groups `adgoup{01.03}` with password `admin`.
+three groups `adgroup{01.03}` with password `admin`.
 
 Check if the new EKS cluster is available:
 

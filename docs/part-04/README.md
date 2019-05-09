@@ -26,14 +26,12 @@ spec:
   commonName: "*.${MY_DOMAIN}"
   dnsNames:
   - "*.${MY_DOMAIN}"
-  - ${MY_DOMAIN}
   acme:
     config:
     - dns01:
         provider: aws-route53
       domains:
       - "*.${MY_DOMAIN}"
-      - ${MY_DOMAIN}
 ```
 
 ![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
@@ -129,9 +127,9 @@ Clone the repository with Harbor Helm Charts:
 ```bash
 test -d tmp || mkdir tmp
 cd tmp
-git clone https://github.com/goharbor/harbor-helm
+git clone --quiet https://github.com/goharbor/harbor-helm
 cd harbor-helm
-git checkout 1.0.1
+git checkout --quiet 1.0.1
 ```
 
 Install Harbor using Helm:

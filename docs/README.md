@@ -22,7 +22,7 @@ across clouds.
 * [AWS account](https://aws.amazon.com/account/)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [eksctl](https://eksctl.io/)
-* Kubernetes and Linux knowledge required
+* Kubernetes, Linux, AWS knowledge required
 
 ## Objectives
 
@@ -51,5 +51,6 @@ across clouds.
   * [Set up your cluster to use a private Docker image registry](https://developer.rackspace.com/docs/rkaas/latest/external/rkaas-userguide/configure-docker-registry/)
   * [Use the Notary client for advanced users](https://docs.docker.com/notary/advanced_usage/)
   * [Signing Docker images with Notary server](https://werner-dijkerman.nl/2019/02/24/signing-docker-images-with-notary-server/)
+  * [Handy API Harbor calls (in Chinese)](https://cloud.tencent.com/developer/article/1151425)
 
 ![Harbor](https://raw.githubusercontent.com/cncf/artwork/ab42c9591f6e0fdccc62c7b88f353d3fdc825734/harbor/stacked/color/harbor-stacked-color.svg?sanitize=true)

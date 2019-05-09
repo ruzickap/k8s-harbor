@@ -2,17 +2,32 @@
 
 Let's do some initial Harbor configuration...
 
+If you are using Let's encrypt staging you need to download and use their
+"Fake LE Root X1" certificate (works for curl and helm):
+
+```bash
+[ ${LETSENCRYPT_ENVIRONMENT} = "staging" ] && \
+curl -s https://letsencrypt.org/certs/fakelerootx1.pem > /tmp/fakelerootx1.pem
+export SSL_CERT_FILE=/tmp/fakelerootx1.pem
+```
+
 ## Add Project
 
 * Go to `Projects`, click on `NEW PROJECT` and create "private"
   `my_project` project.
+
+You can also use the API directly:
+
+```bash
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.${MY_DOMAIN}/api/projects" --data "{ \"project_name\": \"my_project\", \"public\": 0 }"
+```
 
 ## LDAP Authentication
 
 List users which are in Active Directory:
 
 ```bash
-ldapsearch -LLL -x -h winad01.mylabs.dev -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=aduser*)" dn name description memberOf
+ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=aduser*)" dn name description memberOf
 ```
 
 Output:
@@ -52,7 +67,7 @@ name: aduser06
 List groups which are in Active Directory:
 
 ```bash
-ldapsearch -LLL -x -h winad01.mylabs.dev -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=adgroup*)" dn name description member
+ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=adgroup*)" dn name description member
 ```
 
 Output:
@@ -91,6 +106,25 @@ Configure LDAP/Active Directory authentication in Harbor by going to
 * `LDAP Group GID: sAMAccountName`
 * `LDAP Group Admin DN: cn=adgroup03,cn=users,dc=mylabs,dc=dev`
 * `LDAP Group Scope: OneLevel`
+
+It's possible to use API call as well:
+
+```bash
+curl -u "admin:admin" -X PUT "https://core.${MY_DOMAIN}/api/configurations" -H "Content-Type: application/json" -d \
+"{
+  \"auth_mode\": \"ldap_auth\",
+  \"ldap_base_dn\": \"cn=users,dc=mylabs,dc=dev\",
+  \"ldap_group_admin_dn\": \"cn=adgroup03,cn=users,dc=mylabs,dc=dev\",
+  \"ldap_group_attribute_name\": \"sAMAccountName\",
+  \"ldap_group_base_dn\": \"cn=users,dc=mylabs,dc=dev\",
+  \"ldap_group_search_scope\": 1,
+  \"ldap_scope\": 1,
+  \"ldap_search_dn\": \"cn=ansible,cn=Users,dc=mylabs,dc=dev\",
+  \"ldap_search_password\": \"ansible\",
+  \"ldap_uid\": \"sAMAccountName\",
+  \"ldap_url\": \"ldap://winad01.mylabs.dev\"
+}"
+```
 
 ![Harbor Authentication Configuration page](./harbor_ldap_auth_configuration.png
 "Harbor Authentication Configuration page")
