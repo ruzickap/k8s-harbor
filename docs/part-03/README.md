@@ -5,6 +5,11 @@ It's also handy to install cert-manager for managing TLS certificates.
 
 ## Install cert-manager
 
+cert-manager architecture:
+
+![cert-manager high level overview](https://raw.githubusercontent.com/jetstack/cert-manager/4f30ed75e88e5d0defeb950501b5cac6da7fa7fe/docs/images/high-level-overview.png
+"cert-manager high level overview")
+
 Install the CRDs resources separately:
 
 ```bash
@@ -140,6 +145,9 @@ Encrypt to generate certificate. Route53 (DNS) method of requesting certificate
 from Let's Encrypt must be used to create wildcard certificate `*.mylabs.dev`
 (details [here](https://community.letsencrypt.org/t/wildcard-certificates-via-http-01/51223)).
 
+![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
+"ACME DNS Challenge")
+
 ```bash
 export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64=$(echo -n "$EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY" | base64)
 envsubst < files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml | kubectl apply -f -
@@ -213,6 +221,11 @@ spec:
 ```
 
 ## Install Nginx
+
+![Nginx Ingress controller](https://www.nginx.com/wp-content/uploads/2018/12/multiple-ingress-controllers.png
+"Nginx Ingress controller")
+
+([https://www.nginx.com/blog/](https://www.nginx.com/blog/))
 
 Install Nginx which will also create a new loadbalancer:
 

@@ -2,9 +2,6 @@
 
 YouTube video: [https://youtu.be/XSszSd-TTCQ](https://youtu.be/XSszSd-TTCQ)
 
-[![Manage your charts with Harbor](http://img.youtube.com/vi/XSszSd-TTCQ/0.jpg)](http://www.youtube.com/watch?v=XSszSd-TTCQ
-"Manage your charts with Harbor")
-
 ## Upload Helm Chart using Web GUI
 
 Download the compressed Helm Chart of Rook:
@@ -64,11 +61,10 @@ jetstack                https://charts.jetstack.io
 my_project_helm_repo    https://core.mylabs.dev/chartrepo/my_project
 ```
 
-Push the `harbor-helm` to the `my_project_helm_repo` project in Harbor":
+See the Helm chart content:
 
 ```bash
 ls -l ./harbor-helm/
-helm push --username aduser05 --password admin ./harbor-helm/ my_project_helm_repo
 ```
 
 Output:
@@ -82,6 +78,17 @@ total 52
 drwxr-xr-x  3 root root    63 May  9 17:24 docs
 drwxr-xr-x 14 root root   225 May  9 17:24 templates
 -rw-r--r--  1 root root 11711 May  9 17:24 values.yaml
+```
+
+Push the `harbor-helm` to the `my_project_helm_repo` project in Harbor":
+
+```bash
+helm push --username aduser05 --password admin ./harbor-helm/ my_project_helm_repo
+```
+
+Output:
+
+```text
 Pushing harbor-1.0.1.tgz to my_project_helm_repo...
 Done.
 ```
@@ -206,7 +213,7 @@ Output:
 See the provenance file:
 
 ```bash
-cat gitea-1.6.1.tgz.prov
+cat gitea-1.6.1.tgz.prov && echo
 ```
 
 Output:

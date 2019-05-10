@@ -1,5 +1,10 @@
 # Install Harbor
 
+Harbor architecture:
+
+![Harbor Architecture](https://raw.githubusercontent.com/goharbor/harbor/5d31dd5b57d83f300907744aabf13ca60aac19b3/docs/img/harbor-arch.png
+"Harbor Architecture")
+
 Generate certificate using cert-manager:
 
 ```bash
@@ -325,8 +330,8 @@ Open the [https://core.mylabs.dev](https://core.mylabs.dev):
 
 Log in:
 
-* User: admin
-* Password: admin
+* User: `admin`
+* Password: `admin`
 
 You should see the Web UI:
 
