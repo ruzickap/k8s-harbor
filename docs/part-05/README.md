@@ -3,12 +3,18 @@
 Let's do some initial Harbor configuration...
 
 If you are using Let's encrypt staging you need to download and use their
-"Fake LE Root X1" certificate (works for curl and helm):
+"Fake LE Root X1" certificate for curl, helm and k8s cluster:
 
 ```bash
 [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ] && \
-curl -s https://letsencrypt.org/certs/fakelerootx1.pem > /tmp/fakelerootx1.pem
-export SSL_CERT_FILE=/tmp/fakelerootx1.pem
+sudo mkdir -pv /etc/docker/certs.d/core.${MY_DOMAIN}/ && \
+sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt && \
+export SSL_CERT_FILE=/etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt && \
+for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do \
+  ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
+    "sudo mkdir -p /etc/docker/certs.d/core.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt" ; \
+done && \
+echo "*** Done"
 ```
 
 ## Add Project
