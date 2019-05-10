@@ -16,10 +16,10 @@ test -f ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxto
 TYPE_SPEED=60
 
 # Uncomment to run non-interactively
-export PROMPT_TIMEOUT=0
+export PROMPT_TIMEOUT=${PROMPT_TIMEOUT:-0}
 
 # No wait
-export NO_WAIT=false
+export NO_WAIT=${NO_WAIT:-false}
 
 #
 # custom prompt
@@ -39,17 +39,19 @@ clear
 # else
 #  docker run -it --rm -e USER="$USER" -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/mnt -v $HOME/.ssh:/root/.ssh:ro -v $HOME/.aws:/root/.aws ubuntu
 # fi
-# echo $(hostname -I) $(hostname) >> /etc/hosts
 
-# export LETSENCRYPT_ENVIRONMENT="staging" # production
+# export LETSENCRYPT_ENVIRONMENT="production"  # Use with care - Let's Encrypt will generate real certificates
 # export MY_DOMAIN="mylabs.dev"
 
 # apt-get update -qq && apt-get install -qq -y curl git pv > /dev/null
 # cd /mnt
-# [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
+# export NO_WAIT=true
 # ./run-k8s-harbor-full.sh
 
-sed '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' docs/part-{01..06}/README.md | \
+echo $(hostname -I) $(hostname) >> /etc/hosts
+[ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
+
+sed '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' docs/part-{01..08}/README.md | \
 sed -n '/^```bash$/,/^```$/p;/^-----$/p'  | \
 sed -e 's/^-----$/\
 p  ""\

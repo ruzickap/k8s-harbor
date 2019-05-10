@@ -1,3 +1,4 @@
+_
 Auth
 awscli
 ChartMuseum
@@ -11,13 +12,16 @@ Gitea
 Jetstack
 Jia
 Jiang
+k8s
 kubectl
 Kubernetes
 loadbalancer
 nameservers
+nginx
 Nginx
 plugin
 Route53
+swagger.yaml
 VMware
 Weaveworks
 www.nginx.com
