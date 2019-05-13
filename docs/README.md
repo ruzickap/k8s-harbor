@@ -37,6 +37,7 @@ across clouds.
 * [Part 05 - Initial Harbor tasks](part-05/README.md)
 * [Part 06 - Harbor and Helm charts](part-06/README.md)
 * [Part 07 - Harbor and container images](part-07/README.md)
+* [Part 08 - Project settings](part-08/README.md)
 
 ## Links
 
