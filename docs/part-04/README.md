@@ -134,7 +134,7 @@ test -d tmp || mkdir tmp
 cd tmp
 git clone --quiet https://github.com/goharbor/harbor-helm
 cd harbor-helm
-git checkout --quiet 1.0.1
+git checkout --quiet v1.0.1
 ```
 
 Install Harbor using Helm:
