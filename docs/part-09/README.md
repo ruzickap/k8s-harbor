@@ -5,6 +5,12 @@
 
 -----
 
+Configure `kubeconfig`:
+
+```bash
+export KUBECONFIG=$PWD/kubeconfig.conf
+```
+
 Remove Windows Server 2016 CloudFormation stack:
 
 ```bash
@@ -42,6 +48,12 @@ Remove Helm:
 helm reset
 ```
 
+Output:
+
+```text
+Tiller (the Helm server-side component) has been uninstalled from your Kubernetes Cluster.
+```
+
 Remove EKS cluster:
 
 ```bash
@@ -54,9 +66,9 @@ Output:
 [ℹ]  using region eu-central-1
 [ℹ]  deleting EKS cluster "pruzicka-k8s-harbor"
 [✔]  kubeconfig has been updated
-[ℹ]  2 sequential tasks: { delete nodegroup "ng-d5daf6c0", delete cluster control plane "pruzicka-k8s-harbor" }
-[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d5daf6c0"
-[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d5daf6c0" to get deleted
+[ℹ]  2 sequential tasks: { delete nodegroup "ng-1aec8f6a", delete cluster control plane "pruzicka-k8s-harbor" }
+[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a"
+[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a" to get deleted
 [ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-cluster"
 [ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-cluster" to get deleted
 [✔]  all cluster resources were deleted
@@ -97,4 +109,10 @@ Remove Helm plugin:
 
 ```bash
 helm plugin remove push
+```
+
+Remove other files:
+
+```bash
+rm demo-magic.sh kubeconfig.conf README.sh &> /dev/null
 ```
