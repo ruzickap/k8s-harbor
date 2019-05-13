@@ -81,6 +81,12 @@ docker rm $(docker ps -a -q)
 docker rmi --force $(docker images -q)
 ```
 
+Notary clean-up:
+
+```bash
+rm -rf ~/.notary/
+```
+
 Remove `tmp` directory:
 
 ```bash
