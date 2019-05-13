@@ -52,8 +52,8 @@ Output:
 
 ```text
 REPOSITORY                               TAG                 IMAGE ID            CREATED             SIZE
-core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        5 weeks ago         23MB
-gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        5 weeks ago         23MB
+gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        6 weeks ago         23MB
+core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        6 weeks ago         23MB
 ```
 
 ```bash
@@ -127,8 +127,8 @@ Output:
 
 ```text
 REPOSITORY                               TAG                 IMAGE ID            CREATED             SIZE
-core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        6 weeks ago         23MB
 gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        6 weeks ago         23MB
+core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        6 weeks ago         23MB
 core.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        12 months ago       109MB
 nginx                                    1.13.12             ae513a47849c        12 months ago       109MB
 ```

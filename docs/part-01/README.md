@@ -152,30 +152,30 @@ Output:
 
 ```text
 [ℹ]  using region eu-central-1
-[ℹ]  setting availability zones to [eu-central-1a eu-central-1c eu-central-1b]
-[ℹ]  subnets for eu-central-1a - public:192.168.0.0/19 private:192.168.96.0/19
-[ℹ]  subnets for eu-central-1c - public:192.168.32.0/19 private:192.168.128.0/19
+[ℹ]  setting availability zones to [eu-central-1c eu-central-1a eu-central-1b]
+[ℹ]  subnets for eu-central-1c - public:192.168.0.0/19 private:192.168.96.0/19
+[ℹ]  subnets for eu-central-1a - public:192.168.32.0/19 private:192.168.128.0/19
 [ℹ]  subnets for eu-central-1b - public:192.168.64.0/19 private:192.168.160.0/19
-[ℹ]  nodegroup "ng-d5daf6c0" will use "ami-0d741ed58ca5b342e" [AmazonLinux2/1.12]
-[ℹ]  using SSH public key "/home/pruzicka/.ssh/id_rsa.pub" as "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d5daf6c0-a3:84:e4:0d:af:5f:c8:40:da:71:68:8a:74:c7:ba:16"
+[ℹ]  nodegroup "ng-1aec8f6a" will use "ami-0d741ed58ca5b342e" [AmazonLinux2/1.12]
+[ℹ]  using SSH public key "/home/pruzicka/.ssh/id_rsa.pub" as "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a-a3:84:e4:0d:af:5f:c8:40:da:71:68:8a:74:c7:ba:16"
 [ℹ]  creating EKS cluster "pruzicka-k8s-harbor" in "eu-central-1" region
 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=eu-central-1 --name=pruzicka-k8s-harbor'
-[ℹ]  2 sequential tasks: { create cluster control plane "pruzicka-k8s-harbor", create nodegroup "ng-d5daf6c0" }
+[ℹ]  2 sequential tasks: { create cluster control plane "pruzicka-k8s-harbor", create nodegroup "ng-1aec8f6a" }
 [ℹ]  building cluster stack "eksctl-pruzicka-k8s-harbor-cluster"
 [ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-cluster"
-[ℹ]  building nodegroup stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d5daf6c0"
-[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-d5daf6c0
-[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-d5daf6c0
-[ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d5daf6c0"
+[ℹ]  building nodegroup stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a"
+[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-1aec8f6a
+[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-1aec8f6a
+[ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a"
 [✔]  all EKS cluster resource for "pruzicka-k8s-harbor" had been created
 [✔]  saved kubeconfig as "kubeconfig.conf"
-[ℹ]  adding role "arn:aws:iam::822044714040:role/eksctl-pruzicka-k8s-harbor-nodegr-NodeInstanceRole-5RH9QK0HF4J4" to auth ConfigMap
-[ℹ]  nodegroup "ng-d5daf6c0" has 0 node(s)
-[ℹ]  waiting for at least 2 node(s) to become ready in "ng-d5daf6c0"
-[ℹ]  nodegroup "ng-d5daf6c0" has 2 node(s)
-[ℹ]  node "ip-192-168-52-94.eu-central-1.compute.internal" is ready
-[ℹ]  node "ip-192-168-8-20.eu-central-1.compute.internal" is ready
+[ℹ]  adding role "arn:aws:iam::822044714040:role/eksctl-pruzicka-k8s-harbor-nodegr-NodeInstanceRole-77WL59QIZZPA" to auth ConfigMap
+[ℹ]  nodegroup "ng-1aec8f6a" has 0 node(s)
+[ℹ]  waiting for at least 2 node(s) to become ready in "ng-1aec8f6a"
+[ℹ]  nodegroup "ng-1aec8f6a" has 2 node(s)
+[ℹ]  node "ip-192-168-27-196.eu-central-1.compute.internal" is ready
+[ℹ]  node "ip-192-168-57-4.eu-central-1.compute.internal" is ready
 [ℹ]  kubectl command should work with "kubeconfig.conf", try 'kubectl --kubeconfig=kubeconfig.conf get nodes'
 [✔]  EKS cluster "pruzicka-k8s-harbor" in "eu-central-1" region is ready
 ```
@@ -209,9 +209,9 @@ kubectl get nodes -o wide
 Output:
 
 ```text
-NAME                                             STATUS   ROLES    AGE   VERSION   INTERNAL-IP     EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                CONTAINER-RUNTIME
-ip-192-168-52-94.eu-central-1.compute.internal   Ready    <none>   57s   v1.12.7   192.168.52.94   18.195.168.215   Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
-ip-192-168-8-20.eu-central-1.compute.internal    Ready    <none>   63s   v1.12.7   192.168.8.20    18.197.68.64     Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
+NAME                                              STATUS   ROLES    AGE   VERSION   INTERNAL-IP      EXTERNAL-IP     OS-IMAGE         KERNEL-VERSION                CONTAINER-RUNTIME
+ip-192-168-27-196.eu-central-1.compute.internal   Ready    <none>   13m   v1.12.7   192.168.27.196   35.156.42.7     Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
+ip-192-168-57-4.eu-central-1.compute.internal     Ready    <none>   13m   v1.12.7   192.168.57.4     35.156.37.162   Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
 ```
 
 ![EKS High Level](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-high-level.svg?sanitize=true
@@ -229,10 +229,10 @@ done
 Output:
 
 ```text
-*** 18.195.168.215
- 09:26:18 up 1 min,  0 users,  load average: 0.17, 0.10, 0.03
-*** 18.197.68.64
- 09:26:19 up 2 min,  0 users,  load average: 0.39, 0.25, 0.09
+*** 35.156.42.7
+ 13:06:32 up 13 min,  0 users,  load average: 0.10, 0.10, 0.08
+*** 35.156.37.162
+ 13:06:32 up 14 min,  0 users,  load average: 0.02, 0.04, 0.07
 ```
 
 At the end of the output you should see 2 IP addresses which

@@ -59,6 +59,7 @@ stable                  https://kubernetes-charts.storage.googleapis.com
 local                   http://127.0.0.1:8879/charts
 jetstack                https://charts.jetstack.io
 my_project_helm_repo    https://core.mylabs.dev/chartrepo/my_project
+library                 https://core.mylabs.dev/chartrepo/library
 ```
 
 See the Helm chart content:
@@ -71,13 +72,13 @@ Output:
 
 ```text
 total 52
--rw-r--r--  1 root root   577 May  9 17:24 CONTRIBUTING.md
--rw-r--r--  1 root root   502 May  9 17:24 Chart.yaml
--rw-r--r--  1 root root 11357 May  9 17:24 LICENSE
--rw-r--r--  1 root root 20336 May  9 17:24 README.md
-drwxr-xr-x  3 root root    63 May  9 17:24 docs
-drwxr-xr-x 14 root root   225 May  9 17:24 templates
--rw-r--r--  1 root root 11711 May  9 17:24 values.yaml
+-rw-rw-r--  1 pruzicka pruzicka   502 May 13 15:08 Chart.yaml
+-rw-rw-r--  1 pruzicka pruzicka   577 May 13 15:08 CONTRIBUTING.md
+drwxrwxr-x  3 pruzicka pruzicka    63 May 13 15:08 docs
+-rw-rw-r--  1 pruzicka pruzicka 11357 May 13 15:08 LICENSE
+-rw-rw-r--  1 pruzicka pruzicka 20336 May 13 15:08 README.md
+drwxrwxr-x 14 pruzicka pruzicka   225 May 13 15:08 templates
+-rw-rw-r--  1 pruzicka pruzicka 11711 May 13 15:08 values.yaml
 ```
 
 Push the `harbor-helm` to the `my_project_helm_repo` project in Harbor":
@@ -121,25 +122,24 @@ gpg2 --verbose --batch --gen-key ${GNUPGHOME}/my_gpg_key
 Output:
 
 ```text
-gpg: keybox '/mnt/tmp/.gnupg/pubring.kbx' created
+gpg: keybox '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx' created
 gpg: Generating a basic OpenPGP key
 gpg: no running gpg-agent - starting '/usr/bin/gpg-agent'
 gpg: waiting for the agent to come up ... (5s)
-gpg: waiting for the agent to come up ... (4s)
 gpg: connection to agent established
 gpg: writing self signature
-gpg: RSA/SHA512 signature from: "E1C63C9058D3358B [?]"
+gpg: RSA/SHA256 signature from: "0A3D3EB0B6D9AA6D [?]"
 gpg: writing key binding signature
-gpg: RSA/SHA512 signature from: "E1C63C9058D3358B [?]"
-gpg: RSA/SHA512 signature from: "E1A3F789D3E4D72D [?]"
-gpg: writing public key to '/mnt/tmp/.gnupg/pubring.kbx'
-gpg: /mnt/tmp/.gnupg/trustdb.gpg: trustdb created
+gpg: RSA/SHA256 signature from: "0A3D3EB0B6D9AA6D [?]"
+gpg: RSA/SHA256 signature from: "8622040B57DCC9EE [?]"
+gpg: writing public key to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx'
+gpg: /home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/trustdb.gpg: trustdb created
 gpg: using pgp trust model
-gpg: key E1C63C9058D3358B marked as ultimately trusted
-gpg: directory '/mnt/tmp/.gnupg/openpgp-revocs.d' created
-gpg: writing to '/mnt/tmp/.gnupg/openpgp-revocs.d/A0FC0E2B687DDA829E980C6DE1C63C9058D3358B.rev'
-gpg: RSA/SHA512 signature from: "E1C63C9058D3358B Helm User (User) <my_helm_user@mylabs.dev>"
-gpg: revocation certificate stored as '/mnt/tmp/.gnupg/openpgp-revocs.d/A0FC0E2B687DDA829E980C6DE1C63C9058D3358B.rev'
+gpg: key 0A3D3EB0B6D9AA6D marked as ultimately trusted
+gpg: directory '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d' created
+gpg: writing to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/07C7E72D3B8C71FA5C943EE40A3D3EB0B6D9AA6D.rev'
+gpg: RSA/SHA256 signature from: "0A3D3EB0B6D9AA6D Helm User (User) <my_helm_user@mylabs.dev>"
+gpg: revocation certificate stored as '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/07C7E72D3B8C71FA5C943EE40A3D3EB0B6D9AA6D.rev'
 ```
 
 List the GPG secret key:
@@ -154,12 +154,12 @@ Output:
 gpg: checking the trustdb
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-/mnt/tmp/.gnupg/pubring.kbx
----------------------------
-sec   rsa2048 2019-05-09 [SCEA]
-      A0FC0E2B687DDA829E980C6DE1C63C9058D3358B
+/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx
+------------------------------------------------------------
+sec   rsa2048 2019-05-13 [SCEA]
+      07C7E72D3B8C71FA5C943EE40A3D3EB0B6D9AA6D
 uid           [ultimate] Helm User (User) <my_helm_user@mylabs.dev>
-ssb   rsa2048 2019-05-09 [SEA]
+ssb   rsa2048 2019-05-13 [SEA]
 ```
 
 Export private GPG key into `.gnupg/secring.gpg`, because Helm doesn't
@@ -173,7 +173,7 @@ Output:
 
 ```text
 gpg: starting migration from earlier GnuPG versions
-gpg: porting secret keys from '/mnt/tmp/.gnupg/secring.gpg' to gpg-agent
+gpg: porting secret keys from '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/secring.gpg' to gpg-agent
 gpg: migration succeeded
 ```
 
@@ -193,7 +193,7 @@ helm package --sign --key "my_helm_user@${MY_DOMAIN}" --keyring ${GNUPGHOME}/sec
 Output:
 
 ```text
-Successfully packaged chart and saved it to: /mnt/tmp/gitea-1.6.1.tgz
+Successfully packaged chart and saved it to: /home/pruzicka/data/github/k8s-harbor/tmp/gitea-1.6.1.tgz
 ```
 
 There should be 2 files in current directory - the archive with the Helm Chart
@@ -206,8 +206,8 @@ ls -la gitea*tgz*
 Output:
 
 ```text
--rw-r--r-- 1 root root 20390 May  9 17:31 gitea-1.6.1.tgz
--rwxr-xr-x 1 root root   966 May  9 17:31 gitea-1.6.1.tgz.prov
+-rw-rw-r-- 1 pruzicka pruzicka 20390 May 13 15:11 gitea-1.6.1.tgz
+-rwxr-xr-x 1 pruzicka pruzicka   966 May 13 15:11 gitea-1.6.1.tgz.prov
 ```
 
 See the provenance file:
@@ -219,7 +219,7 @@ cat gitea-1.6.1.tgz.prov && echo
 Output:
 
 ```text
-----BEGIN PGP SIGNED MESSAGE-----
+-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 appVersion: 1.6.1
@@ -243,16 +243,9 @@ version: 1.6.1
 
 ...
 files:
-  gitea-1.6.1.tgz: sha256:c7761dd2e0fca52072a6eae404bf38eba03d30269fe05b5520a3a42079f003d9
+  gitea-1.6.1.tgz: sha256:4bf1923d6c69e6b3d303f0bd79046acfb0e9891617563a7ad169477d107ebb49
 -----BEGIN PGP SIGNATURE-----
-
-wsBcBAEBCgAQBQJc1GP6CRDhxjyQWNM1iwAAoaAIAHrwjfb5t+2giTZh/1p7F5+Q
-p/l6btL1BEGiCXRXsXb8kKE2lmYqT1NV5NVolwGRjqidiMqpREXm8QVGZFBAeodZ
-oJi/2Dke6jrWfw1uT9gNDQayAXqksx/zD0SmkbY9lJhClEAZIjjKcG38rmKJF91v
-cFfyUxy/bC3pdbGyQcCSM5hOAOyVG7IXfPq2iu53RiF2RbFsX8OsCa5KmjuTLHtE
-CXh5bMKVDKegOMeqhyaCx5xBmfTpl5kvFW22NPrNdL2GAvCIsuqU6s0aljknRHac
-e6WjI6AyE6BkeuY1bgAx43LjSgTBhW2wsjma9AWGyA9SiQECTb1JM3CRKbR0vv4=
-=YMDB
+...
 -----END PGP SIGNATURE-----
 ```
 
@@ -328,7 +321,7 @@ Output:
 
 ```text
 NAME:   gitea
-LAST DEPLOYED: Thu May  9 17:37:00 2019
+LAST DEPLOYED: Mon May 13 15:11:55 2019
 NAMESPACE: gitea-system
 STATUS: DEPLOYED
 
@@ -339,7 +332,7 @@ gitea-gitea  1     3s
 
 ==> v1/Pod(related)
 NAME                         READY  STATUS    RESTARTS  AGE
-gitea-gitea-f9fd8cb4b-dwjll  0/3    Init:0/1  0         3s
+gitea-gitea-f9fd8cb4b-hm587  0/3    Init:0/1  0         2s
 
 ==> v1/Secret
 NAME      TYPE    DATA  AGE
@@ -347,16 +340,16 @@ gitea-db  Opaque  1     3s
 
 ==> v1/Service
 NAME              TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)   AGE
-gitea-gitea-http  ClusterIP  10.100.9.221    <none>       3000/TCP  3s
-gitea-gitea-ssh   ClusterIP  10.100.119.160  <none>       22/TCP    3s
+gitea-gitea-http  ClusterIP  10.100.121.170  <none>       3000/TCP  3s
+gitea-gitea-ssh   ClusterIP  10.100.54.65    <none>       22/TCP    3s
 
 ==> v1beta1/Deployment
 NAME         READY  UP-TO-DATE  AVAILABLE  AGE
-gitea-gitea  0/1    1           0          3s
+gitea-gitea  0/1    1           0          2s
 
 ==> v1beta1/Ingress
 NAME                HOSTS             ADDRESS  PORTS  AGE
-gitea-giteaingress  gitea.mylabs.dev  80, 443  3s
+gitea-giteaingress  gitea.mylabs.dev  80, 443  2s
 
 
 NOTES:

@@ -53,7 +53,7 @@ Output:
 ```text
 "jetstack" has been added to your repositories
 NAME:   cert-manager
-LAST DEPLOYED: Tue May  7 13:00:50 2019
+LAST DEPLOYED: Mon May 13 15:07:06 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
@@ -66,13 +66,13 @@ cert-manager-webhook:webhook-requester  23s
 
 ==> v1/Pod(related)
 NAME                                     READY  STATUS   RESTARTS  AGE
-cert-manager-86c45c86c8-5c5rw            1/1    Running  0         23s
-cert-manager-cainjector-6885996d5-44gbz  1/1    Running  0         23s
-cert-manager-webhook-59dfddccfd-xjpld    1/1    Running  0         23s
+cert-manager-86c45c86c8-t488h            1/1    Running  0         23s
+cert-manager-cainjector-6885996d5-bhmkd  1/1    Running  0         23s
+cert-manager-webhook-59dfddccfd-mnfb6    1/1    Running  0         23s
 
 ==> v1/Service
 NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
-cert-manager-webhook  ClusterIP  10.100.140.68  <none>       443/TCP  23s
+cert-manager-webhook  ClusterIP  10.100.26.141  <none>       443/TCP  23s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
@@ -117,7 +117,7 @@ cert-manager-webhook:webhook-authentication-reader  23s
 
 ==> v1beta1/ValidatingWebhookConfiguration
 NAME                  AGE
-cert-manager-webhook  23s
+cert-manager-webhook  22s
 
 
 NOTES:
@@ -237,49 +237,49 @@ Output:
 
 ```text
 NAME:   nginx-ingress
-LAST DEPLOYED: Mon May  6 11:29:31 2019
+LAST DEPLOYED: Mon May 13 15:07:39 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                      DATA  AGE
-nginx-ingress-controller  1     2s
+nginx-ingress-controller  1     4s
 
 ==> v1/Pod(related)
 NAME                                           READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-ffc964cd-6npjn        0/1    ContainerCreating  0         2s
-nginx-ingress-default-backend-56768c457-nj6jd  0/1    ContainerCreating  0         2s
+nginx-ingress-controller-ffc964cd-bb5sm        0/1    ContainerCreating  0         4s
+nginx-ingress-default-backend-56768c457-2zvp8  1/1    Running            0         4s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.82.132   a73fdbe796fe1...  80:32424/TCP,443:30456/TCP  2s
-nginx-ingress-default-backend  ClusterIP     10.100.252.170  <none>            80/TCP                      2s
+NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.94.119  a15f001ab7580...  80:30252/TCP,443:32598/TCP  4s
+nginx-ingress-default-backend  ClusterIP     10.100.96.234  <none>            80/TCP                      4s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
-nginx-ingress  1        2s
+nginx-ingress  1        4s
 
 ==> v1beta1/ClusterRole
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  4s
 
 ==> v1beta1/ClusterRoleBinding
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  4s
 
 ==> v1beta1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-nginx-ingress-controller       0/1    1           0          2s
-nginx-ingress-default-backend  0/1    1           0          2s
+nginx-ingress-controller       0/1    1           0          4s
+nginx-ingress-default-backend  1/1    1           1          4s
 
 ==> v1beta1/Role
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  4s
 
 ==> v1beta1/RoleBinding
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  4s
 
 
 NOTES:

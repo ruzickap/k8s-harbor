@@ -17,6 +17,11 @@ done && \
 echo "*** Done"
 ```
 
+Output:
+
+```bash
+```
+
 ## Add Project
 
 * Go to `Projects`, click on `NEW PROJECT` and create "private"

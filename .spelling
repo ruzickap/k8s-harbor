@@ -1,5 +1,6 @@
 _
 Auth
+Asciinema
 awscli
 ChartMuseum
 Cleanup
@@ -22,6 +23,7 @@ nginx
 Nginx
 plugin
 Route53
+screencast
 swagger.yaml
 VMware
 Weaveworks
