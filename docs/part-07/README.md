@@ -204,3 +204,27 @@ You should be able to see the signed container image in the Harbor web
 interface:
 
 ![Signed container image](./harbor_signed_container_image.png "Signed container image")
+
+Install [Notary](https://github.com/theupdateframework/notary):
+
+```bash
+sudo curl -sL https://github.com/theupdateframework/notary/releases/download/v0.6.1/notary-Linux-amd64 -o /usr/local/bin/notary
+sudo chmod a+x /usr/local/bin/notary
+```
+
+Access Notary using the standard client:
+
+```bash
+notary -s https://notary.${MY_DOMAIN} list core.${MY_DOMAIN}/library/kuard-amd64
+```
+
+Output:
+
+```text
+NAME    DIGEST                                                              SIZE (BYTES)    ROLE
+----    ------                                                              ------------    ----
+blue    1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229    739             targets
+```
+
+![Notary](https://raw.githubusercontent.com/theupdateframework/notary/97a2d690658937fea3b65b4494bd5c3a75558d08/docs/images/notary-blk.svg?sanitize=true
+"Notary")
