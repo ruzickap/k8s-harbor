@@ -1,5 +1,7 @@
 # Initial Harbor tasks
 
+YouTube video: [https://youtu.be/DcArQEFgk5s](https://youtu.be/DcArQEFgk5s)
+
 Let's do some initial Harbor configuration...
 
 If you are using Let's encrypt staging you need to download and use their

@@ -76,6 +76,8 @@ It should be visible in the Harbor UI:
 
 ## Vulnerability scan
 
+YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
+
 Scan the image `kuard-amd64:blue` for vulnerabilities (using API):
 
 ::: warning
@@ -171,6 +173,8 @@ Vulnerability list for container image:
 "Vulnerability list for container image")
 
 ## Signed container image
+
+YouTube video: [https://youtu.be/pPklSTJZY2E](https://youtu.be/pPklSTJZY2E)
 
 Tag the `kuard` image to be pulled to Harbor `library` project:
 
