@@ -4,7 +4,7 @@
 # include the magic
 ################################################
 test -f ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
-. ./demo-magic.sh -n
+. ./demo-magic.sh
 
 ################################################
 # Configure the options
@@ -16,10 +16,10 @@ test -f ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxto
 TYPE_SPEED=60
 
 # Uncomment to run non-interactively
-export PROMPT_TIMEOUT=${PROMPT_TIMEOUT:-0}
+export PROMPT_TIMEOUT=0
 
 # No wait
-export NO_WAIT=${NO_WAIT:-false}
+export NO_WAIT=false
 
 #
 # custom prompt
