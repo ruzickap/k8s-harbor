@@ -9,8 +9,12 @@ Enable automated vulnerability scan after each "image push" to the project:
 
 ```bash
 PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://core.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
-curl -s -u "aduser05:admin" -X PUT "https://core.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" \
--d "{ \"metadata\": { \"auto_scan\": \"true\" } }"
+curl -s -u "aduser05:admin" -X PUT "https://core.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
+"{
+  \"metadata\": {
+    \"auto_scan\": \"true\"
+  }
+}"
 ```
 
 You should see the following in the Web interface:
@@ -57,8 +61,13 @@ Turn on the "Prevent vulnerable images from running" feature:
 
 ```bash
 PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://core.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
-curl -s -u "aduser05:admin" -X PUT "https://core.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" \
--d "{ \"metadata\": { \"prevent_vul\": \"true\", \"severity\": \"high\" } }"
+curl -s -u "aduser05:admin" -X PUT "https://core.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
+"{
+  \"metadata\": {
+    \"prevent_vul\": \"true\",
+    \"severity\": \"high\"
+  }
+}"
 ```
 
 ![Harbor - Prevent vulnerable images from running](./harbor_prevent_vulnerable_images_from_running.png
@@ -189,3 +198,66 @@ Events:
 ```
 
 You are not able to run docker images with "High" security issues.
+
+## Project RBAC settings
+
+Create new project called `my_rbac_test_project`
+
+```bash
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.${MY_DOMAIN}/api/projects" -d \
+"{
+  \"project_name\": \"my_rbac_test_project\",
+  \"public\": 0
+}"
+```
+
+Try to push the kuard image as a "Guest" user:
+
+```bash
+echo admin | docker login --username aduser04 --password-stdin core.${MY_DOMAIN}
+docker tag gcr.io/kuar-demo/kuard-amd64:blue core.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+docker push core.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+```
+
+Output:
+
+```text
+The push refers to repository [core.mylabs.dev/my_rbac_test_project/kuard-amd64]
+656e9c47289e: Preparing
+bcf2f368fe23: Preparing
+denied: requested access to the resource is denied
+```
+
+* Guests are not allow to push anything into the projects.
+
+Add user `aduser04` on the project `my_rbac_test_project` as a Developer:
+
+```bash
+PROJECT_ID=$(curl -s -u "admin:admin" -X GET "https://core.${MY_DOMAIN}/api/projects?name=my_rbac_test_project" | jq ".[].project_id")
+curl -u "admin:admin" -X POST "https://core.${MY_DOMAIN}/api/projects/${PROJECT_ID}/members" -H "Content-Type: application/json" -d \
+"{
+  \"role_id\": 2,
+  \"member_user\": {
+    \"username\": \"aduser04\"
+  }
+}"
+```
+
+![Harbor - Project members](./harbor_project_members.png "Harbor - Project members")
+
+Push the container image again:
+
+```bash
+docker push core.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+```
+
+Output:
+
+```text
+The push refers to repository [core.mylabs.dev/my_rbac_test_project/kuard-amd64]
+656e9c47289e: Layer already exists
+bcf2f368fe23: Layer already exists
+blue: digest: sha256:1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229 size: 739
+```
+
+Now the image was successfully uploaded:
