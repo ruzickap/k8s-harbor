@@ -96,7 +96,7 @@ Done.
 
 ## Upload signed Helm Chart using CLI
 
-Create GPG key in `.gnupg/` directory:
+Create GPG key in `.gnupg` directory:
 
 ```bash
 export GNUPGHOME=$PWD/.gnupg

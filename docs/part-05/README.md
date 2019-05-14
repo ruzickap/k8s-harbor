@@ -21,7 +21,7 @@ echo "*** Done"
 
 Output:
 
-```bash
+```text
 ```
 
 ## Add Project
@@ -32,7 +32,11 @@ Output:
 You can also use the API directly:
 
 ```bash
-curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.${MY_DOMAIN}/api/projects" --data "{ \"project_name\": \"my_project\", \"public\": 0 }"
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.${MY_DOMAIN}/api/projects" -d \
+"{
+  \"project_name\": \"my_project\",
+  \"public\": 0
+}"
 ```
 
 ## LDAP Authentication
