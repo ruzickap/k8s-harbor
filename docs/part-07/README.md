@@ -78,6 +78,9 @@ It should be visible in the Harbor UI:
 
 YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
 
+![Clair logo](https://cloud.githubusercontent.com/assets/343539/21630811/c5081e5c-d202-11e6-92eb-919d5999c77a.png
+"Clair logo")
+
 Scan the image `kuard-amd64:blue` for vulnerabilities (using API):
 
 ::: warning
@@ -176,6 +179,9 @@ Vulnerability list for container image:
 
 YouTube video: [https://youtu.be/pPklSTJZY2E](https://youtu.be/pPklSTJZY2E)
 
+![Notary](https://raw.githubusercontent.com/theupdateframework/notary/97a2d690658937fea3b65b4494bd5c3a75558d08/docs/images/notary-blk.svg?sanitize=true
+"Notary")
+
 Tag the `kuard` image to be pulled to Harbor `library` project:
 
 ```bash
@@ -229,6 +235,3 @@ NAME    DIGEST                                                              SIZE
 ----    ------                                                              ------------    ----
 blue    1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229    739             targets
 ```
-
-![Notary](https://raw.githubusercontent.com/theupdateframework/notary/97a2d690658937fea3b65b4494bd5c3a75558d08/docs/images/notary-blk.svg?sanitize=true
-"Notary")

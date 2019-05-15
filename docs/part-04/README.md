@@ -39,10 +39,10 @@ spec:
       - "*.${MY_DOMAIN}"
 ```
 
-![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
-"ACME DNS Challenge")
+![cert-manager - Create certificate](https://i1.wp.com/blog.openshift.com/wp-content/uploads/OCP-PKI-and-certificates-cert-manager.png
+"cert-manager - Create certificate")
 
-([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
+([https://blog.openshift.com/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift/](https://blog.openshift.com/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift/))
 
 You should see the following output form cert-manager:
 

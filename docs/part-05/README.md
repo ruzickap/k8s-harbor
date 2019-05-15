@@ -4,7 +4,7 @@ YouTube video: [https://youtu.be/DcArQEFgk5s](https://youtu.be/DcArQEFgk5s)
 
 Let's do some initial Harbor configuration...
 
-If you are using Let's encrypt staging you need to download and use their
+If you are using Let's Encrypt "staging" you need to download and use their
 "Fake LE Root X1" certificate for curl, helm and k8s cluster:
 
 ```bash

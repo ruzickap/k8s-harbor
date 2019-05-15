@@ -96,6 +96,9 @@ Done.
 
 ## Upload signed Helm Chart using CLI
 
+![GnuPG logo](https://upload.wikimedia.org/wikipedia/commons/6/61/Gnupg_logo.svg
+"GnuPG logo")
+
 Create GPG key in `.gnupg` directory:
 
 ```bash
@@ -275,6 +278,9 @@ Output:
 ```
 
 ## Use Harbor Helm Chart repository
+
+![ChartMuseum logo](https://raw.githubusercontent.com/helm/chartmuseum/0cfa25360682f66069d595fb0ede0fcc69bad41f/logo.png
+"ChartMuseum logo")
 
 Add the public "library" Helm Chart repository:
 
