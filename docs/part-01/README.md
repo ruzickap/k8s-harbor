@@ -29,7 +29,7 @@ Install necessary software:
 ```bash
 test -x /usr/bin/apt && \
 apt update -qq && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl freerdp-x11 gettext-base git gnupg2 jq ldap-utils openssh-client python3-pip sudo wget > /dev/null && \
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq awscli curl docker.io freerdp-x11 gettext-base git gnupg2 jq ldap-utils openssh-client python3-pip sudo wget > /dev/null && \
 pip3 install --quiet ansible boto3 pywinrm
 ```
 
