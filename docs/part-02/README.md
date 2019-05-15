@@ -86,3 +86,6 @@ Downloading and installing helm-push v0.7.1 ...
 https://github.com/chartmuseum/helm-push/releases/download/v0.7.1/helm-push_0.7.1_linux_amd64.tar.gz
 Installed plugin: push
 ```
+
+![Helm Chart Repository](https://raw.githubusercontent.com/helm/chartmuseum/f8b563ea87317eb490eefd51f74d43b0f466d132/logo2.png
+"Helm Chart Repository")
