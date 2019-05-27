@@ -52,8 +52,8 @@ Output:
 
 ```text
 REPOSITORY                               TAG                 IMAGE ID            CREATED             SIZE
-gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        6 weeks ago         23MB
-core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        6 weeks ago         23MB
+core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        8 weeks ago         23MB
+gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        8 weeks ago         23MB
 ```
 
 ```bash
@@ -89,7 +89,7 @@ needs to be done manually using the Web interface
 :::
 
 ```bash
-curl -u "aduser05:admin" -X POST "https://core.${MY_DOMAIN}/api/repositories/my_project/kuard-amd64/tags/blue/scan"
+curl -u "aduser05:admin" --header "Content-Type: application/json" -X POST "https://core.${MY_DOMAIN}/api/repositories/my_project/kuard-amd64/tags/blue/scan"
 ```
 
 Everything should be "green" - no vulnerability found:
@@ -132,10 +132,10 @@ Output:
 
 ```text
 REPOSITORY                               TAG                 IMAGE ID            CREATED             SIZE
-gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        6 weeks ago         23MB
-core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        6 weeks ago         23MB
-core.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        12 months ago       109MB
-nginx                                    1.13.12             ae513a47849c        12 months ago       109MB
+core.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        8 weeks ago         23MB
+gcr.io/kuar-demo/kuard-amd64             blue                1db936caa6ac        8 weeks ago         23MB
+core.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        13 months ago       109MB
+nginx                                    1.13.12             ae513a47849c        13 months ago       109MB
 ```
 
 Push `nginx` docker image to Harbor:
@@ -162,7 +162,7 @@ needs to be done manually using the Web interface
 Scan the image for vulnerabilities:
 
 ```bash
-curl -u "aduser06:admin" -X POST "https://core.${MY_DOMAIN}/api/repositories/my_project%2Fnginx/tags/1.13.12/scan"
+curl -u "aduser06:admin" --header "Content-Type: application/json" -X POST "https://core.${MY_DOMAIN}/api/repositories/my_project%2Fnginx/tags/1.13.12/scan"
 ```
 
 You should see many vulnerabilities in the container image:

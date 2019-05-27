@@ -1,0 +1,270 @@
+applicationController:
+  containerPort: 8082
+  servicePort: 8082
+  image:
+    repository: argoproj/argocd
+    tag: v0.12.3
+    pullPolicy: Always
+  volumeMounts: []
+  volumes: []
+
+server:
+  containerPort: 8080
+  servicePortHttp: 80
+  servicePortHttps: 443
+  serviceAnnotations: {}
+  image:
+    repository: argoproj/argocd
+    tag: v0.12.3
+    pullPolicy: Always
+  uiInitImage:
+    repository: argoproj/argocd-ui
+    tag: v0.12.3
+    pullPolicy: Always
+  extraArgs: ['--insecure']
+  volumeMounts: []
+  volumes: []
+
+repoServer:
+  containerPort: 8081
+  servicePort: 8081
+  image:
+    repository: argoproj/argocd
+    tag: v0.12.3
+    pullPolicy: Always
+  volumeMounts: []
+  volumes: []
+
+dexServer:
+  containerPortHttp: 5556
+  containerPortGrpc: 5557
+  servicePortHttp: 5556
+  servicePortGrpc: 5557
+  image:
+    repository: quay.io/dexidp/dex
+    tag: v2.12.0
+    pullPolicy: Always
+  initImage:
+    repository: argoproj/argocd
+    tag: v0.12.3
+    pullPolicy: Always
+  volumeMounts: []
+  volumes: []
+
+# terminate tls at ArgoCD level
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  path: /
+  hosts:
+    - argocd.example.com
+
+# Standard Argo CD installation with cluster-admin access.
+# Set this true if you plan to use Argo CD to deploy applications in the same cluster that
+#     Argo CD runs in (i.e. kubernetes.svc.default).
+# Will still be able to deploy to external clusters with inputted credentials.
+
+clusterAdminAccess:
+  enabled: true
+
+config:
+  helmRepositories:
+    # - name: privateRepo
+    #   url: http://chartmuseum.privatecloud.com
+    #   usernameSecret:
+    #     name: private-chartmuseum
+    #     key: username
+    #   passwordSecret:
+    #     name: private-chartmuseum
+    #     key: password
+    # - name: incubator
+    #   url: https://kubernetes-charts-incubator.storage.googleapis.com/
+  repositories:
+    # - url: git@gitlab.com:usersprivategroup/users-gitops-config.git
+    #   sshPrivateKeySecret:
+    #     key: privateKey
+    #     name: argocd-dev-key
+    # - url: git@gitlab.com:accountingprivategroup/accounting-gitops-config.git
+    #   sshPrivateKeySecret:
+    #     key: privateKey
+    #     name: argocd-dev-key
+  dexConfig:
+    #   # Argo CD's externally facing base URL. Required for configuring SSO
+    #   # url: https://argo-cd-demo.argoproj.io
+    #
+    #   # A dex connector configuration. See documentation on how to configure SSO:
+    #   # https://github.com/argoproj/argo-cd/blob/master/docs/sso.md#2-configure-argocd-for-sso
+    # connectors:
+    #   # GitHub example
+    #   - type: github
+    #     id: github
+    #     name: GitHub
+    #     config:
+    #       clientID: aabbccddeeff00112233
+    #       clientSecret: $dex.github.clientSecret
+    #       orgs:
+    #       - name: your-github-org
+    #         teams:
+    connectors:
+    - type: ldap
+      # Required field for connector id.
+      id: ldap
+      # Required field for connector name.
+      name: LDAP
+      config:
+        # Host and optional port of the LDAP server in the form "host:port".
+        # If the port is not supplied, it will be guessed based on "insecureNoSSL",
+        # and "startTLS" flags. 389 for insecure or StartTLS connections, 636
+        # otherwise.
+        host: winad01.mylabs.dev:389
+
+        # Following field is required if the LDAP host is not using TLS (port 389).
+        # Because this option inherently leaks passwords to anyone on the same network
+        # as dex, THIS OPTION MAY BE REMOVED WITHOUT WARNING IN A FUTURE RELEASE.
+        #
+        insecureNoSSL: true
+
+        # If a custom certificate isn't provide, this option can be used to turn on
+        # TLS certificate checks. As noted, it is insecure and shouldn't be used outside
+        # of explorative phases.
+        #
+        insecureSkipVerify: true
+
+        # When connecting to the server, connect using the ldap:// protocol then issue
+        # a StartTLS command. If unspecified, connections will use the ldaps:// protocol
+        #
+        # startTLS: true
+
+        # Path to a trusted root certificate file. Default: use the host's root CA.
+        # rootCA: /etc/dex/ldap.ca
+
+        # A raw certificate file can also be provided inline.
+        # rootCAData: ( base64 encoded PEM file )
+
+        # The DN and password for an application service account. The connector uses
+        # these credentials to search for users and groups. Not required if the LDAP
+        # server provides access for anonymous auth.
+        # Please note that if the bind password contains a `$`, it has to be saved in an
+        # environment variable which should be given as the value to `bindPW`.
+        bindDN: cn=ansible,cn=Users,dc=mylabs,dc=dev
+        bindPW: ansible_secret_password
+
+        # The attribute to display in the provided password prompt. If unset, will
+        # display "Username"
+        usernamePrompt: LDAP Username
+
+        # User search maps a username and password entered by a user to a LDAP entry.
+        userSearch:
+          # BaseDN to start the search from. It will translate to the query
+          # "(&(objectClass=person)(uid=<username>))".
+          baseDN: cn=users,dc=mylabs,dc=dev
+          # Optional filter to apply when searching the directory.
+          filter: "(objectClass=user)"
+
+          # username attribute used for comparing user entries. This will be translated
+          # and combined with the other filter as "(<attr>=<username>)".
+          username: sAMAccountName
+          # The following three fields are direct mappings of attributes on the user entry.
+          # String representation of the user.
+          idAttr: sAMAccountName
+          # Required. Attribute to map to Email.
+          emailAttr: sAMAccountName
+          # Maps to display name of users. No default value.
+          nameAttr: displayName
+
+        # Group search queries for groups given a user entry.
+        groupSearch:
+          # BaseDN to start the search from. It will translate to the query
+          # "(&(objectClass=group)(member=<user uid>))".
+          baseDN: cn=users,dc=mylabs,dc=dev
+          # Optional filter to apply when searching the directory.
+          filter: "(objectClass=group)"
+
+          # Following two fields are used to match a user to a group. It adds an additional
+          # requirement to the filter that an attribute in the group must match the user's
+          # attribute value.
+          userAttr: sAMAccountName
+          groupAttr: memberOf
+
+          # Represents group name.
+          nameAttr: name
+
+  url: https://argocd.${MY_DOMAIN}/
+  oidcConfig:
+    # name: Okta
+    # issuer: https://dev-123456.oktapreview.com
+    # clientID: aaaabbbbccccddddeee
+    # clientSecret: $oidc.okta.clientSecret
+  # The following keys hold the shared secret for authenticating GitHub/GitLab/BitBucket webhook
+  # events. To enable webhooks, configure one or more of the following keys with the shared git
+  # provider webhook secret. The payload URL configured in the git provider should use the
+  # /api/webhook endpoint of your Argo CD instance (e.g. https://argocd.example.com/api/webhook)
+  webhook:
+    githubSecret:
+    gitlabSecret:
+    bitbucketSecret:
+  # resourceCustomizations can be used to create custom health checks for resources
+  # https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/health.md#way-1-define-a-custom-health-check-in-argocd-cm-configmap
+  resourceCustomizations:
+    certmanager.k8s.io/Certificate:
+      # Lua script for customizing the health status assessment
+      health.lua: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Ready" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+              if condition.type == "Ready" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = condition.message
+                return hs
+              end
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for certificate"
+        return hs
+
+  configManagementPlugins:
+    # - name: pluginName
+    #   init:                          # Optional command to initialize application source directory
+    #     command: ["sample command"]
+    #     args: ["sample args"]
+    #   generate:                      # Command to generate manifests YAML
+    #     command: ["sample command"]
+    #     args: ["sample args"]
+
+rbac:
+#   # An RBAC policy .csv file containing additional policy and role definitions.
+#   # See https://github.com/argoproj/argo-cd/blob/master/docs/rbac.md on how to write RBAC policies.
+#   policy.csv: |
+#     # Give all members of "my-org:team-alpha" the ability to sync apps in "my-project"
+#     p, my-org:team-alpha, applications, sync, my-project/*, allow
+#     # Make all members of "my-org:team-beta" admins
+#     g, my-org:team-beta, role:admin
+  policyCsv: #|
+  #   p, role:org-admin, applications, *, */*, allow
+  #   p, role:org-admin, clusters, get, *, allow
+  #   p, role:org-admin, repositories, get, *, allow
+  #   p, role:org-admin, repositories, create, *, allow
+  #   p, role:org-admin, repositories, update, *, allow
+  #   p, role:org-admin, repositories, delete, *, allow
+  #   g, your-github-org:your-team, role:org-admin
+  # The default role Argo CD will fall back to, when authorizing API requests
+  policyDefault: #role:readonly
+
+redis:
+  image:
+    repository: redis
+    tag: 5.0.3
+    pullPolicy: Always
+  containerPort: 6379
+  servicePort: 6379

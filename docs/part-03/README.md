@@ -13,7 +13,7 @@ cert-manager architecture:
 Install the CRDs resources separately:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/00-crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/deploy/manifests/00-crds.yaml
 ```
 
 Output:
@@ -45,79 +45,54 @@ Install the cert-manager Helm chart:
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
-helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.7.2
+helm repo update
+helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.8.0 --set webhook.enabled=false
 ```
 
 Output:
 
 ```text
 "jetstack" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
 NAME:   cert-manager
-LAST DEPLOYED: Mon May 13 15:07:06 2019
+LAST DEPLOYED: Mon May 27 07:27:35 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
-NAME                                    AGE
-cert-manager-edit                       23s
-cert-manager-view                       23s
-cert-manager-webhook:webhook-requester  23s
+NAME               AGE
+cert-manager-edit  6s
+cert-manager-view  6s
 
 ==> v1/Pod(related)
-NAME                                     READY  STATUS   RESTARTS  AGE
-cert-manager-86c45c86c8-t488h            1/1    Running  0         23s
-cert-manager-cainjector-6885996d5-bhmkd  1/1    Running  0         23s
-cert-manager-webhook-59dfddccfd-mnfb6    1/1    Running  0         23s
-
-==> v1/Service
-NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
-cert-manager-webhook  ClusterIP  10.100.26.141  <none>       443/TCP  23s
+NAME                                      READY  STATUS   RESTARTS  AGE
+cert-manager-7548788b6-6g5jt              1/1    Running  0         6s
+cert-manager-cainjector-5675c6fcc7-hx9gv  1/1    Running  0         6s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
-cert-manager             1        23s
-cert-manager-cainjector  1        23s
-cert-manager-webhook     1        23s
-
-==> v1alpha1/Certificate
-NAME                              AGE
-cert-manager-webhook-ca           23s
-cert-manager-webhook-webhook-tls  23s
-
-==> v1alpha1/Issuer
-NAME                           AGE
-cert-manager-webhook-ca        23s
-cert-manager-webhook-selfsign  23s
-
-==> v1beta1/APIService
-NAME                                  AGE
-v1beta1.admission.certmanager.k8s.io  23s
+cert-manager             1        6s
+cert-manager-cainjector  1        6s
 
 ==> v1beta1/ClusterRole
 NAME                     AGE
-cert-manager             23s
-cert-manager-cainjector  23s
+cert-manager             6s
+cert-manager-cainjector  6s
 
 ==> v1beta1/ClusterRoleBinding
-NAME                                 AGE
-cert-manager                         23s
-cert-manager-cainjector              23s
-cert-manager-webhook:auth-delegator  23s
+NAME                     AGE
+cert-manager             6s
+cert-manager-cainjector  6s
 
 ==> v1beta1/Deployment
 NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager             1/1    1           1          23s
-cert-manager-cainjector  1/1    1           1          23s
-cert-manager-webhook     1/1    1           1          23s
-
-==> v1beta1/RoleBinding
-NAME                                                AGE
-cert-manager-webhook:webhook-authentication-reader  23s
-
-==> v1beta1/ValidatingWebhookConfiguration
-NAME                  AGE
-cert-manager-webhook  22s
+cert-manager             1/1    1           1          6s
+cert-manager-cainjector  1/1    1           1          6s
 
 
 NOTES:
@@ -220,6 +195,134 @@ spec:
             key: secret-access-key
 ```
 
+![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
+"ACME DNS Challenge")
+
+([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
+
+## Generate TLS certificate
+
+Create certificate using cert-manager
+
+```bash
+envsubst < files/cert-manager-letsencrypt-aws-route53-certificate.yaml | kubectl apply -f -
+cat files/cert-manager-letsencrypt-aws-route53-certificate.yaml
+```
+
+Output:
+
+```text
+certificate.certmanager.k8s.io/ingress-cert-production created
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  namespace: cert-manager
+spec:
+  secretName: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-${LETSENCRYPT_ENVIRONMENT}-dns
+  commonName: "*.${MY_DOMAIN}"
+  dnsNames:
+  - "*.${MY_DOMAIN}"
+  acme:
+    config:
+    - dns01:
+        provider: aws-route53
+      domains:
+      - "*.${MY_DOMAIN}"
+```
+
+![cert-manager - Create certificate](https://i1.wp.com/blog.openshift.com/wp-content/uploads/OCP-PKI-and-certificates-cert-manager.png
+"cert-manager - Create certificate")
+
+([https://blog.openshift.com/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift/](https://blog.openshift.com/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift/))
+
+## Install kubed
+
+It's necessary to copy the wildcard certificate across all "future" namespaces
+and that's the reason why [kubed](https://github.com/appscode/kubed) needs to be
+installed (for now).
+
+Add kubed helm repository:
+
+```bash
+helm repo add appscode https://charts.appscode.com/stable/
+helm repo update
+```
+
+Install kubed:
+
+```bash
+helm install appscode/kubed --name kubed --version 0.10.0 --namespace kube-system --wait \
+  --set config.clusterName=my_k8s_cluster \
+  --set apiserver.enabled=false
+```
+
+Output:
+
+```text
+NAME:   kubed
+LAST DEPLOYED: Mon May 27 07:27:59 2019
+NAMESPACE: kube-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/ClusterRole
+NAME         AGE
+kubed-kubed  2s
+
+==> v1/ClusterRoleBinding
+NAME                                  AGE
+kubed-kubed                           2s
+kubed-kubed-apiserver-auth-delegator  2s
+
+==> v1/Pod(related)
+NAME                         READY  STATUS             RESTARTS  AGE
+kubed-kubed-76b4dcd9f-8xs7l  0/1    ContainerCreating  0         2s
+
+==> v1/RoleBinding
+NAME                                                          AGE
+kubed-kubed-apiserver-extension-server-authentication-reader  2s
+
+==> v1/Secret
+NAME                        TYPE    DATA  AGE
+kubed-kubed                 Opaque  1     2s
+kubed-kubed-apiserver-cert  Opaque  2     2s
+
+==> v1/Service
+NAME         TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)  AGE
+kubed-kubed  ClusterIP  10.100.11.84  <none>       443/TCP  2s
+
+==> v1/ServiceAccount
+NAME         SECRETS  AGE
+kubed-kubed  1        2s
+
+==> v1beta1/Deployment
+NAME         READY  UP-TO-DATE  AVAILABLE  AGE
+kubed-kubed  0/1    1           0          2s
+
+
+NOTES:
+To verify that Kubed has started, run:
+
+  kubectl --namespace=kube-system get deployments -l "release=kubed, app=kubed"
+```
+
+Annotate (mark) the cert-manager secret to be copied to other namespaces
+if necessary:
+
+```bash
+kubectl annotate secret ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n cert-manager kubed.appscode.com/sync="app=kubed"
+```
+
+Output:
+
+```text
+secret/ingress-cert-production annotated
+```
+
 ## Install Nginx
 
 ![Nginx Ingress controller](https://www.nginx.com/wp-content/uploads/2018/12/multiple-ingress-controllers.png
@@ -227,59 +330,62 @@ spec:
 
 ([https://www.nginx.com/blog/](https://www.nginx.com/blog/))
 
-Install Nginx which will also create a new loadbalancer:
+Install nginx-ingress which will also create a new loadbalancer:
 
 ```bash
-helm install stable/nginx-ingress --wait --name nginx-ingress --namespace nginx-ingress-system --set rbac.create=true
+helm install stable/nginx-ingress --wait --name nginx-ingress --namespace nginx-ingress-system --version 1.6.11 \
+  --set rbac.create=true \
+  --set controller.extraArgs.default-ssl-certificate=cert-manager/ingress-cert-${LETSENCRYPT_ENVIRONMENT}
 ```
 
 Output:
 
 ```text
 NAME:   nginx-ingress
-LAST DEPLOYED: Mon May 13 15:07:39 2019
+E0527 07:28:13.375809    6277 portforward.go:372] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:40707->127.0.0.1:52834: write tcp4 127.0.0.1:40707->127.0.0.1:52834: write: broken pipe
+LAST DEPLOYED: Mon May 27 07:28:11 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                      DATA  AGE
-nginx-ingress-controller  1     4s
+nginx-ingress-controller  1     2s
 
 ==> v1/Pod(related)
-NAME                                           READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-ffc964cd-bb5sm        0/1    ContainerCreating  0         4s
-nginx-ingress-default-backend-56768c457-2zvp8  1/1    Running            0         4s
+NAME                                            READY  STATUS             RESTARTS  AGE
+nginx-ingress-controller-947555496-fhxdq        0/1    ContainerCreating  0         2s
+nginx-ingress-default-backend-6694789b87-245jt  0/1    ContainerCreating  0         2s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.94.119  a15f001ab7580...  80:30252/TCP,443:32598/TCP  4s
-nginx-ingress-default-backend  ClusterIP     10.100.96.234  <none>            80/TCP                      4s
+NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.113.183  a37a778b78040...  80:30879/TCP,443:30814/TCP  2s
+nginx-ingress-default-backend  ClusterIP     10.100.176.167  <none>            80/TCP                      2s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
-nginx-ingress  1        4s
+nginx-ingress  1        2s
 
 ==> v1beta1/ClusterRole
 NAME           AGE
-nginx-ingress  4s
+nginx-ingress  2s
 
 ==> v1beta1/ClusterRoleBinding
 NAME           AGE
-nginx-ingress  4s
+nginx-ingress  2s
 
 ==> v1beta1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-nginx-ingress-controller       0/1    1           0          4s
-nginx-ingress-default-backend  1/1    1           1          4s
+nginx-ingress-controller       0/1    1           0          2s
+nginx-ingress-default-backend  0/1    1           0          2s
 
 ==> v1beta1/Role
 NAME           AGE
-nginx-ingress  4s
+nginx-ingress  2s
 
 ==> v1beta1/RoleBinding
 NAME           AGE
-nginx-ingress  4s
+nginx-ingress  2s
 
 
 NOTES:
@@ -334,7 +440,290 @@ export CANONICAL_HOSTED_ZONE_NAME_ID=$(aws elb describe-load-balancers --query "
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query "HostedZones[?Name==\`${MY_DOMAIN}.\`].Id" --output text)
 
 envsubst < files/aws_route53-dns_change.json | aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch=file:///dev/stdin
+sleep 100
 ```
 
 ![Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/65b766c494a5b4f5420b2912d8373c4957163541/static/images/crystal.svg?sanitize=true
 "Architecture")
+
+You should see the following output form cert-manager when looking at
+certificates:
+
+```bash
+kubectl describe certificates -n cert-manager ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+```
+
+Output
+
+```text
+Name:         ingress-cert-production
+Namespace:    cert-manager
+Labels:       <none>
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"certmanager.k8s.io/v1alpha1","kind":"Certificate","metadata":{"annotations":{},"name":"ingress-cert-production","namespace"...
+API Version:  certmanager.k8s.io/v1alpha1
+Kind:         Certificate
+Metadata:
+  Creation Timestamp:  2019-05-27T05:27:51Z
+  Generation:          1
+  Resource Version:    3414
+  Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/cert-manager/certificates/ingress-cert-production
+  UID:                 2c33eb73-8040-11e9-a16f-063dbeaa18d6
+Spec:
+  Acme:
+    Config:
+      Dns 01:
+        Provider:  aws-route53
+      Domains:
+        *.mylabs.dev
+  Common Name:  *.mylabs.dev
+  Dns Names:
+    *.mylabs.dev
+  Issuer Ref:
+    Kind:       ClusterIssuer
+    Name:       letsencrypt-production-dns
+  Secret Name:  ingress-cert-production
+Status:
+  Conditions:
+    Last Transition Time:  2019-05-27T05:29:36Z
+    Message:               Certificate is up to date and has not expired
+    Reason:                Ready
+    Status:                True
+    Type:                  Ready
+  Not After:               2019-08-25T04:29:34Z
+Events:
+  Type    Reason              Age    From          Message
+  ----    ------              ----   ----          -------
+  Normal  Generated           2m18s  cert-manager  Generated new private key
+  Normal  GenerateSelfSigned  2m18s  cert-manager  Generated temporary self signed certificate
+  Normal  OrderCreated        2m18s  cert-manager  Created Order resource "ingress-cert-production-20059064"
+  Normal  OrderComplete       34s    cert-manager  Order "ingress-cert-production-20059064" completed successfully
+  Normal  CertIssued          34s    cert-manager  Certificate issued successfully
+```
+
+The Kubernetes "secret" in `cert-manager` namespace should contain the
+certificates:
+
+```bash
+kubectl describe secret -n cert-manager ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+```
+
+Output:
+
+```text
+Name:         ingress-cert-production
+Namespace:    cert-manager
+Labels:       certmanager.k8s.io/certificate-name=ingress-cert-production
+Annotations:  certmanager.k8s.io/alt-names: *.mylabs.dev
+              certmanager.k8s.io/common-name: *.mylabs.dev
+              certmanager.k8s.io/ip-sans:
+              certmanager.k8s.io/issuer-kind: ClusterIssuer
+              certmanager.k8s.io/issuer-name: letsencrypt-production-dns
+              kubed.appscode.com/sync: app=kubed
+
+Type:  kubernetes.io/tls
+
+Data
+====
+tls.crt:  3550 bytes
+tls.key:  1679 bytes
+ca.crt:   0 bytes
+```
+
+Check the SSL certificate:
+
+```bash
+echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 2>/dev/null | openssl x509 -inform pem -noout -text
+```
+
+Output:
+
+```text
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            03:20:47:ef:39:e2:08:83:ad:4f:bf:46:f6:44:39:f7:2f:36
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+        Validity
+            Not Before: May 27 04:29:34 2019 GMT
+            Not After : Aug 25 04:29:34 2019 GMT
+        Subject: CN = *.mylabs.dev
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+...
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                AD:15:5B:47:21:A2:C1:B9:03:FD:B1:C1:17:DE:C8:AA:76:3E:A9:FE
+            X509v3 Authority Key Identifier:
+                keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
+
+            Authority Information Access:
+                OCSP - URI:http://ocsp.int-x3.letsencrypt.org
+                CA Issuers - URI:http://cert.int-x3.letsencrypt.org/
+
+            X509v3 Subject Alternative Name:
+                DNS:*.mylabs.dev
+            X509v3 Certificate Policies:
+                Policy: 2.23.140.1.2.1
+                Policy: 1.3.6.1.4.1.44947.1.1.1
+                  CPS: http://cps.letsencrypt.org
+...
+```
+
+## Install [Argo CD](https://github.com/argoproj/argo-cd)
+
+Create namespace for Argo CD:
+
+```bash
+kubectl create namespace argocd-system
+kubectl label namespace argocd-system app=kubed
+```
+
+```bash
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+envsubst < files/argo-cd_helm_chart_values.yaml | helm install --name argocd --namespace argocd-system --wait argo/argo-cd --version 0.2.2 --values -
+```
+
+Output:
+
+```text
+"argo" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "argo" chart repository
+...Successfully got an update from the "appscode" chart repository
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
+NAME:   argocd
+LAST DEPLOYED: Mon May 27 07:30:24 2019
+NAMESPACE: argocd-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/ClusterRole
+NAME                           AGE
+argocd-application-controller  63s
+argocd-server                  63s
+
+==> v1/ClusterRoleBinding
+NAME                           AGE
+argocd-application-controller  63s
+argocd-server                  63s
+
+==> v1/ConfigMap
+NAME            DATA  AGE
+argocd-cm       3     63s
+argocd-rbac-cm  0     63s
+
+==> v1/Deployment
+NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
+argocd-application-controller  1/1    1           1          62s
+argocd-dex-server              1/1    1           1          62s
+argocd-redis                   1/1    1           1          62s
+argocd-repo-server             1/1    1           1          62s
+argocd-server                  1/1    1           1          62s
+
+==> v1/Pod(related)
+NAME                                            READY  STATUS   RESTARTS  AGE
+argocd-application-controller-5fbf79c7b9-mtqsl  1/1    Running  2         62s
+argocd-dex-server-64869cbfcf-6jk7z              1/1    Running  1         62s
+argocd-redis-78d8767bc8-2hc7m                   1/1    Running  0         62s
+argocd-repo-server-5fd94b46c-xgjln              1/1    Running  0         62s
+argocd-server-7f95ffdf86-fldts                  1/1    Running  0         62s
+
+==> v1/Role
+NAME                           AGE
+argocd-application-controller  63s
+argocd-dex-server              63s
+argocd-server                  62s
+
+==> v1/RoleBinding
+NAME                           AGE
+argocd-application-controller  62s
+argocd-dex-server              62s
+argocd-server                  62s
+
+==> v1/Secret
+NAME           TYPE    DATA  AGE
+argocd-secret  Opaque  5     63s
+
+==> v1/Service
+NAME                           TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)            AGE
+argocd-application-controller  ClusterIP  10.100.101.52  <none>       8082/TCP           62s
+argocd-dex-server              ClusterIP  10.100.47.86   <none>       5556/TCP,5557/TCP  62s
+argocd-metrics                 ClusterIP  10.100.48.254  <none>       8082/TCP           62s
+argocd-redis                   ClusterIP  10.100.64.206  <none>       6379/TCP           62s
+argocd-repo-server             ClusterIP  10.100.53.148  <none>       8081/TCP           62s
+argocd-server                  ClusterIP  10.100.85.157  <none>       80/TCP,443/TCP     62s
+
+==> v1/ServiceAccount
+NAME                           SECRETS  AGE
+argocd-application-controller  1        63s
+argocd-dex-server              1        63s
+argocd-server                  1        63s
+
+
+NOTES:
+In order to access the server UI you have the following options:
+
+1. kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+    and then open the browser on http://localhost:8080 and accept the certificate
+
+2. enable ingress and check the first option ssl passthrough:
+    https://github.com/argoproj/argo-cd/blob/master/docs/ingress.md#option-1-ssl-passthrough
+
+After reaching the UI the first time you can login with username: admin and the password will be the
+name of the server pod. You can get the pod name by running:
+
+kubectl get pods -n argocd -l app.kubernetes.io/name=argo-cd-server -o name | cut -d'/' -f 2
+```
+
+Argo CD architecture:
+
+![Argo CD - Architecture](https://raw.githubusercontent.com/argoproj/argo-cd/f5bc901dd722290bcba63229cee6e112b9e55935/docs/assets/argocd_architecture.png
+"Argo CD - Architecture")
+
+Change Argo CD for username `admin` to have password `admin`:
+
+```bash
+kubectl patch secret argocd-secret -n argocd-system --type="json" -p="[{\"op\" : \"replace\" ,\"path\" : \"/data/admin.password\" ,\"value\" : \"JDJ5JDEwJDhtWVdWZTBrVWZibkExLnc2LmloQnVOMVZTdi5Sc0ZGYWlOOGV5U2dxQXdYM1NpOGJSM0l1\"}]"
+```
+
+Try to access the Argo CD using the URL [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
+with following credentials:
+
+* Username: `admin`
+* Password: `admin`
+
+Configure Ingress for Argo CD:
+
+```bash
+envsubst < files/argo-cd_ingress.yaml | kubectl apply -f -
+```
+
+There are now two domains:
+
+* HTTPS: [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
+* GRPC: argocd-grpc.mylabs.dev
+
+Download [Argo CD client](https://github.com/argoproj/argo-cd/releases):
+
+```bash
+if [ ! -x /usr/local/bin/argocd ]; then
+  sudo curl -s -Lo /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v1.0.0/argocd-linux-amd64
+  sudo chmod a+x /usr/local/bin/argocd
+fi
+```

@@ -1,6 +1,8 @@
 _
-Auth
+Argo
+argocd-grpc
 Asciinema
+Auth
 awscli
 ChartMuseum
 Cleanup
@@ -16,12 +18,15 @@ Jiang
 k8s
 kuard
 kubectl
+kubed
 Kubernetes
 loadbalancer
+mylabs.dev
 nameservers
 nginx
 Nginx
 plugin
+PostgreSQL
 Route53
 screencast
 swagger.yaml

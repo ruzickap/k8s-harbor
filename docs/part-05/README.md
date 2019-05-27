@@ -44,7 +44,7 @@ curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.
 List users which are in Active Directory:
 
 ```bash
-ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=aduser*)" dn name description memberOf
+ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible_secret_password -b cn=users,dc=mylabs,dc=dev -s sub "(cn=aduser*)" dn name description memberOf
 ```
 
 Output:
@@ -84,7 +84,7 @@ name: aduser06
 List groups which are in Active Directory:
 
 ```bash
-ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible -b cn=users,dc=mylabs,dc=dev -s sub "(cn=adgroup*)" dn name description member
+ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=dev -w ansible_secret_password -b cn=users,dc=mylabs,dc=dev -s sub "(cn=adgroup*)" dn name description member
 ```
 
 Output:
@@ -115,7 +115,7 @@ Configure LDAP/Active Directory authentication in Harbor by going to
 * `Auth Mode: LDAP`
 * `LDAP URL: ldap://winad01.mylabs.dev`
 * `LDAP Search DN: cn=ansible,cn=Users,dc=mylabs,dc=dev`
-* `LDAP Search Password: ansible`
+* `LDAP Search Password: ansible_secret_password`
 * `LDAP Base DN: cn=users,dc=mylabs,dc=dev`
 * `LDAP UID: sAMAccountName`
 * `LDAP Scope: OneLevel`
@@ -131,15 +131,17 @@ curl -u "admin:admin" -X PUT "https://core.${MY_DOMAIN}/api/configurations" -H "
 "{
   \"auth_mode\": \"ldap_auth\",
   \"ldap_base_dn\": \"cn=users,dc=mylabs,dc=dev\",
+  \"ldap_filter\": \"(objectClass=organizationalPerson)\",
   \"ldap_group_admin_dn\": \"cn=adgroup03,cn=users,dc=mylabs,dc=dev\",
   \"ldap_group_attribute_name\": \"sAMAccountName\",
   \"ldap_group_base_dn\": \"cn=users,dc=mylabs,dc=dev\",
+  \"ldap_group_search_filter\": \"(objectClass=group)\",
   \"ldap_group_search_scope\": 1,
   \"ldap_scope\": 1,
   \"ldap_search_dn\": \"cn=ansible,cn=Users,dc=mylabs,dc=dev\",
-  \"ldap_search_password\": \"ansible\",
+  \"ldap_search_password\": \"ansible_secret_password\",
   \"ldap_uid\": \"sAMAccountName\",
-  \"ldap_url\": \"ldap://winad01.mylabs.dev\"
+  \"ldap_url\": \"ldap://winad01.${MY_DOMAIN}\"
 }"
 ```
 

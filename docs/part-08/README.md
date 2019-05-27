@@ -111,7 +111,7 @@ and see this:
 Try the same with `nginx:1.13.12` image:
 
 ```bash
-kubectl run nginx --image=core.${MY_DOMAIN}/library/nginx:1.13.12 --replicas=2 --port=80 --expose=true --labels="app=nginx" -n mytest
+kubectl run nginx --image=core.${MY_DOMAIN}/library/nginx:1.13.12 --image-pull-policy Always --replicas=2 --port=80 --expose=true --labels="app=nginx" -n mytest
 ```
 
 Output:
@@ -131,8 +131,8 @@ Output:
 
 ```text
 NAME                     READY   STATUS             RESTARTS   AGE
-nginx-7c58bbb988-2sjk8   0/1     ImagePullBackOff   0          3s
-nginx-7c58bbb988-9w7xl   0/1     ImagePullBackOff   0          3s
+nginx-77b487d974-vgsdb   0/1     ImagePullBackOff   0          8s
+nginx-77b487d974-zjdmd   0/1     ImagePullBackOff   0          8s
 ```
 
 The details of one of the pods looks like:
@@ -145,18 +145,18 @@ kubectl -n mytest describe pod $POD_NAME
 Output:
 
 ```text
-Name:               nginx-7c58bbb988-2sjk8
+Name:               nginx-77b487d974-vgsdb
 Namespace:          mytest
 Priority:           0
 PriorityClassName:  <none>
-Node:               ip-192-168-57-4.eu-central-1.compute.internal/192.168.57.4
-Start Time:         Mon, 13 May 2019 15:13:15 +0200
+Node:               ip-192-168-55-129.eu-central-1.compute.internal/192.168.55.129
+Start Time:         Mon, 27 May 2019 08:12:49 +0200
 Labels:             app=nginx
-                    pod-template-hash=7c58bbb988
+                    pod-template-hash=77b487d974
 Annotations:        <none>
 Status:             Pending
-IP:                 192.168.46.186
-Controlled By:      ReplicaSet/nginx-7c58bbb988
+IP:                 192.168.62.255
+Controlled By:      ReplicaSet/nginx-77b487d974
 Containers:
   nginx:
     Container ID:
@@ -165,12 +165,12 @@ Containers:
     Port:           80/TCP
     Host Port:      0/TCP
     State:          Waiting
-      Reason:       ErrImagePull
+      Reason:       ImagePullBackOff
     Ready:          False
     Restart Count:  0
     Environment:    <none>
     Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-xr4zb (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-j55td (ro)
 Conditions:
   Type              Status
   Initialized       True
@@ -178,23 +178,23 @@ Conditions:
   ContainersReady   False
   PodScheduled      True
 Volumes:
-  default-token-xr4zb:
+  default-token-j55td:
     Type:        Secret (a volume populated by a Secret)
-    SecretName:  default-token-xr4zb
+    SecretName:  default-token-j55td
     Optional:    false
 QoS Class:       BestEffort
 Node-Selectors:  <none>
 Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
                  node.kubernetes.io/unreachable:NoExecute for 300s
 Events:
-  Type     Reason     Age                   From                                                     Message
-  ----     ------     ----  ----                                                     -------
-  Normal   Scheduled  4s    default-scheduler                                        Successfully assigned mytest/nginx-7c58bbb988-2sjk8 to ip-192-168-57-4.eu-central-1.compute.internal
-  Normal   Pulling    3s    kubelet, ip-192-168-73-66.eu-central-1.compute.internal  pulling image "core.mylabs.dev/library/nginx:1.13.12"
-  Warning  Failed     3s    kubelet, ip-192-168-73-66.eu-central-1.compute.internal  Failed to pull image "core.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
-  Warning  Failed     3s    kubelet, ip-192-168-73-66.eu-central-1.compute.internal  Error: ErrImagePull
-  Warning  Failed     2s    kubelet, ip-192-168-73-66.eu-central-1.compute.internal  Error: ImagePullBackOff
-  Normal   BackOff    2s    kubelet, ip-192-168-73-66.eu-central-1.compute.internal  Back-off pulling image "core.mylabs.dev/library/nginx:1.13.12"
+  Type     Reason     Age                From                                                      Message
+  ----     ------     ----               ----                                                      -------
+  Normal   Scheduled  17s                default-scheduler                                         Successfully assigned mytest/nginx-77b487d974-vgsdb to ip-192-168-55-129.eu-central-1.compute.internal
+  Normal   Pulling    17s                kubelet, ip-192-168-55-129.eu-central-1.compute.internal  pulling image "core.mylabs.dev/library/nginx:1.13.12"
+  Warning  Failed     16s                kubelet, ip-192-168-55-129.eu-central-1.compute.internal  Failed to pull image "core.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
+  Warning  Failed     16s                kubelet, ip-192-168-55-129.eu-central-1.compute.internal  Error: ErrImagePull
+  Normal   BackOff    15s (x2 over 16s)  kubelet, ip-192-168-55-129.eu-central-1.compute.internal  Back-off pulling image "core.mylabs.dev/library/nginx:1.13.12"
+  Warning  Failed     15s (x2 over 16s)  kubelet, ip-192-168-55-129.eu-central-1.compute.internal  Error: ImagePullBackOff
 ```
 
 You are not able to run docker images with "High" security issues.
@@ -222,6 +222,11 @@ docker push core.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 Output:
 
 ```text
+WARNING! Your password will be stored unencrypted in /home/pruzicka/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
 The push refers to repository [core.mylabs.dev/my_rbac_test_project/kuard-amd64]
 656e9c47289e: Preparing
 bcf2f368fe23: Preparing
@@ -255,9 +260,15 @@ Output:
 
 ```text
 The push refers to repository [core.mylabs.dev/my_rbac_test_project/kuard-amd64]
-656e9c47289e: Layer already exists
-bcf2f368fe23: Layer already exists
+656e9c47289e: Mounted from library/kuard-amd64
+bcf2f368fe23: Mounted from library/kuard-amd64
 blue: digest: sha256:1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229 size: 739
+Signing and pushing trust metadata
+Finished initializing "core.mylabs.dev/my_rbac_test_project/kuard-amd64"
+Successfully signed core.mylabs.dev/my_rbac_test_project/kuard-amd64:blue
 ```
 
 Now the image was successfully uploaded:
+
+![Harbor - Project - my_rbac_test_project](./harbor_my_rbac_test_project.png
+"Harbor - Project - my_rbac_test_project")

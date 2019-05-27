@@ -8,7 +8,7 @@
     # Values for CloudFormation template
     system_security_settings_tmp_file: c:\\secedit-export.cfg
     windows_machines_ansible_user: ansible
-    windows_machines_ansible_pass: ansible
+    windows_machines_ansible_pass: ansible_secret_password
     aws_region: eu-central-1
     aws_cf_eksctl_stack_name: "eksctl-{{ lookup('env','USER') }}-k8s-harbor-cluster"
     aws_cf_stack_name: "{{ aws_cf_eksctl_stack_name }}-windows-server-2016"
@@ -30,13 +30,13 @@
         stack_name: "{{ aws_cf_stack_name }}"
         state: present
         disable_rollback: true
-        template_body: "{{ lookup('template', 'templates/aws_cf_stack.yml.j2') }}"
+        template_body: "{{ lookup('template', 'templates/aws_cf_stack-windows_server_2016.yml.j2') }}"
         template_parameters:
           KeyName: "{{ aws_cf_keyname }}"
         tags: "{{ aws_cf_tags }}"
       register: cloudformation_result
 
-    - name: Get details bout instance
+    - name: Get details about instance
       ec2_instance_facts:
         instance_ids:
           - "{{ cloudformation_result.stack_outputs.InstanceId }}"
@@ -64,7 +64,7 @@
       loop_control:
         label: "{{ item.instance_id }} - {{ item.public_ip_address }} - {{ item.tags.Hostname }}"
 
-- name: Common tasks for windows servers machines
+- name: Common tasks for windows server machines
   hosts: winservers
   any_errors_fatal: true
 
@@ -171,11 +171,25 @@
         safe_mode_password: "{{ master_password }}"
       register: win_domain_result
 
-    - name: Reboot after creation
+    - name: Reboot after AD was configured
       win_reboot:
-        post_reboot_delay: 3
-        msg: "Server config in progress; rebooting..."
       when: win_domain_result.reboot_required
+
+    - name: Wait 5 minutes after reboot
+      pause:
+        minutes: 5
+      when: win_domain_result.reboot_required
+
+    - name: Gather facts again including AD details
+      setup:
+
+    - name: Add email to users
+      win_domain_user:
+        name: "{{ 'aduser%02x' | format(item) }}"
+        email: "{{ 'aduser%02x' | format(item) }}@{{ domain }}"
+      loop: "{{ range(1, number_of_test_groups * 2 + 1, 1)|list }}"
+      loop_control:
+        label: "{{ item }} - {{ 'aduser%02x' | format(item) }} - {{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"
 
     - name: Windows credentials
       debug: msg="xfreerdp '/u:Administrato'r '/p:{{ master_password }}' /size:1440x810 -wallpaper /cert-ignore /dynamic-resolution /v:{{ hostvars[item].inventory_hostname }}"

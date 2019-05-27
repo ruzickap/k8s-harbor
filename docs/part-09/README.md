@@ -8,6 +8,7 @@
 Configure `kubeconfig`:
 
 ```bash
+export MY_DOMAIN="mylabs.dev"
 export KUBECONFIG=$PWD/kubeconfig.conf
 ```
 
@@ -27,16 +28,55 @@ kubectl delete namespace gitea-system --wait=false
 Remove Harbor:
 
 ```bash
-helm delete --purge harbor
+kubectl label namespace argocd-system app-
+argocd --server argocd-grpc.${MY_DOMAIN} --insecure app delete harbor && sleep 100
+argocd --server argocd-grpc.${MY_DOMAIN} --insecure proj delete harbor
 kubectl delete namespace harbor-system --wait=false
 ```
 
-Remove Nginx and cert-manager:
+Remove Argo CD:
+
+```bash
+helm delete --purge argocd
+kubectl delete namespace argocd-system --wait=false
+kubectl delete apiservices.apiregistration.k8s.io v1alpha1.argoproj.io --wait=false
+kubectl delete crd applications.argoproj.io --wait=false
+kubectl delete crd appprojects.argoproj.io --wait=false
+```
+
+Remove all created databases form RDS:
+
+```bash
+for DB in \"harbor-clair\" \"harbor-notary_server\" \"harbor-notary_signer\" \"harbor-registry\"; do
+  echo "*** $DB"
+  PGPASSWORD=myadmin_user_password psql -h pgsql.${MY_DOMAIN} -U myadmin postgres --command="DROP DATABASE IF EXISTS $DB"
+done
+PGPASSWORD=myadmin_user_password psql -h pgsql.${MY_DOMAIN} -U myadmin postgres --command="DROP USER IF EXISTS harbor_user"
+```
+
+Remove PostgreSQL CloudFormation stack:
+
+```bash
+aws cloudformation delete-stack --stack-name eksctl-${USER}-k8s-harbor-cluster-pgsql
+```
+
+Remove kubed:
+
+```bash
+helm delete --purge kubed
+```
+
+Remove cert-manager:
 
 ```bash
 helm delete --purge cert-manager
-kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/00-crds.yaml --wait=false
+kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/deploy/manifests/00-crds.yaml --wait=false
 kubectl delete namespace cert-manager --wait=false
+```
+
+Remove Nginx-ingress:
+
+```bash
 helm delete --purge nginx-ingress
 kubectl delete namespace nginx-ingress-system --wait=false
 kubectl delete namespace mytest --wait=false
@@ -45,12 +85,15 @@ kubectl delete namespace mytest --wait=false
 Remove Helm:
 
 ```bash
-helm reset
+helm reset --remove-helm-home
+kubectl delete serviceaccount tiller --namespace kube-system --wait=false
+kubectl delete clusterrolebinding tiller-cluster-rule --wait=false
 ```
 
 Output:
 
 ```text
+Deleting /home/pruzicka/.helm
 Tiller (the Helm server-side component) has been uninstalled from your Kubernetes Cluster.
 ```
 
@@ -66,9 +109,9 @@ Output:
 [ℹ]  using region eu-central-1
 [ℹ]  deleting EKS cluster "pruzicka-k8s-harbor"
 [✔]  kubeconfig has been updated
-[ℹ]  2 sequential tasks: { delete nodegroup "ng-1aec8f6a", delete cluster control plane "pruzicka-k8s-harbor" }
-[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a"
-[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-1aec8f6a" to get deleted
+[ℹ]  2 sequential tasks: { delete nodegroup "ng-a9d9c670", delete cluster control plane "pruzicka-k8s-harbor" }
+[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670"
+[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670" to get deleted
 [ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-cluster"
 [ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-cluster" to get deleted
 [✔]  all cluster resources were deleted
@@ -87,28 +130,29 @@ aws iam delete-user --user-name ${USER}-eks-cert-manager-route53
 Docker clean-up:
 
 ```bash
-rm -rf ~/.docker/
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
-docker rmi --force $(docker images -q)
+test -d ~/.docker/ && rm -rf ~/.docker/
+DOCKER_CONTAINERS=$(docker ps -a -q)
+[ -n "${DOCKER_CONTAINERS}" ] && docker stop ${DOCKER_CONTAINERS} && docker rm ${DOCKER_CONTAINERS}
+DOCKER_IMAGES=$(docker images -q)
+[ -n "${DOCKER_IMAGES}" ] && docker rmi --force ${DOCKER_IMAGES}
 ```
 
 Notary clean-up:
 
 ```bash
-rm -rf ~/.notary/
+test -d ~/.notary/ && rm -rf ~/.notary/
+```
+
+Remove Argo CD configuration directory:
+
+```bash
+test -d ~/.argocd/ && rm -rf ~/.argocd/
 ```
 
 Remove `tmp` directory:
 
 ```bash
 rm -rf tmp
-```
-
-Remove Helm plugin:
-
-```bash
-helm plugin remove push
 ```
 
 Remove other files:

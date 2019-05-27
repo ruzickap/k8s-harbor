@@ -31,6 +31,10 @@ Resources:
           ToPort: '389'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
+          FromPort: '636'
+          ToPort: '636'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
           FromPort: '3389'
           ToPort: '3389'
           CidrIp: 0.0.0.0/0

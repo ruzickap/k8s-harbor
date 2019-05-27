@@ -47,7 +47,6 @@ clear
 # export MY_DOMAIN="mylabs.dev"
 
 
-# export NO_WAIT=true
 # ./run-k8s-harbor-full.sh
 
 
@@ -63,7 +62,10 @@ wait\
 -e 's/^```bash$/\
 pe '"'"'/' \
 -e 's/^```$/'"'"'/' \
--e '/^sleep/d' \
 > README.sh
 
-source README.sh
+if [ "$#" -eq 0 ]; then
+  source README.sh
+else
+  cat README.sh
+fi

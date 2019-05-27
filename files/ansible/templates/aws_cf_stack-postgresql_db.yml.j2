@@ -1,0 +1,103 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'PostgreSQL RDS - {{ aws_pgsql_fqdn }}'
+
+Resources:
+  RecordSet:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneName: '{{ domain }}.'
+      Comment: DNS name for Windows Active Directory Server
+      Name: '{{ aws_pgsql_fqdn }}.'
+      Type: CNAME
+      TTL: '60'
+      ResourceRecords:
+        - !GetAtt 'DBInstance.Endpoint.Address'
+
+  DatabaseSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: "Security group for {{ aws_pgsql_fqdn }}"
+      VpcId: "{{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['VPC'] }}"
+      Tags:
+        - Key: Name
+          Value: "{{ aws_cf_stack_name }}-sg"
+{% for (key, value) in aws_cf_tags.items() %}
+        - Key: {{ key }}
+          Value: {{ value }}
+{% endfor %}
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: icmp
+          FromPort: 8
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+
+  DBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties:
+      DBSubnetGroupName: "{{ aws_cf_stack_name }}-sg"
+      DBSubnetGroupDescription: "Subnet Group for {{ aws_pgsql_fqdn }}"
+      SubnetIds: {{ ansible_facts['cloudformation'][aws_cf_eksctl_stack_name]['stack_outputs']['SubnetsPublic'].split(',') }}
+      Tags:
+        - Key: Name
+          Value: "{{ aws_cf_stack_name }}-sg"
+{% for (key, value) in aws_cf_tags.items() %}
+        - Key: {{ key }}
+          Value: {{ value }}
+{% endfor %}
+
+  DBInstance:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Snapshot
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      AllocatedStorage: 5
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      BackupRetentionPeriod: 0
+      DBInstanceClass: db.t2.medium
+      DBInstanceIdentifier: {{ aws_pgsql_fqdn | regex_replace('\.', '-') }}
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: postgres
+      EngineVersion: "11.2"
+      MasterUsername: "{{ aws_cf_db_username }}"
+      MasterUserPassword: "{{ aws_cf_db_password }}"
+      PubliclyAccessible: true
+      PreferredBackupWindow: "03:00-06:00"
+      PreferredMaintenanceWindow: "Mon:00:00-Mon:03:00"
+      StorageType: gp2
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+      Tags:
+        - Key: Name
+          Value: "{{ aws_cf_stack_name }}-sg"
+{% for (key, value) in aws_cf_tags.items() %}
+        - Key: {{ key }}
+          Value: {{ value }}
+{% endfor %}
+
+Outputs:
+  StackName:
+    Description: 'Stack name.'
+    Value: !Sub '${AWS::StackName}'
+
+  InstanceName:
+    Description: 'The name of the database instance.'
+    Value: !Ref DBInstance
+    Export:
+      Name: !Sub '${AWS::StackName}-InstanceName'
+
+  DNSName:
+    Description: 'The connection endpoint for the database.'
+    Value: !GetAtt 'DBInstance.Endpoint.Address'
+    Export:
+      Name: !Sub '${AWS::StackName}-DNSName'
+
+  FQDN:
+    Description: 'The connection endpoint for the database exported via Route 53'
+    Value: "{{ aws_pgsql_fqdn }}"

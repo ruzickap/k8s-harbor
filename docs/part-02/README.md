@@ -9,13 +9,13 @@ Helm Architecture:
 Install [Helm](https://helm.sh/) binary:
 
 ```bash
-curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash
+curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.14.0
 ```
 
 Output:
 
 ```text
-Downloading https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz
+Downloading https://kubernetes-helm.storage.googleapis.com/helm-v2.14.0-linux-amd64.tar.gz
 Preparing to install helm and tiller into /usr/local/bin
 helm installed into /usr/local/bin/helm
 tiller installed into /usr/local/bin/tiller
@@ -35,28 +35,23 @@ Output:
 ```text
 serviceaccount/tiller created
 clusterrolebinding.rbac.authorization.k8s.io/tiller-cluster-rule created
-Creating /root/.helm
-Creating /root/.helm/repository
-Creating /root/.helm/repository/cache
-Creating /root/.helm/repository/local
-Creating /root/.helm/plugins
-Creating /root/.helm/starters
-Creating /root/.helm/cache/archive
-Creating /root/.helm/repository/repositories.yaml
+Creating /home/pruzicka/.helm
+Creating /home/pruzicka/.helm/repository
+Creating /home/pruzicka/.helm/repository/cache
+Creating /home/pruzicka/.helm/repository/local
+Creating /home/pruzicka/.helm/plugins
+Creating /home/pruzicka/.helm/starters
+Creating /home/pruzicka/.helm/cache/archive
+Creating /home/pruzicka/.helm/repository/repositories.yaml
 Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
 Adding local repo with URL: http://127.0.0.1:8879/charts
-$HELM_HOME has been configured at /root/.helm.
+$HELM_HOME has been configured at /home/pruzicka/.helm.
 
 Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
 
 Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
 To prevent this, run `helm init` with the --tiller-tls-verify flag.
 For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
-Happy Helming!
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
 ```
 
 Check if the tiller was installed properly:
@@ -69,7 +64,7 @@ Output:
 
 ```text
 NAME                             READY   STATUS    RESTARTS   AGE
-tiller-deploy-7b65c7bff9-gwmv9   1/1     Running   0          12s
+tiller-deploy-58d57fd669-5grpf   1/1     Running   0          14s
 ```
 
 Add [Helm plugin](https://github.com/chartmuseum/helm-push) to push chart
