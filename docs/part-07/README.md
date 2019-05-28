@@ -74,6 +74,67 @@ It should be visible in the Harbor UI:
 ![Container image in Harbor UI](./harbor_container_image.png
 "Container image in Harbor UI")
 
+## Signed container image
+
+YouTube video: [https://youtu.be/pPklSTJZY2E](https://youtu.be/pPklSTJZY2E)
+
+![Notary](https://raw.githubusercontent.com/theupdateframework/notary/97a2d690658937fea3b65b4494bd5c3a75558d08/docs/images/notary-blk.svg?sanitize=true
+"Notary")
+
+Tag the `kuard` image to be pulled to Harbor `library` project:
+
+```bash
+docker tag gcr.io/kuar-demo/kuard-amd64:blue core.${MY_DOMAIN}/library/kuard-amd64:blue
+```
+
+Push there the image:
+
+```bash
+export DOCKER_CONTENT_TRUST=1
+export DOCKER_CONTENT_TRUST_SERVER=https://notary.${MY_DOMAIN}
+export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="mypassphrase123"
+export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="rootpassphrase123"
+docker push core.${MY_DOMAIN}/library/kuard-amd64:blue
+```
+
+Output:
+
+```text
+The push refers to repository [core.mylabs.dev/library/kuard-amd64]
+656e9c47289e: Mounted from my_project/kuard-amd64
+bcf2f368fe23: Mounted from my_project/kuard-amd64
+blue: digest: sha256:1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229 size: 739
+Signing and pushing trust metadata
+Finished initializing "core.mylabs.dev/library/kuard-amd64"
+Successfully signed core.mylabs.dev/library/kuard-amd64:blue
+```
+
+You should be able to see the signed container image in the Harbor web
+interface:
+
+![Signed container image](./harbor_signed_container_image.png "Signed container image")
+
+Install [Notary](https://github.com/theupdateframework/notary):
+
+```bash
+sudo curl -sL https://github.com/theupdateframework/notary/releases/download/v0.6.1/notary-Linux-amd64 -o /usr/local/bin/notary
+sudo chmod a+x /usr/local/bin/notary
+```
+
+Access Notary using the standard client:
+
+```bash
+notary -s https://notary.${MY_DOMAIN} list core.${MY_DOMAIN}/library/kuard-amd64
+```
+
+Output:
+
+```text
+NAME    DIGEST                                                              SIZE (BYTES)    ROLE
+----    ------                                                              ------------    ----
+blue    1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229    739             targets
+```
+
 ## Vulnerability scan
 
 YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
@@ -174,64 +235,3 @@ Vulnerability list for container image:
 
 ![Vulnerability list for container image](./harbor_container_image_vulnerability_list.png
 "Vulnerability list for container image")
-
-## Signed container image
-
-YouTube video: [https://youtu.be/pPklSTJZY2E](https://youtu.be/pPklSTJZY2E)
-
-![Notary](https://raw.githubusercontent.com/theupdateframework/notary/97a2d690658937fea3b65b4494bd5c3a75558d08/docs/images/notary-blk.svg?sanitize=true
-"Notary")
-
-Tag the `kuard` image to be pulled to Harbor `library` project:
-
-```bash
-docker tag gcr.io/kuar-demo/kuard-amd64:blue core.${MY_DOMAIN}/library/kuard-amd64:blue
-```
-
-Push there the image:
-
-```bash
-export DOCKER_CONTENT_TRUST=1
-export DOCKER_CONTENT_TRUST_SERVER=https://notary.${MY_DOMAIN}
-export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="mypassphrase123"
-export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="rootpassphrase123"
-docker push core.${MY_DOMAIN}/library/kuard-amd64:blue
-```
-
-Output:
-
-```text
-The push refers to repository [core.mylabs.dev/library/kuard-amd64]
-656e9c47289e: Mounted from my_project/kuard-amd64
-bcf2f368fe23: Mounted from my_project/kuard-amd64
-blue: digest: sha256:1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229 size: 739
-Signing and pushing trust metadata
-Finished initializing "core.mylabs.dev/library/kuard-amd64"
-Successfully signed core.mylabs.dev/library/kuard-amd64:blue
-```
-
-You should be able to see the signed container image in the Harbor web
-interface:
-
-![Signed container image](./harbor_signed_container_image.png "Signed container image")
-
-Install [Notary](https://github.com/theupdateframework/notary):
-
-```bash
-sudo curl -sL https://github.com/theupdateframework/notary/releases/download/v0.6.1/notary-Linux-amd64 -o /usr/local/bin/notary
-sudo chmod a+x /usr/local/bin/notary
-```
-
-Access Notary using the standard client:
-
-```bash
-notary -s https://notary.${MY_DOMAIN} list core.${MY_DOMAIN}/library/kuard-amd64
-```
-
-Output:
-
-```text
-NAME    DIGEST                                                              SIZE (BYTES)    ROLE
-----    ------                                                              ------------    ----
-blue    1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229    739             targets
-```
