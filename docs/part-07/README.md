@@ -144,11 +144,6 @@ YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
 
 Scan the image `kuard-amd64:blue` for vulnerabilities (using API):
 
-::: warning
-TODO: Scanning container images executed by calling API is not working. This
-needs to be done manually using the Web interface
-:::
-
 ```bash
 curl -u "aduser05:admin" --header "Content-Type: application/json" -X POST "https://core.${MY_DOMAIN}/api/repositories/my_project/kuard-amd64/tags/blue/scan"
 ```
@@ -214,11 +209,6 @@ The push refers to repository [core.mylabs.dev/my_project/nginx]
 d626a8ad97a1: Pushed
 1.13.12: digest: sha256:e4f0474a75c510f40b37b6b7dc2516241ffa8bde5a442bde3d372c9519c84d90 size: 948
 ```
-
-::: warning
-TODO: Scanning container images executed by calling API is not working. This
-needs to be done manually using the Web interface
-:::
 
 Scan the image for vulnerabilities:
 
