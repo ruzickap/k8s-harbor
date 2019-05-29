@@ -142,6 +142,42 @@ YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
 ![Clair logo](https://cloud.githubusercontent.com/assets/343539/21630811/c5081e5c-d202-11e6-92eb-919d5999c77a.png
 "Clair logo")
 
+Check if "Vulnerability database" was successfully updated:
+
+```bash
+curl -s -u "admin:admin" "https://core.cluster0.k8srnd.mirantis.tech/api/systeminfo" | jq '.clair_vulnerability_status'
+```
+
+Output:
+
+```text
+{
+  "overall_last_update": 1559061991,
+  "details": [
+    {
+      "namespace": "oracle",
+      "last_update": 1559061991
+    },
+    {
+      "namespace": "centos",
+      "last_update": 1559061991
+    },
+    {
+      "namespace": "alpine",
+      "last_update": 1559061991
+    },
+    {
+      "namespace": "debian",
+      "last_update": 1559061991
+    },
+    {
+      "namespace": "ubuntu",
+      "last_update": 1559061991
+    }
+  ]
+}
+```
+
 Scan the image `kuard-amd64:blue` for vulnerabilities (using API):
 
 ```bash
