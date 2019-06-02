@@ -29,6 +29,7 @@ Remove Harbor:
 
 ```bash
 kubectl label namespace argocd-system app-
+argocd login --insecure argocd-grpc.${MY_DOMAIN} --username admin --password admin
 argocd --server argocd-grpc.${MY_DOMAIN} --insecure app delete harbor && sleep 100
 argocd --server argocd-grpc.${MY_DOMAIN} --insecure proj delete harbor
 kubectl delete namespace harbor-system --wait=false

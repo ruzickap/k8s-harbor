@@ -124,6 +124,7 @@ deployment.apps/nginx created
 If you check the pods you will see they are not running:
 
 ```bash
+sleep 5
 kubectl -n mytest get pods --selector=app=nginx
 ```
 

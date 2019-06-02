@@ -9,7 +9,7 @@ Download the compressed Helm Chart of Rook:
 ```bash
 test -d tmp || mkdir tmp
 cd tmp
-wget --quiet https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
+wget https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
 ```
 
 Upload manually the `rook-ceph-v1.0.0.tgz` to Harbor by clicking on

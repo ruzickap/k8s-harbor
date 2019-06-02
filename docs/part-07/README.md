@@ -142,10 +142,31 @@ YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
 ![Clair logo](https://cloud.githubusercontent.com/assets/343539/21630811/c5081e5c-d202-11e6-92eb-919d5999c77a.png
 "Clair logo")
 
-Check if "Vulnerability database" was successfully updated:
+Wait for Clair to finish updating the "Vulnerability database" (it takes about
+40 minutes):
 
 ```bash
-curl -s -u "admin:admin" "https://core.cluster0.k8srnd.mirantis.tech/api/systeminfo" | jq '.clair_vulnerability_status'
+COUNT=0; OUTPUT="{}"; while [ "${OUTPUT}" = "{}" ] && [ "${COUNT}" -lt 360 ]; do COUNT=$((COUNT+1)); OUTPUT=$(curl -s -u "admin:admin" "https://core.${MY_DOMAIN}/api/systeminfo" | jq .clair_vulnerability_status); sleep 10; echo -n "${COUNT} ";  done
+```
+
+Check the logs form Clair pod to see when it was updated:
+
+```bash
+CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o jsonpath="{.items[0].metadata.name}")
+kubectl logs -n harbor-system ${CLAIR_POD} | grep -E "(updating vulnerabilities|update finished)"
+```
+
+Output:
+
+```text
+{"Event":"updating vulnerabilities","Level":"info","Location":"updater.go:192","Time":"2019-06-02 08:23:07.083817"}
+{"Event":"update finished","Level":"info","Location":"updater.go:223","Time":"2019-06-02 09:06:39.287362"}
+```
+
+See if "Vulnerability database" was successfully updated using API:
+
+```bash
+curl -s -u "admin:admin" "https://core.${MY_DOMAIN}/api/systeminfo" | jq '.clair_vulnerability_status'
 ```
 
 Output:
@@ -194,6 +215,7 @@ Stretch from Docker Hub. The image is is one year old:
 [https://hub.docker.com/_/nginx?tab=tags&page=5](https://hub.docker.com/_/nginx?tab=tags&page=5)
 
 ```bash
+unset DOCKER_CONTENT_TRUST
 docker pull nginx:1.13.12
 ```
 
