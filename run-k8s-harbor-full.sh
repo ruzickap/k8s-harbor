@@ -46,22 +46,24 @@ clear
 # export LETSENCRYPT_ENVIRONMENT="production"  # Use with care - Let's Encrypt will generate real certificates
 # export MY_DOMAIN="mylabs.dev"
 
-
 # ./run-k8s-harbor-full.sh
-
 
 [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 
-sed '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' docs/part-{01..08}/README.md | \
-sed -n '/^```bash$/,/^```$/p;/^-----$/p'  | \
-sed -e 's/^-----$/\
+sed docs/part-{01..08}/README.md \
+  -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
+| \
+sed -n '/^```bash$/,/^```$/p;/^-----$/p' \
+| \
+sed \
+  -e 's/^-----$/\
 p  ""\
 p  "################################################################################################### Press <ENTER> to continue"\
 wait\
 /' \
--e 's/^```bash$/\
+  -e 's/^```bash$/\
 pe '"'"'/' \
--e 's/^```$/'"'"'/' \
+  -e 's/^```$/'"'"'/' \
 > README.sh
 
 if [ "$#" -eq 0 ]; then
