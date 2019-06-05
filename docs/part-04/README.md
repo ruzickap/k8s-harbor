@@ -3,6 +3,35 @@
 ![Harbor logo](https://raw.githubusercontent.com/cncf/artwork/c33a8386bce4eabc36e1d4972e0996db4630037b/projects/harbor/horizontal/color/harbor-horizontal-color.svg?sanitize=true
 "Harbor logo")
 
+## Install Harbor using Helm
+
+Create namespace for Harbor and copy there the secrets with Let's encrypt
+certificate:
+
+```bash
+kubectl create namespace harbor2-system
+kubectl label namespace harbor2-system app=kubed
+```
+
+Add Harbor Helm repository:
+
+```bash
+helm repo add harbor https://helm.goharbor.io
+```
+
+Install Harbor using Helm:
+
+```bash
+helm ls | grep harbor2 || \
+helm install --name harbor2 --namespace harbor2-system harbor/harbor --version v1.1.0 \
+  --set expose.ingress.hosts.core=core2.${MY_DOMAIN} \
+  --set expose.ingress.hosts.notary=notary2.${MY_DOMAIN} \
+  --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
+  --set persistence.enabled=false \
+  --set externalURL=https://core2.${MY_DOMAIN} \
+  --set harborAdminPassword=admin
+```
+
 ## Install Harbor using Argo CD
 
 Login to Argo CD:
@@ -79,12 +108,11 @@ Output:
 ```text
 TIMESTAMP  GROUP        KIND   NAMESPACE                  NAME    STATUS   HEALTH        HOOK  MESSAGE
 ...
-2019-05-27T07:32:40+02:00   apps  Deployment  harbor-system  harbor-harbor-notary-server    Synced  Healthy              deployment.apps/harbor-harbor-notary-server created
-2019-05-27T07:32:48+02:00   apps  Deployment  harbor-system  harbor-harbor-chartmuseum    Synced  Healthy              deployment.apps/harbor-harbor-chartmuseum created
-2019-05-27T07:32:55+02:00   apps  StatefulSet  harbor-system   harbor-harbor-redis    Synced  Healthy              statefulset.apps/harbor-harbor-redis created
-2019-05-27T07:33:04+02:00   apps  Deployment  harbor-system  harbor-harbor-registry    Synced  Healthy              deployment.apps/harbor-harbor-registry created
-2019-05-27T07:33:05+02:00   apps  Deployment  harbor-system   harbor-harbor-clair    Synced  Healthy              deployment.apps/harbor-harbor-clair created
-2019-05-27T07:34:10+02:00   apps  Deployment  harbor-system    harbor-harbor-core    Synced  Healthy              deployment.apps/harbor-harbor-core created
+2019-06-05T14:35:15+02:00   apps  Deployment  harbor-system  harbor-harbor-chartmuseum    Synced  Healthy              deployment.apps/harbor-harbor-chartmuseum created
+2019-06-05T14:35:18+02:00   apps  StatefulSet  harbor-system   harbor-harbor-redis    Synced  Healthy              statefulset.apps/harbor-harbor-redis created
+2019-06-05T14:35:24+02:00   apps  Deployment  harbor-system  harbor-harbor-registry    Synced  Healthy              deployment.apps/harbor-harbor-registry created
+2019-06-05T14:35:24+02:00   apps  Deployment  harbor-system   harbor-harbor-clair      Synced  Healthy              deployment.apps/harbor-harbor-clair created
+2019-06-05T14:36:27+02:00   apps  Deployment  harbor-system    harbor-harbor-core    Synced  Healthy              deployment.apps/harbor-harbor-core created
 
 Name:               harbor
 Project:            harbor
@@ -100,38 +128,38 @@ Health Status:      Healthy
 
 
 GROUP       KIND                   NAMESPACE      NAME                         STATUS  HEALTH
-            ConfigMap              harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
-            Service                harbor-system  harbor-harbor-core           Synced  Healthy
-            Service                harbor-system  harbor-harbor-notary-signer  Synced  Healthy
-            Service                harbor-system  harbor-harbor-redis          Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-portal         Synced  Healthy
-            Secret                 harbor-system  harbor-harbor-registry       Synced  Healthy
-            PersistentVolumeClaim  harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
 apps        Deployment             harbor-system  harbor-harbor-registry       Synced  Healthy
-            ConfigMap              harbor-system  harbor-harbor-clair          Synced  Healthy
-            Service                harbor-system  harbor-harbor-notary-server  Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-jobservice     Synced  Healthy
-            PersistentVolumeClaim  harbor-system  harbor-harbor-jobservice     Synced  Healthy
             Service                harbor-system  harbor-harbor-clair          Synced  Healthy
-            Service                harbor-system  harbor-harbor-jobservice     Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-notary-server  Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-notary-signer  Synced  Healthy
-extensions  Ingress                harbor-system  harbor-harbor-ingress        Synced  Healthy
-            Secret                 harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
-            ConfigMap              harbor-system  harbor-harbor-notary-server  Synced  Healthy
-            ConfigMap              harbor-system  harbor-harbor-registry       Synced  Healthy
-            PersistentVolumeClaim  harbor-system  harbor-harbor-registry       Synced  Healthy
-            Service                harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
+            Service                harbor-system  harbor-harbor-notary-signer  Synced  Healthy
 apps        Deployment             harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
-            Secret                 harbor-system  harbor-harbor-core           Synced  Healthy
-            Service                harbor-system  harbor-harbor-registry       Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-clair          Synced  Healthy
-apps        Deployment             harbor-system  harbor-harbor-core           Synced  Healthy
-apps        StatefulSet            harbor-system  harbor-harbor-redis          Synced  Healthy
-            Secret                 harbor-system  harbor-harbor-jobservice     Synced  Healthy
-            ConfigMap              harbor-system  harbor-harbor-core           Synced  Healthy
-            ConfigMap              harbor-system  harbor-harbor-jobservice     Synced  Healthy
             Service                harbor-system  harbor-harbor-portal         Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-core           Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-registry       Synced  Healthy
+            Service                harbor-system  harbor-harbor-core           Synced  Healthy
+            Service                harbor-system  harbor-harbor-notary-server  Synced  Healthy
+            Service                harbor-system  harbor-harbor-jobservice     Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-clair          Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-portal         Synced  Healthy
+            Secret                 harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-core           Synced  Healthy
+            PersistentVolumeClaim  harbor-system  harbor-harbor-registry       Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-notary-server  Synced  Healthy
+            PersistentVolumeClaim  harbor-system  harbor-harbor-jobservice     Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-notary-signer  Synced  Healthy
+apps        StatefulSet            harbor-system  harbor-harbor-redis          Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-clair          Synced  Healthy
+            Service                harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
+            Service                harbor-system  harbor-harbor-redis          Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-jobservice     Synced  Healthy
+extensions  Ingress                harbor-system  harbor-harbor-ingress        Synced  Healthy
+            Secret                 harbor-system  harbor-harbor-jobservice     Synced  Healthy
+            Secret                 harbor-system  harbor-harbor-registry       Synced  Healthy
+            Service                harbor-system  harbor-harbor-registry       Synced  Healthy
+apps        Deployment             harbor-system  harbor-harbor-notary-server  Synced  Healthy
+            Secret                 harbor-system  harbor-harbor-core           Synced  Healthy
+            ConfigMap              harbor-system  harbor-harbor-jobservice     Synced  Healthy
+            PersistentVolumeClaim  harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
 ```
 
 Harbor architecture:
@@ -150,7 +178,7 @@ Output:
 ```text
 Name:             harbor-harbor-ingress
 Namespace:        harbor-system
-Address:          3.122.97.63
+Address:          54.93.44.33
 Default backend:  default-http-backend:80 (<none>)
 TLS:
   ingress-cert-production terminates core.mylabs.dev
@@ -159,14 +187,14 @@ Rules:
   Host               Path  Backends
   ----               ----  --------
   core.mylabs.dev
-                     /             harbor-harbor-portal:80 (192.168.23.107:80)
-                     /api/         harbor-harbor-core:80 (192.168.1.163:8080)
-                     /service/     harbor-harbor-core:80 (192.168.1.163:8080)
-                     /v2/          harbor-harbor-core:80 (192.168.1.163:8080)
-                     /chartrepo/   harbor-harbor-core:80 (192.168.1.163:8080)
-                     /c/           harbor-harbor-core:80 (192.168.1.163:8080)
+                     /             harbor-harbor-portal:80 (192.168.70.197:80)
+                     /api/         harbor-harbor-core:80 (192.168.86.6:8080)
+                     /service/     harbor-harbor-core:80 (192.168.86.6:8080)
+                     /v2/          harbor-harbor-core:80 (192.168.86.6:8080)
+                     /chartrepo/   harbor-harbor-core:80 (192.168.86.6:8080)
+                     /c/           harbor-harbor-core:80 (192.168.86.6:8080)
   notary.mylabs.dev
-                     /   harbor-harbor-notary-server:4443 (192.168.52.129:4443)
+                     /   harbor-harbor-notary-server:4443 (192.168.25.61:4443)
 Annotations:
   ingress.kubernetes.io/proxy-body-size:             0
   ingress.kubernetes.io/ssl-redirect:                true
@@ -177,8 +205,8 @@ Annotations:
 Events:
   Type    Reason  Age    From                      Message
   ----    ------  ----   ----                      -------
-  Normal  CREATE  3m27s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
-  Normal  UPDATE  3m15s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Normal  CREATE  3m28s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Normal  UPDATE  3m8s   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
 ```
 
 Open the [https://core.mylabs.dev](https://core.mylabs.dev):

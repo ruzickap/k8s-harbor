@@ -9,12 +9,12 @@ If you are using Let's Encrypt "staging" you need to download and use their
 
 ```bash
 [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ] && \
-sudo mkdir -pv /etc/docker/certs.d/core.${MY_DOMAIN}/ && \
-sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt && \
-export SSL_CERT_FILE=/etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt && \
+sudo mkdir -pv /etc/docker/certs.d/core2.${MY_DOMAIN}/ && \
+sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt && \
+export SSL_CERT_FILE=/etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt && \
 for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do \
   ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
-    "sudo mkdir -p /etc/docker/certs.d/core.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core.${MY_DOMAIN}/ca.crt" ; \
+    "sudo mkdir -p /etc/docker/certs.d/core2.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt" ; \
 done && \
 echo "*** Done"
 ```
@@ -32,7 +32,7 @@ Output:
 You can also use the API directly:
 
 ```bash
-curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core.${MY_DOMAIN}/api/projects" -d \
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core2.${MY_DOMAIN}/api/projects" -d \
 "{
   \"project_name\": \"my_project\",
   \"public\": 0
@@ -127,7 +127,7 @@ Configure LDAP/Active Directory authentication in Harbor by going to
 It's possible to use API call as well:
 
 ```bash
-curl -u "admin:admin" -X PUT "https://core.${MY_DOMAIN}/api/configurations" -H "Content-Type: application/json" -d \
+curl -u "admin:admin" -X PUT "https://core2.${MY_DOMAIN}/api/configurations" -H "Content-Type: application/json" -d \
 "{
   \"auth_mode\": \"ldap_auth\",
   \"ldap_base_dn\": \"cn=users,dc=mylabs,dc=dev\",
@@ -149,7 +149,7 @@ curl -u "admin:admin" -X PUT "https://core.${MY_DOMAIN}/api/configurations" -H "
 "Harbor Authentication Configuration page")
 
 Open a new tab with Harbor login page
-([https://core.mylabs.dev](https://core.mylabs.dev)) and login as:
+([https://core2.mylabs.dev](https://core2.mylabs.dev)) and login as:
 
 * User: `aduser01`
 * Password: `admin`
@@ -161,7 +161,7 @@ and `Logs`:
 "Harbor - Standard user view")
 
 Open a new tab with Harbor login page
-([https://core.mylabs.dev](https://core.mylabs.dev)) and login as:
+([https://core2.mylabs.dev](https://core2.mylabs.dev)) and login as:
 
 * User: `aduser06` and `aduser05`
 * Password: `admin`

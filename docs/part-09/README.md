@@ -25,6 +25,14 @@ helm delete --purge gitea
 kubectl delete namespace gitea-system --wait=false
 ```
 
+Clean second Harbor instance (do not remove Harbor, but only clear it's
+projects):
+
+```bash
+helm delete --purge harbor2
+kubectl delete namespace harbor2-system --wait=false
+```
+
 Remove Harbor:
 
 ```bash
@@ -70,6 +78,7 @@ helm delete --purge kubed
 Remove cert-manager:
 
 ```bash
+helm repo remove harbor jetstack appscode argo my_project_helm_repo library
 helm delete --purge cert-manager
 kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/deploy/manifests/00-crds.yaml --wait=false
 kubectl delete namespace cert-manager --wait=false

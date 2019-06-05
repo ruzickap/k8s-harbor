@@ -55,44 +55,45 @@ Output:
 "jetstack" has been added to your repositories
 Hang tight while we grab the latest from your chart repositories...
 ...Skip local chart repository
+...Successfully got an update from the "harbor" chart repository
 ...Successfully got an update from the "jetstack" chart repository
 ...Successfully got an update from the "stable" chart repository
-Update Complete.
+Update Complete. ⎈ Happy Helming!⎈
 NAME:   cert-manager
-LAST DEPLOYED: Mon May 27 07:27:35 2019
+LAST DEPLOYED: Wed Jun  5 14:29:52 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME               AGE
-cert-manager-edit  6s
-cert-manager-view  6s
+cert-manager-edit  12s
+cert-manager-view  12s
 
 ==> v1/Pod(related)
 NAME                                      READY  STATUS   RESTARTS  AGE
-cert-manager-7548788b6-6g5jt              1/1    Running  0         6s
-cert-manager-cainjector-5675c6fcc7-hx9gv  1/1    Running  0         6s
+cert-manager-7548788b6-94zdp              1/1    Running  0         12s
+cert-manager-cainjector-5675c6fcc7-plbkr  1/1    Running  0         12s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
-cert-manager             1        6s
-cert-manager-cainjector  1        6s
+cert-manager             1        12s
+cert-manager-cainjector  1        12s
 
 ==> v1beta1/ClusterRole
 NAME                     AGE
-cert-manager             6s
-cert-manager-cainjector  6s
+cert-manager             12s
+cert-manager-cainjector  12s
 
 ==> v1beta1/ClusterRoleBinding
 NAME                     AGE
-cert-manager             6s
-cert-manager-cainjector  6s
+cert-manager             12s
+cert-manager-cainjector  12s
 
 ==> v1beta1/Deployment
 NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager             1/1    1           1          6s
-cert-manager-cainjector  1/1    1           1          6s
+cert-manager             1/1    1           1          12s
+cert-manager-cainjector  1/1    1           1          12s
 
 
 NOTES:
@@ -252,6 +253,19 @@ helm repo add appscode https://charts.appscode.com/stable/
 helm repo update
 ```
 
+Output:
+
+```text
+"appscode" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "appscode" chart repository
+...Successfully got an update from the "harbor" chart repository
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈ Happy Helming!⎈
+```
+
 Install kubed:
 
 ```bash
@@ -264,7 +278,7 @@ Output:
 
 ```text
 NAME:   kubed
-LAST DEPLOYED: Mon May 27 07:27:59 2019
+LAST DEPLOYED: Wed Jun  5 14:30:28 2019
 NAMESPACE: kube-system
 STATUS: DEPLOYED
 
@@ -280,7 +294,7 @@ kubed-kubed-apiserver-auth-delegator  2s
 
 ==> v1/Pod(related)
 NAME                         READY  STATUS             RESTARTS  AGE
-kubed-kubed-76b4dcd9f-8xs7l  0/1    ContainerCreating  0         2s
+kubed-kubed-76b4dcd9f-qbbqw  0/1    ContainerCreating  0         2s
 
 ==> v1/RoleBinding
 NAME                                                          AGE
@@ -289,11 +303,11 @@ kubed-kubed-apiserver-extension-server-authentication-reader  2s
 ==> v1/Secret
 NAME                        TYPE    DATA  AGE
 kubed-kubed                 Opaque  1     2s
-kubed-kubed-apiserver-cert  Opaque  2     2s
+kubed-kubed-apiserver-cert  Opaque  2     3s
 
 ==> v1/Service
-NAME         TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)  AGE
-kubed-kubed  ClusterIP  10.100.11.84  <none>       443/TCP  2s
+NAME         TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
+kubed-kubed  ClusterIP  10.100.112.12  <none>       443/TCP  2s
 
 ==> v1/ServiceAccount
 NAME         SECRETS  AGE
@@ -342,8 +356,7 @@ Output:
 
 ```text
 NAME:   nginx-ingress
-E0527 07:28:13.375809    6277 portforward.go:372] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:40707->127.0.0.1:52834: write tcp4 127.0.0.1:40707->127.0.0.1:52834: write: broken pipe
-LAST DEPLOYED: Mon May 27 07:28:11 2019
+LAST DEPLOYED: Wed Jun  5 14:30:40 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
@@ -354,13 +367,13 @@ nginx-ingress-controller  1     2s
 
 ==> v1/Pod(related)
 NAME                                            READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-947555496-fhxdq        0/1    ContainerCreating  0         2s
-nginx-ingress-default-backend-6694789b87-245jt  0/1    ContainerCreating  0         2s
+nginx-ingress-controller-947555496-9nf54        0/1    ContainerCreating  0         2s
+nginx-ingress-default-backend-6694789b87-bkmj7  0/1    ContainerCreating  0         2s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.113.183  a37a778b78040...  80:30879/TCP,443:30814/TCP  2s
-nginx-ingress-default-backend  ClusterIP     10.100.176.167  <none>            80/TCP                      2s
+NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.244.69  aba9e9103878d...  80:31279/TCP,443:31552/TCP  2s
+nginx-ingress-default-backend  ClusterIP     10.100.71.100  <none>            80/TCP                      2s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
@@ -443,6 +456,19 @@ envsubst < files/aws_route53-dns_change.json | aws route53 change-resource-recor
 sleep 100
 ```
 
+Output:
+
+```text
+{
+    "ChangeInfo": {
+        "Id": "/change/CWW2GSS39JTSW",
+        "Status": "PENDING",
+        "SubmittedAt": "2019-06-05T12:30:55.095Z",
+        "Comment": "A new record set for the zone."
+    }
+}
+```
+
 ![Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/65b766c494a5b4f5420b2912d8373c4957163541/static/images/crystal.svg?sanitize=true
 "Architecture")
 
@@ -464,11 +490,11 @@ Annotations:  kubectl.kubernetes.io/last-applied-configuration:
 API Version:  certmanager.k8s.io/v1alpha1
 Kind:         Certificate
 Metadata:
-  Creation Timestamp:  2019-05-27T05:27:51Z
+  Creation Timestamp:  2019-06-05T12:30:21Z
   Generation:          1
-  Resource Version:    3414
+  Resource Version:    6493
   Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/cert-manager/certificates/ingress-cert-production
-  UID:                 2c33eb73-8040-11e9-a16f-063dbeaa18d6
+  UID:                 afb37042-878d-11e9-9a91-0668fe0cab46
 Spec:
   Acme:
     Config:
@@ -485,20 +511,20 @@ Spec:
   Secret Name:  ingress-cert-production
 Status:
   Conditions:
-    Last Transition Time:  2019-05-27T05:29:36Z
+    Last Transition Time:  2019-06-05T12:32:08Z
     Message:               Certificate is up to date and has not expired
     Reason:                Ready
     Status:                True
     Type:                  Ready
-  Not After:               2019-08-25T04:29:34Z
+  Not After:               2019-09-03T11:32:06Z
 Events:
   Type    Reason              Age    From          Message
   ----    ------              ----   ----          -------
-  Normal  Generated           2m18s  cert-manager  Generated new private key
-  Normal  GenerateSelfSigned  2m18s  cert-manager  Generated temporary self signed certificate
-  Normal  OrderCreated        2m18s  cert-manager  Created Order resource "ingress-cert-production-20059064"
-  Normal  OrderComplete       34s    cert-manager  Order "ingress-cert-production-20059064" completed successfully
-  Normal  CertIssued          34s    cert-manager  Certificate issued successfully
+  Normal  Generated           2m15s  cert-manager  Generated new private key
+  Normal  GenerateSelfSigned  2m15s  cert-manager  Generated temporary self signed certificate
+  Normal  OrderCreated        2m15s  cert-manager  Created Order resource "ingress-cert-production-20059064"
+  Normal  OrderComplete       29s    cert-manager  Order "ingress-cert-production-20059064" completed successfully
+  Normal  CertIssued          29s    cert-manager  Certificate issued successfully
 ```
 
 The Kubernetes "secret" in `cert-manager` namespace should contain the
@@ -525,9 +551,9 @@ Type:  kubernetes.io/tls
 
 Data
 ====
-tls.crt:  3550 bytes
 tls.key:  1679 bytes
 ca.crt:   0 bytes
+tls.crt:  3550 bytes
 ```
 
 Check the SSL certificate:
@@ -543,12 +569,12 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            03:20:47:ef:39:e2:08:83:ad:4f:bf:46:f6:44:39:f7:2f:36
+            03:2a:03:1d:e0:c4:2e:f5:0f:2d:89:a6:b5:0e:a9:f8:32:9f
         Signature Algorithm: sha256WithRSAEncryption
         Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
         Validity
-            Not Before: May 27 04:29:34 2019 GMT
-            Not After : Aug 25 04:29:34 2019 GMT
+            Not Before: Jun  5 11:32:06 2019 GMT
+            Not After : Sep  3 11:32:06 2019 GMT
         Subject: CN = *.mylabs.dev
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
@@ -563,7 +589,7 @@ Certificate:
             X509v3 Basic Constraints: critical
                 CA:FALSE
             X509v3 Subject Key Identifier:
-                AD:15:5B:47:21:A2:C1:B9:03:FD:B1:C1:17:DE:C8:AA:76:3E:A9:FE
+                0B:35:19:82:BD:96:C3:88:B2:F8:07:70:BE:4A:83:47:A8:08:B9:C4
             X509v3 Authority Key Identifier:
                 keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
 
@@ -601,78 +627,79 @@ Output:
 "argo" has been added to your repositories
 Hang tight while we grab the latest from your chart repositories...
 ...Skip local chart repository
-...Successfully got an update from the "argo" chart repository
+...Successfully got an update from the "harbor" chart repository
 ...Successfully got an update from the "appscode" chart repository
+...Successfully got an update from the "argo" chart repository
 ...Successfully got an update from the "jetstack" chart repository
 ...Successfully got an update from the "stable" chart repository
-Update Complete.
+Update Complete. ⎈ Happy Helming!⎈
 NAME:   argocd
-LAST DEPLOYED: Mon May 27 07:30:24 2019
+LAST DEPLOYED: Wed Jun  5 14:32:50 2019
 NAMESPACE: argocd-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME                           AGE
-argocd-application-controller  63s
-argocd-server                  63s
+argocd-application-controller  53s
+argocd-server                  53s
 
 ==> v1/ClusterRoleBinding
 NAME                           AGE
-argocd-application-controller  63s
-argocd-server                  63s
+argocd-application-controller  53s
+argocd-server                  53s
 
 ==> v1/ConfigMap
 NAME            DATA  AGE
-argocd-cm       3     63s
-argocd-rbac-cm  0     63s
+argocd-cm       3     53s
+argocd-rbac-cm  0     53s
 
 ==> v1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-argocd-application-controller  1/1    1           1          62s
-argocd-dex-server              1/1    1           1          62s
-argocd-redis                   1/1    1           1          62s
-argocd-repo-server             1/1    1           1          62s
-argocd-server                  1/1    1           1          62s
+argocd-application-controller  1/1    1           1          53s
+argocd-dex-server              1/1    1           1          53s
+argocd-redis                   1/1    1           1          53s
+argocd-repo-server             1/1    1           1          53s
+argocd-server                  1/1    1           1          53s
 
 ==> v1/Pod(related)
 NAME                                            READY  STATUS   RESTARTS  AGE
-argocd-application-controller-5fbf79c7b9-mtqsl  1/1    Running  2         62s
-argocd-dex-server-64869cbfcf-6jk7z              1/1    Running  1         62s
-argocd-redis-78d8767bc8-2hc7m                   1/1    Running  0         62s
-argocd-repo-server-5fd94b46c-xgjln              1/1    Running  0         62s
-argocd-server-7f95ffdf86-fldts                  1/1    Running  0         62s
+argocd-application-controller-5fbf79c7b9-bxpd9  1/1    Running  0         53s
+argocd-dex-server-64869cbfcf-45mjg              1/1    Running  0         53s
+argocd-redis-78d8767bc8-4rqbs                   1/1    Running  0         53s
+argocd-repo-server-5fd94b46c-6kg9w              1/1    Running  0         53s
+argocd-server-7f95ffdf86-ct7nq                  1/1    Running  0         53s
 
 ==> v1/Role
 NAME                           AGE
-argocd-application-controller  63s
-argocd-dex-server              63s
-argocd-server                  62s
+argocd-application-controller  53s
+argocd-dex-server              53s
+argocd-server                  53s
 
 ==> v1/RoleBinding
 NAME                           AGE
-argocd-application-controller  62s
-argocd-dex-server              62s
-argocd-server                  62s
+argocd-application-controller  53s
+argocd-dex-server              53s
+argocd-server                  53s
 
 ==> v1/Secret
 NAME           TYPE    DATA  AGE
-argocd-secret  Opaque  5     63s
+argocd-secret  Opaque  5     53s
 
 ==> v1/Service
-NAME                           TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)            AGE
-argocd-application-controller  ClusterIP  10.100.101.52  <none>       8082/TCP           62s
-argocd-dex-server              ClusterIP  10.100.47.86   <none>       5556/TCP,5557/TCP  62s
-argocd-metrics                 ClusterIP  10.100.48.254  <none>       8082/TCP           62s
-argocd-redis                   ClusterIP  10.100.64.206  <none>       6379/TCP           62s
-argocd-repo-server             ClusterIP  10.100.53.148  <none>       8081/TCP           62s
-argocd-server                  ClusterIP  10.100.85.157  <none>       80/TCP,443/TCP     62s
+NAME                           TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
+argocd-application-controller  ClusterIP  10.100.183.200  <none>       8082/TCP           53s
+argocd-dex-server              ClusterIP  10.100.143.184  <none>       5556/TCP,5557/TCP  53s
+argocd-metrics                 ClusterIP  10.100.5.209    <none>       8082/TCP           53s
+argocd-redis                   ClusterIP  10.100.105.250  <none>       6379/TCP           53s
+argocd-repo-server             ClusterIP  10.100.67.17    <none>       8081/TCP           53s
+argocd-server                  ClusterIP  10.100.56.192   <none>       80/TCP,443/TCP     53s
 
 ==> v1/ServiceAccount
 NAME                           SECRETS  AGE
-argocd-application-controller  1        63s
-argocd-dex-server              1        63s
-argocd-server                  1        63s
+argocd-application-controller  1        53s
+argocd-dex-server              1        53s
+argocd-server                  1        53s
 
 
 NOTES:
@@ -712,6 +739,13 @@ Configure Ingress for Argo CD:
 
 ```bash
 envsubst < files/argo-cd_ingress.yaml | kubectl apply -f -
+```
+
+Output:
+
+```text
+ingress.extensions/argocd-server-http-ingress created
+ingress.extensions/argocd-server-grpc-ingress created
 ```
 
 There are now two domains:
