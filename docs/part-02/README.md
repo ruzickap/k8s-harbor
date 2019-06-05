@@ -9,16 +9,13 @@ Helm Architecture:
 Install [Helm](https://helm.sh/) binary:
 
 ```bash
-curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.14.0
+curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.13.1
 ```
 
 Output:
 
 ```text
-Downloading https://kubernetes-helm.storage.googleapis.com/helm-v2.14.0-linux-amd64.tar.gz
-Preparing to install helm and tiller into /usr/local/bin
-helm installed into /usr/local/bin/helm
-tiller installed into /usr/local/bin/tiller
+Helm v2.13.1 is already v2.13.1
 Run 'helm init' to configure helm.
 ```
 
@@ -33,8 +30,6 @@ helm init --wait --service-account tiller
 Output:
 
 ```text
-serviceaccount/tiller created
-clusterrolebinding.rbac.authorization.k8s.io/tiller-cluster-rule created
 Creating /home/pruzicka/.helm
 Creating /home/pruzicka/.helm/repository
 Creating /home/pruzicka/.helm/repository/cache
@@ -52,6 +47,7 @@ Tiller (the Helm server-side component) has been installed into your Kubernetes 
 Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
 To prevent this, run `helm init` with the --tiller-tls-verify flag.
 For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+Happy Helming!
 ```
 
 Check if the tiller was installed properly:
@@ -64,7 +60,7 @@ Output:
 
 ```text
 NAME                             READY   STATUS    RESTARTS   AGE
-tiller-deploy-58d57fd669-5grpf   1/1     Running   0          14s
+tiller-deploy-7b65c7bff9-rgfhh   1/1     Running   0          33m
 ```
 
 Add [Helm plugin](https://github.com/chartmuseum/helm-push) to push chart
