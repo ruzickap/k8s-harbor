@@ -98,16 +98,48 @@ aws iam create-policy \
   --policy-document file://files/route_53_change_policy.json
 ```
 
+Output:
+
+```text
+{
+    "Policy": {
+        "PolicyName": "pruzicka-AmazonRoute53Domains-cert-manager",
+        "PolicyId": "ANPA36ZNO4Q4MTW5T5ZLX",
+        "Arn": "arn:aws:iam::822044714040:policy/pruzicka-AmazonRoute53Domains-cert-manager",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 0,
+        "IsAttachable": true,
+        "CreateDate": "2019-06-05T11:16:58Z",
+        "UpdateDate": "2019-06-05T11:16:58Z"
+    }
+}
+```
+
 Create user which will use the policy above allowing the cert-manager to change
 Route 53 settings:
 
 ```bash
-aws iam create-user --user-name ${USER}-eks-cert-manager-route53
-POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`${USER}-AmazonRoute53Domains-cert-manager\`].{ARN:Arn}" --output text)
-aws iam attach-user-policy --user-name "${USER}-eks-cert-manager-route53" --policy-arn $POLICY_ARN
-aws iam create-access-key --user-name ${USER}-eks-cert-manager-route53 > $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN}
-export EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID=$(awk -F\" "/AccessKeyId/ { print \$4 }" $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN})
+aws iam create-user --user-name ${USER}-eks-cert-manager-route53 && \
+POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`${USER}-AmazonRoute53Domains-cert-manager\`].{ARN:Arn}" --output text) && \
+aws iam attach-user-policy --user-name "${USER}-eks-cert-manager-route53" --policy-arn $POLICY_ARN && \
+aws iam create-access-key --user-name ${USER}-eks-cert-manager-route53 > $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN} && \
+export EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID=$(awk -F\" "/AccessKeyId/ { print \$4 }" $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN}) && \
 export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY=$(awk -F\" "/SecretAccessKey/ { print \$4 }" $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN})
+```
+
+Output:
+
+```text
+{
+    "User": {
+        "Path": "/",
+        "UserName": "pruzicka-eks-cert-manager-route53",
+        "UserId": "AIDA36ZNO4Q4NSQJW6T7V",
+        "Arn": "arn:aws:iam::822044714040:user/pruzicka-eks-cert-manager-route53",
+        "CreateDate": "2019-06-05T11:16:59Z"
+    }
+}
 ```
 
 The `AccessKeyId` and `SecretAccessKey` is need for creating the `ClusterIssuer`
@@ -143,7 +175,7 @@ eksctl create cluster \
 --name=${USER}-k8s-harbor \
 --tags "Application=Harbor,Owner=${USER},Environment=Test,Division=Services" \
 --region=eu-central-1 \
---node-type=t3.medium \
+--node-type=t3.large \
 --ssh-access \
 --ssh-public-key $HOME/.ssh/id_rsa.pub \
 --node-ami=auto \
@@ -155,30 +187,30 @@ Output:
 
 ```text
 [ℹ]  using region eu-central-1
-[ℹ]  setting availability zones to [eu-central-1c eu-central-1b eu-central-1a]
-[ℹ]  subnets for eu-central-1c - public:192.168.0.0/19 private:192.168.96.0/19
-[ℹ]  subnets for eu-central-1b - public:192.168.32.0/19 private:192.168.128.0/19
-[ℹ]  subnets for eu-central-1a - public:192.168.64.0/19 private:192.168.160.0/19
-[ℹ]  nodegroup "ng-a9d9c670" will use "ami-0d741ed58ca5b342e" [AmazonLinux2/1.12]
-[ℹ]  using SSH public key "/home/pruzicka/.ssh/id_rsa.pub" as "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670-a3:84:e4:0d:af:5f:c8:40:da:71:68:8a:74:c7:ba:16"
+[ℹ]  setting availability zones to [eu-central-1a eu-central-1c eu-central-1b]
+[ℹ]  subnets for eu-central-1a - public:192.168.0.0/19 private:192.168.96.0/19
+[ℹ]  subnets for eu-central-1c - public:192.168.32.0/19 private:192.168.128.0/19
+[ℹ]  subnets for eu-central-1b - public:192.168.64.0/19 private:192.168.160.0/19
+[ℹ]  nodegroup "ng-e5b7f19b" will use "ami-0d741ed58ca5b342e" [AmazonLinux2/1.12]
+[ℹ]  using SSH public key "/home/pruzicka/.ssh/id_rsa.pub" as "eksctl-pruzicka-k8s-harbor-nodegroup-ng-e5b7f19b-a3:84:e4:0d:af:5f:c8:40:da:71:68:8a:74:c7:ba:16"
 [ℹ]  creating EKS cluster "pruzicka-k8s-harbor" in "eu-central-1" region
 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=eu-central-1 --name=pruzicka-k8s-harbor'
-[ℹ]  2 sequential tasks: { create cluster control plane "pruzicka-k8s-harbor", create nodegroup "ng-a9d9c670" }
+[ℹ]  2 sequential tasks: { create cluster control plane "pruzicka-k8s-harbor", create nodegroup "ng-e5b7f19b" }
 [ℹ]  building cluster stack "eksctl-pruzicka-k8s-harbor-cluster"
 [ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-cluster"
-[ℹ]  building nodegroup stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670"
-[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-a9d9c670
-[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-a9d9c670
-[ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670"
+[ℹ]  building nodegroup stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-e5b7f19b"
+[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-e5b7f19b
+[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-e5b7f19b
+[ℹ]  deploying stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-e5b7f19b"
 [✔]  all EKS cluster resource for "pruzicka-k8s-harbor" had been created
 [✔]  saved kubeconfig as "kubeconfig.conf"
-[ℹ]  adding role "arn:aws:iam::822044714040:role/eksctl-pruzicka-k8s-harbor-nodegr-NodeInstanceRole-QYPHMTHKAPTN" to auth ConfigMap
-[ℹ]  nodegroup "ng-a9d9c670" has 0 node(s)
-[ℹ]  waiting for at least 2 node(s) to become ready in "ng-a9d9c670"
-[ℹ]  nodegroup "ng-a9d9c670" has 2 node(s)
-[ℹ]  node "ip-192-168-11-110.eu-central-1.compute.internal" is ready
-[ℹ]  node "ip-192-168-55-129.eu-central-1.compute.internal" is ready
+[ℹ]  adding role "arn:aws:iam::822044714040:role/eksctl-pruzicka-k8s-harbor-nodegr-NodeInstanceRole-DRP0Z9AD52O7" to auth ConfigMap
+[ℹ]  nodegroup "ng-e5b7f19b" has 0 node(s)
+[ℹ]  waiting for at least 2 node(s) to become ready in "ng-e5b7f19b"
+[ℹ]  nodegroup "ng-e5b7f19b" has 2 node(s)
+[ℹ]  node "ip-192-168-31-245.eu-central-1.compute.internal" is ready
+[ℹ]  node "ip-192-168-83-237.eu-central-1.compute.internal" is ready
 [ℹ]  kubectl command should work with "kubeconfig.conf", try 'kubectl --kubeconfig=kubeconfig.conf get nodes'
 [✔]  EKS cluster "pruzicka-k8s-harbor" in "eu-central-1" region is ready
 ```
@@ -186,11 +218,34 @@ Output:
 ![EKS Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-architecture.svg?sanitize=true
 "EKS Architecture")
 
+Create the PostgreSQL database (RDS):
+
+```bash
+ansible-playbook --connection=local -i "127.0.0.1," files/ansible/aws_postgresql_db.yml &
+```
+
+Output:
+
+```text
+...
+PLAY RECAP *********************************************************************
+127.0.0.1                  : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
 Create CloudFormation stack with Windows Server 2016, which will serve as
 Active Directory to use LDAP connection from Harbor:
 
 ```bash
 ansible-playbook --connection=local -i "127.0.0.1," files/ansible/aws_windows_server_2016.yml
+```
+
+Output:
+
+```text
+...
+PLAY RECAP *********************************************************************
+127.0.0.1                  : ok=6    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+winad01.mylabs.dev         : ok=22   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 You should be able to access Windows Server using RDP:
@@ -202,12 +257,6 @@ xfreerdp /u:Administrator /p:really_long_secret_windows_password /size:1440x810 
 Windows desktop should appear:
 
 ![Windows Server](./xfreerdp_windows_server.png "Windows Server")
-
-Create the PostgreSQL database (RDS):
-
-```bash
-ansible-playbook --connection=local -i "127.0.0.1," files/ansible/aws_postgresql_db.yml
-```
 
 If you check the AD Users you should see users `aduser{01..06}` distributed into
 three groups `adgroup{01.03}` with password `admin`.
@@ -222,9 +271,9 @@ kubectl get nodes -o wide
 Output:
 
 ```text
-NAME                                              STATUS   ROLES    AGE   VERSION   INTERNAL-IP      EXTERNAL-IP    OS-IMAGE         KERNEL-VERSION                CONTAINER-RUNTIME
-ip-192-168-11-110.eu-central-1.compute.internal   Ready    <none>   24m   v1.12.7   192.168.11.110   3.122.97.63    Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
-ip-192-168-55-129.eu-central-1.compute.internal   Ready    <none>   24m   v1.12.7   192.168.55.129   3.121.202.72   Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
+NAME                                              STATUS   ROLES    AGE   VERSION   INTERNAL-IP      EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                CONTAINER-RUNTIME
+ip-192-168-31-245.eu-central-1.compute.internal   Ready    <none>   56m   v1.12.7   192.168.31.245   54.93.44.33      Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
+ip-192-168-83-237.eu-central-1.compute.internal   Ready    <none>   56m   v1.12.7   192.168.83.237   35.156.219.168   Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
 ```
 
 ![EKS High Level](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-high-level.svg?sanitize=true
@@ -235,17 +284,17 @@ Both worker nodes should be accessible via SSH:
 ```bash
 for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do
   echo "*** ${EXTERNAL_IP}"
-  ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} uptime
+  ssh -q -n -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} uptime
 done
 ```
 
 Output:
 
 ```text
-*** 3.122.97.63
- 05:26:51 up 25 min,  0 users,  load average: 0.00, 0.00, 0.00
-*** 3.121.202.72
- 05:26:52 up 25 min,  0 users,  load average: 0.00, 0.00, 0.00
+*** 54.93.44.33
+ 12:29:29 up 57 min,  0 users,  load average: 1.35, 1.36, 0.84
+*** 35.156.219.168
+ 12:29:29 up 57 min,  0 users,  load average: 0.09, 0.08, 0.03
  ```
 
 At the end of the output you should see 2 IP addresses which
