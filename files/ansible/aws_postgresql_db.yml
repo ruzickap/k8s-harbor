@@ -9,6 +9,11 @@
     aws_cf_db_username: myadmin
     aws_cf_db_password: myadmin_user_password
     aws_pgsql_fqdn: "pgsql.{{ domain }}"
+    aws_rds_postgresql_databases:
+      - harbor-registry
+      - harbor-clair
+      - harbor-notary_server
+      - harbor-notary_signer
     aws_cf_tags:
       Application: Harbor
       Consumer: "{{ lookup('env','USER') }}"
@@ -37,11 +42,7 @@
         login_user: "{{ aws_cf_db_username }}"
         login_password: "{{ aws_cf_db_password }}"
         name: "{{ item }}"
-      loop:
-        - harbor-registry
-        - harbor-clair
-        - harbor-notary_server
-        - harbor-notary_signer
+      loop: "{{ aws_rds_postgresql_databases }}"
 
     - name: Create harbor user to access the DBs
       postgresql_user:
@@ -63,8 +64,4 @@
         type: database
         obj: "{{ item }}"
         role: harbor_user
-      loop:
-        - harbor-registry
-        - harbor-clair
-        - harbor-notary_server
-        - harbor-notary_signer
+      loop: "{{ aws_rds_postgresql_databases }}"
