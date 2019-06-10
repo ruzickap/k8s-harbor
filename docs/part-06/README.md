@@ -14,12 +14,12 @@ wget https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
 
 Upload manually the `rook-ceph-v1.0.0.tgz` to Harbor by clicking on
 
-Projects -> library -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
+Projects -> `library` -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
 
 Here is the API call:
 
 ```bash
-curl -s -X POST -u "admin:admin" "https://core2.${MY_DOMAIN}/api/chartrepo/library/charts" \
+curl -s -X POST -u "admin:admin" "https://core2.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
   -H "Content-Type: multipart/form-data" \
   -F "chart=@rook-ceph-v1.0.0.tgz;type=application/x-yaml" \
 | jq
@@ -64,6 +64,19 @@ jetstack                https://charts.jetstack.io
 appscode                https://charts.appscode.com/stable/
 argo                    https://argoproj.github.io/argo-helm
 my_project_helm_repo    https://core2.mylabs.dev/chartrepo/my_project
+```
+
+Check the content of the `my_project_helm_repo` repository:
+
+```bash
+helm search -l my_project_helm_repo
+```
+
+Output:
+
+```text
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+my_project_helm_repo/rook-ceph  v1.0.0                          File, Block, and Object Storage Services for your Cloud-N...
 ```
 
 Clone `harbor-helm` repository containing Helm chart of Harbor:

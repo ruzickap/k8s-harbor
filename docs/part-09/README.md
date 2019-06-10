@@ -9,6 +9,7 @@ Configure `kubeconfig`:
 
 ```bash
 export MY_DOMAIN="mylabs.dev"
+eksctl utils write-kubeconfig --kubeconfig kubeconfig.conf --name=${USER}-k8s-harbor
 export KUBECONFIG=$PWD/kubeconfig.conf
 ```
 

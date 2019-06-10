@@ -9,10 +9,12 @@ Clair
 Cleanup
 CloudFormation
 ClusterIssuer
+ConfigMaps
 CRDs
 CustomResourceDefinition
 eksctl
 Gitea
+GitOps
 Jetstack
 Jia
 Jiang

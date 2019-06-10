@@ -171,7 +171,7 @@ curl -s -u "admin:admin" "https://core2.${MY_DOMAIN}/api/systeminfo" | jq '.clai
 
 Output:
 
-```text
+```json
 {
   "overall_last_update": 1559737686,
   "details": [

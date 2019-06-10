@@ -79,7 +79,7 @@ Create `kuard` deployment and expose it:
 
 ```bash
 kubectl create namespace mytest
-kubectl run kuard --image=core2.${MY_DOMAIN}/library/kuard-amd64:blue --replicas=2 --port=8080 --expose=true --labels="app=kuard" -n mytest
+kubectl run kuard --image=core2.${MY_DOMAIN}/library/kuard-amd64:blue --image-pull-policy Always --replicas=2 --port=8080 --expose=true --labels="app=kuard" -n mytest
 ```
 
 Output:
@@ -215,7 +215,7 @@ curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core2
 Try to push the kuard image as a "Guest" user:
 
 ```bash
-echo admin | docker login --username aduser04 --password-stdin core2.${MY_DOMAIN}
+echo admin | docker login --username aduser03 --password-stdin core2.${MY_DOMAIN}
 docker tag gcr.io/kuar-demo/kuard-amd64:blue core2.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 docker push core2.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 ```
@@ -236,7 +236,7 @@ denied: requested access to the resource is denied
 
 * Guests are not allow to push anything into the projects.
 
-Add user `aduser04` on the project `my_rbac_test_project` as a Developer:
+Add user `aduser03` on the project `my_rbac_test_project` as a Developer:
 
 ```bash
 PROJECT_ID=$(curl -s -u "admin:admin" -X GET "https://core2.${MY_DOMAIN}/api/projects?name=my_rbac_test_project" | jq ".[].project_id")
@@ -244,7 +244,7 @@ curl -u "admin:admin" -X POST "https://core2.${MY_DOMAIN}/api/projects/${PROJECT
 "{
   \"role_id\": 2,
   \"member_user\": {
-    \"username\": \"aduser04\"
+    \"username\": \"aduser03\"
   }
 }"
 ```

@@ -3,6 +3,8 @@
 Before we move on with other tasks it is necessary to install Nginx Ingress.
 It's also handy to install cert-manager for managing TLS certificates.
 
+<img src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png" width="200">
+
 ## Install cert-manager
 
 cert-manager architecture:
@@ -124,6 +126,8 @@ from Let's Encrypt must be used to create wildcard certificate `*.mylabs.dev`
 ![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
 "ACME DNS Challenge")
 
+([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
+
 ```bash
 export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64=$(echo -n "$EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY" | base64)
 envsubst < files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml | kubectl apply -f -
@@ -196,18 +200,13 @@ spec:
             key: secret-access-key
 ```
 
-![ACME DNS Challenge](https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png
-"ACME DNS Challenge")
-
-([https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/](https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/))
-
 ## Generate TLS certificate
 
-Create certificate using cert-manager
+Create certificate using cert-manager:
 
 ```bash
 envsubst < files/cert-manager-letsencrypt-aws-route53-certificate.yaml | kubectl apply -f -
-cat files/cert-manager-letsencrypt-aws-route53-certificate.yaml
+envsubst < files/cert-manager-letsencrypt-aws-route53-certificate.yaml
 ```
 
 Output:
@@ -217,22 +216,22 @@ certificate.certmanager.k8s.io/ingress-cert-production created
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  name: ingress-cert-production
   namespace: cert-manager
 spec:
-  secretName: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  secretName: ingress-cert-production
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-${LETSENCRYPT_ENVIRONMENT}-dns
-  commonName: "*.${MY_DOMAIN}"
+    name: letsencrypt-production-dns
+  commonName: "*.mylabs.dev"
   dnsNames:
-  - "*.${MY_DOMAIN}"
+  - "*.mylabs.dev"
   acme:
     config:
     - dns01:
         provider: aws-route53
       domains:
-      - "*.${MY_DOMAIN}"
+      - "*.mylabs.dev"
 ```
 
 ![cert-manager - Create certificate](https://i1.wp.com/blog.openshift.com/wp-content/uploads/OCP-PKI-and-certificates-cert-manager.png
@@ -245,6 +244,8 @@ spec:
 It's necessary to copy the wildcard certificate across all "future" namespaces
 and that's the reason why [kubed](https://github.com/appscode/kubed) needs to be
 installed (for now).
+[kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.9.0/guides/config-syncer/)
+across Kubernetes namespaces/clusters.
 
 Add kubed helm repository:
 
@@ -336,6 +337,10 @@ Output:
 ```text
 secret/ingress-cert-production annotated
 ```
+
+Kubed - synchronize secret diagram
+
+![Kubed - synchronize secret](./kubed.svg "Kubed - synchronize secret")
 
 ## Install Nginx
 
@@ -453,7 +458,6 @@ export CANONICAL_HOSTED_ZONE_NAME_ID=$(aws elb describe-load-balancers --query "
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query "HostedZones[?Name==\`${MY_DOMAIN}.\`].Id" --output text)
 
 envsubst < files/aws_route53-dns_change.json | aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch=file:///dev/stdin
-sleep 100
 ```
 
 Output:
@@ -467,6 +471,12 @@ Output:
         "Comment": "A new record set for the zone."
     }
 }
+```
+
+Wait for completion of certificate create process:
+
+```bash
+COUNT=0; while [ "${OUTPUT}" != "True" ] && [ "${COUNT}" -lt 100 ]; do COUNT=$((COUNT+1)); OUTPUT=$(kubectl get certificate ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n cert-manager -o jsonpath="{.status.conditions[0].status}"); sleep 1; echo -n "${COUNT} "; done
 ```
 
 ![Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/65b766c494a5b4f5420b2912d8373c4957163541/static/images/crystal.svg?sanitize=true
@@ -608,6 +618,11 @@ Certificate:
 
 ## Install [Argo CD](https://github.com/argoproj/argo-cd)
 
+Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+
+<img src="https://raw.githubusercontent.com/argoproj/argo-site/26cfe3fdb09f2c4eba3f2ae1d394878cda9c6e4a/src/assets/images/argo-wheel.png"
+width="200">
+
 Create namespace for Argo CD:
 
 ```bash
@@ -729,12 +744,6 @@ Change Argo CD for username `admin` to have password `admin`:
 kubectl patch secret argocd-secret -n argocd-system --type="json" -p="[{\"op\" : \"replace\" ,\"path\" : \"/data/admin.password\" ,\"value\" : \"JDJ5JDEwJDhtWVdWZTBrVWZibkExLnc2LmloQnVOMVZTdi5Sc0ZGYWlOOGV5U2dxQXdYM1NpOGJSM0l1\"}]"
 ```
 
-Try to access the Argo CD using the URL [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
-with following credentials:
-
-* Username: `admin`
-* Password: `admin`
-
 Configure Ingress for Argo CD:
 
 ```bash
@@ -747,6 +756,16 @@ Output:
 ingress.extensions/argocd-server-http-ingress created
 ingress.extensions/argocd-server-grpc-ingress created
 ```
+
+Try to access the Argo CD using the URL [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
+with following credentials:
+
+* Username: `admin`
+* Password: `admin`
+
+Argo CD web interface:
+
+![Argo CD web interface](./argocd.png "Argo CD web interface")
 
 There are now two domains:
 
