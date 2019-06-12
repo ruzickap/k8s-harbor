@@ -9,13 +9,13 @@ Helm Architecture:
 Install [Helm](https://helm.sh/) binary:
 
 ```bash
-curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.13.1
+curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.14.1
 ```
 
 Output:
 
 ```text
-Helm v2.13.1 is already v2.13.1
+Helm v2.14.1 is already v2.14.1
 Run 'helm init' to configure helm.
 ```
 
