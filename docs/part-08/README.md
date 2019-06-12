@@ -198,7 +198,9 @@ Events:
   Warning  Failed     12s (x2 over 13s)  kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Error: ImagePullBackOff
 ```
 
-You are not able to run docker images with "High" security issues.
+You are not able to run docker images with "High" security issues. You can see
+the error message: `The severity of vulnerability of the image: "high" is equal
+or higher than the threshold in project setting: "high".`
 
 ## Project RBAC settings
 
@@ -234,7 +236,8 @@ bcf2f368fe23: Preparing
 denied: requested access to the resource is denied
 ```
 
-* Guests are not allow to push anything into the projects.
+* Guests are not allow to push anything into the projects as you can see from
+  the error message: `denied: requested access to the resource is denied`.
 
 Add user `aduser03` on the project `my_rbac_test_project` as a Developer:
 
