@@ -111,7 +111,7 @@ Tiller (the Helm server-side component) has been uninstalled from your Kubernete
 Remove EKS cluster:
 
 ```bash
-eksctl delete cluster --name=${USER}-k8s-harbor --wait
+eksctl delete cluster --name=${USER}-k8s-harbor
 ```
 
 Output:
