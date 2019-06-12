@@ -12,8 +12,10 @@ and interoperability. It fills a gap for organizations and applications that
 cannot use a public or cloud-based registry, or want a consistent experience
 across clouds.
 
-* GitHub repository: [https://github.com/ruzickap/k8s-harbor](https://github.com/ruzickap/k8s-harbor)
-* Web Pages: [https://ruzickap.github.io/k8s-harbor](https://ruzickap.github.io/k8s-harbor)
+* Demo GitHub repository: [https://github.com/ruzickap/k8s-harbor](https://github.com/ruzickap/k8s-harbor)
+* Demo Web Pages: [https://ruzickap.github.io/k8s-harbor](https://ruzickap.github.io/k8s-harbor)
+* Presentation git repository: [https://github.com/ruzickap/k8s-harbor-presentation](https://github.com/ruzickap/k8s-harbor-presentation)
+* Presentation URL: [https://ruzickap.github.io/k8s-harbor-presentation](https://ruzickap.github.io/k8s-harbor-presentation)
 * Asciinema screencast: [https://asciinema.org/a/245910](https://asciinema.org/a/245910)
 
 ## Requirements
@@ -23,7 +25,7 @@ across clouds.
 * [AWS account](https://aws.amazon.com/account/)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [eksctl](https://eksctl.io/)
-* Kubernetes, Linux, AWS knowledge required
+* Kubernetes, Docker, Linux, AWS knowledge required
 
 ## Objectives
 
