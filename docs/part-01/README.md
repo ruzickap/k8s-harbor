@@ -251,7 +251,7 @@ winad01.mylabs.dev         : ok=22   changed=8    unreachable=0    failed=0    s
 You should be able to access Windows Server using RDP:
 
 ```bash
-xfreerdp /u:Administrator /p:really_long_secret_windows_password /size:1440x810 -wallpaper /cert-ignore /dynamic-resolution /v:winad01.mylabs.dev &> /dev/null &
+xfreerdp /u:Administrator /p:really_long_secret_windows_password /size:1440x810 -wallpaper /cert-ignore /dynamic-resolution /v:winad01.${MY_DOMAIN} &> /dev/null &
 ```
 
 Windows desktop should appear:
