@@ -141,7 +141,8 @@ curl -u "admin:admin" -X PUT "https://core2.${MY_DOMAIN}/api/configurations" -H 
   \"ldap_search_dn\": \"cn=ansible,cn=Users,dc=mylabs,dc=dev\",
   \"ldap_search_password\": \"ansible_secret_password\",
   \"ldap_uid\": \"sAMAccountName\",
-  \"ldap_url\": \"ldap://winad01.${MY_DOMAIN}\"
+  \"ldap_url\": \"ldap://winad01.${MY_DOMAIN}\",
+  \"token_expiration\": 300
 }"
 ```
 
