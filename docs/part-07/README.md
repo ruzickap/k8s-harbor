@@ -142,18 +142,14 @@ YouTube video: [https://youtu.be/K4tJ6B2cGR4](https://youtu.be/K4tJ6B2cGR4)
 ![Clair logo](https://cloud.githubusercontent.com/assets/343539/21630811/c5081e5c-d202-11e6-92eb-919d5999c77a.png
 "Clair logo")
 
-Wait for Clair to finish updating the "Vulnerability database" (it takes about
-40 minutes):
-
-```bash
-COUNT=0; OUTPUT="{}"; while [ "${OUTPUT}" = "{}" ] && [ "${COUNT}" -lt 360 ]; do COUNT=$((COUNT+1)); OUTPUT=$(curl -s -u "admin:admin" "https://core2.${MY_DOMAIN}/api/systeminfo" | jq .clair_vulnerability_status); sleep 10; echo -n "${COUNT} ";  done
-```
+Wait for Clair to finish updating the "Vulnerability database" (it may take a
+long time).
 
 Check the logs form Clair pod to see when it was updated:
 
 ```bash
 CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
-kubectl logs -n harbor2-system ${CLAIR_POD} | grep -E "(updating vulnerabilities|update finished)"
+kubectl logs -n harbor2-system ${CLAIR_POD} | grep -E "(updating vulnerabilities|update finished|error)"
 ```
 
 Output:
