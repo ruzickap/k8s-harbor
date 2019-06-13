@@ -569,7 +569,7 @@ tls.crt:  3550 bytes
 Check the SSL certificate:
 
 ```bash
-echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 2>/dev/null | openssl x509 -inform pem -noout -text
+echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 | openssl x509 -inform pem -noout -text
 ```
 
 Output:
