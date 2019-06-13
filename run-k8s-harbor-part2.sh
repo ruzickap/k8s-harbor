@@ -67,13 +67,17 @@ if [ "$#" -eq 0 ]; then
     exit 1
   fi
 
-  ansible-playbook --connection=local -i "127.0.0.1," files/ansible/aws_postgresql_db.yml
+  ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"
+  ansible localhost -m wait_for -a "port=5432 host=pgsql.${MY_DOMAIN}"
 
   echo -e "\n\n*** Wait until Clair Vulnerability database will be fully updated\n"
   export KUBECONFIG=$PWD/kubeconfig.conf
   CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
   COUNT=0
   while ! kubectl logs -n harbor2-system ${CLAIR_POD} | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
+
+  echo -e "\n\n*** Wait until the status of Vulnerability database get from Harbor API will be ready\n"
+  COUNT=0; OUTPUT="{}"; while [ "${OUTPUT}" = "{}" ] && [ "${COUNT}" -lt 400 ]; do COUNT=$((COUNT+1)); OUTPUT=$(curl -s -u "admin:admin" "https://core2.${MY_DOMAIN}/api/systeminfo" | jq .clair_vulnerability_status); sleep 10; echo -n "${COUNT} ";  done
 
   echo -e "\n\n*** Press ENTER to start\n"
   read A
