@@ -67,7 +67,7 @@ Add [Helm plugin](https://github.com/chartmuseum/helm-push) to push chart
 package to [ChartMuseum](https://chartmuseum.com/):
 
 ```bash
-helm plugin install https://github.com/chartmuseum/helm-push
+helm plugin list | grep ^push || helm plugin install https://github.com/chartmuseum/helm-push
 ```
 
 Output:

@@ -342,7 +342,7 @@ Kubed - synchronize secret diagram
 
 ![Kubed - synchronize secret](./kubed.svg "Kubed - synchronize secret")
 
-## Install Nginx
+## Install nginx-ingress
 
 ![Nginx Ingress controller](https://www.nginx.com/wp-content/uploads/2018/12/multiple-ingress-controllers.png
 "Nginx Ingress controller")

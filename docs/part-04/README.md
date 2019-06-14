@@ -41,7 +41,7 @@ Install Harbor using Helm:
 
 ```bash
 helm ls | grep harbor2 || \
-helm install --name harbor2 --namespace harbor2-system harbor/harbor --version v1.1.0 \
+helm install --name harbor2 --namespace harbor2-system harbor/harbor --version v1.1.0 --wait \
   --set expose.ingress.hosts.core=core2.${MY_DOMAIN} \
   --set expose.ingress.hosts.notary=notary2.${MY_DOMAIN} \
   --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
