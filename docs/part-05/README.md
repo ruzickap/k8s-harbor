@@ -8,15 +8,19 @@ If you are using Let's Encrypt "staging" you need to download and use their
 "Fake LE Root X1" certificate for curl, helm and k8s cluster:
 
 ```bash
-[ ${LETSENCRYPT_ENVIRONMENT} = "staging" ] && \
-sudo mkdir -pv /etc/docker/certs.d/core2.${MY_DOMAIN}/ && \
-sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt && \
-export SSL_CERT_FILE=/etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt && \
-for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do \
-  ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
-    "sudo mkdir -p /etc/docker/certs.d/core2.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt" ; \
-done && \
-echo "*** Done"
+if [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ]; then
+  sudo mkdir -pv /etc/docker/certs.d/core2.${MY_DOMAIN}/
+  CA_CERT=$(kubectl get secrets ingress-cert-staging -n cert-manager -o jsonpath="{.data.ca\.crt}")
+  [ "${CA_CERT}" != "<nil>" ] && echo ${CA_CERT} | base64 -d > /tmp/ca.crt
+  test -s /tmp/ca.crt || wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /tmp/ca.crt
+  sudo cp /tmp/ca.crt /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt
+  export SSL_CERT_FILE=/tmp/ca.crt
+  for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do
+    ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
+      "sudo mkdir -p /etc/docker/certs.d/core2.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt"
+  done
+  echo "*** Done"
+fi
 ```
 
 Output:

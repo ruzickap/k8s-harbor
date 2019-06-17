@@ -1,0 +1,26 @@
+image: ubuntu1804
+
+stack: docker
+
+branches:
+  only:
+    - master
+
+build: off
+
+install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -qq gnupg2 jq pv > /dev/null
+
+  # Download and install kubectl
+  - curl -s -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+
+  # Download and install kind
+  - curl -s -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.3.0/kind-linux-amd64 && chmod +x kind && sudo mv kind /usr/local/bin/
+
+  # Change DNS
+  - sudo sed -i 's/^#DNS=/DNS=1.1.1.1/' /etc/systemd/resolved.conf
+  - sudo service systemd-resolved restart
+
+test_script:
+  - tests/tests.sh

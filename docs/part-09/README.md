@@ -10,7 +10,7 @@ Configure `kubeconfig`:
 ```bash
 export MY_DOMAIN="mylabs.dev"
 eksctl utils write-kubeconfig --kubeconfig kubeconfig.conf --name=${USER}-k8s-harbor
-export KUBECONFIG=$PWD/kubeconfig.conf
+export KUBECONFIG=${KUBECONFIG:-$PWD/kubeconfig.conf}
 ```
 
 Remove Windows Server 2016 CloudFormation stack:
@@ -52,16 +52,6 @@ kubectl delete namespace argocd-system --wait=false
 kubectl delete apiservices.apiregistration.k8s.io v1alpha1.argoproj.io --wait=false
 kubectl delete crd applications.argoproj.io --wait=false
 kubectl delete crd appprojects.argoproj.io --wait=false
-```
-
-Remove all created databases form RDS:
-
-```bash
-for DB in \"harbor-clair\" \"harbor-notary_server\" \"harbor-notary_signer\" \"harbor-registry\"; do
-  echo "*** $DB"
-  PGPASSWORD=myadmin_user_password psql -h pgsql.${MY_DOMAIN} -U myadmin postgres --command="DROP DATABASE IF EXISTS $DB"
-done
-PGPASSWORD=myadmin_user_password psql -h pgsql.${MY_DOMAIN} -U myadmin postgres --command="DROP USER IF EXISTS harbor_user"
 ```
 
 Remove PostgreSQL CloudFormation stack:

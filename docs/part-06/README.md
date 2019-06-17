@@ -22,7 +22,7 @@ Here is the API call:
 curl -s -X POST -u "admin:admin" "https://core2.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
   -H "Content-Type: multipart/form-data" \
   -F "chart=@rook-ceph-v1.0.0.tgz;type=application/x-yaml" \
-| jq
+| jq "."
 ```
 
 Output:
@@ -290,7 +290,7 @@ curl -s -u "aduser06:admin" -X POST "https://core2.${MY_DOMAIN}/api/chartrepo/li
   -H "Content-Type: multipart/form-data" \
   -F "chart=@gitea-1.6.1.tgz;type=application/x-compressed-tar" \
   -F "prov=@gitea-1.6.1.tgz.prov" \
-| jq
+| jq "."
 ```
 
 Output:

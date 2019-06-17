@@ -9,7 +9,7 @@ Create namespace for Harbor and copy there the secret with Let's encrypt
 certificate:
 
 ```bash
-kubectl create namespace harbor2-system && \
+kubectl create namespace harbor2-system
 kubectl label namespace harbor2-system app=kubed
 ```
 
@@ -41,7 +41,7 @@ Install Harbor using Helm:
 
 ```bash
 helm ls | grep harbor2 || \
-helm install --name harbor2 --namespace harbor2-system harbor/harbor --version v1.1.0 --wait \
+helm install --wait --name harbor2 --namespace harbor2-system  harbor/harbor --version v1.1.0 \
   --set expose.ingress.hosts.core=core2.${MY_DOMAIN} \
   --set expose.ingress.hosts.notary=notary2.${MY_DOMAIN} \
   --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \

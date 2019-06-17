@@ -11,7 +11,9 @@
 
 sed docs/part-0{1,2,4}/README.md \
   -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
+  -e '/^Check if the tiller was installed properly/,/^Add Harbor Helm repository/d' \
   -e '/^## Install Harbor using Argo CD/,$d' \
+  -e 's/^helm install --wait/helm install/' \
 | \
 sed -n '/^```bash$/,/^```$/p' \
 | \

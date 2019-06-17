@@ -1,0 +1,12 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  namespace: cert-manager
+spec:
+  secretName: ingress-cert-${LETSENCRYPT_ENVIRONMENT}
+  commonName: "*.${MY_DOMAIN}"
+  isCA: true
+  issuerRef:
+    name: selfsigning-issuer
+    kind: ClusterIssuer

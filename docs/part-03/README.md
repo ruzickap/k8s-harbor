@@ -476,7 +476,7 @@ Output:
 Wait for completion of certificate create process:
 
 ```bash
-COUNT=0; while [ "${OUTPUT}" != "True" ] && [ "${COUNT}" -lt 100 ]; do COUNT=$((COUNT+1)); OUTPUT=$(kubectl get certificate ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n cert-manager -o jsonpath="{.status.conditions[0].status}"); sleep 1; echo -n "${COUNT} "; done
+COUNT=0; OUTPUT=""; while [ "${OUTPUT}" != "True" ] && [ "${COUNT}" -lt 100 ]; do COUNT=$((COUNT+1)); OUTPUT=$(kubectl get certificate ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n cert-manager -o jsonpath="{.status.conditions[0].status}"); sleep 1; echo -n "${COUNT} "; done
 ```
 
 ![Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/65b766c494a5b4f5420b2912d8373c4957163541/static/images/crystal.svg?sanitize=true
@@ -569,6 +569,7 @@ tls.crt:  3550 bytes
 Check the SSL certificate:
 
 ```bash
+while ! echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 &> /dev/null; do sleep 1; echo -n ". "; done
 echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 | openssl x509 -inform pem -noout -text
 ```
 

@@ -82,9 +82,7 @@ Use your domain registrar to change the nameservers for your zone (for example
 can find out the the Route 53 nameservers:
 
 ```bash
-aws route53 get-hosted-zone \
-  --id $(aws route53 list-hosted-zones --query "HostedZones[?Name==\`${MY_DOMAIN}.\`].Id" --output text) \
-  --query "DelegationSet.NameServers"
+aws route53 get-hosted-zone --id $(aws route53 list-hosted-zones --query "HostedZones[?Name==\`${MY_DOMAIN}.\`].Id" --output text) --query "DelegationSet.NameServers"
 ```
 
 Create policy allowing the cert-manager to change Route 53 settings. This will

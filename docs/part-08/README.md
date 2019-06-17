@@ -276,3 +276,7 @@ Now the image was successfully uploaded:
 
 ![Harbor - Project - my_rbac_test_project](./harbor_my_rbac_test_project.png
 "Harbor - Project - my_rbac_test_project")
+
+```bash
+cd ..
+```
