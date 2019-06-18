@@ -7,8 +7,6 @@ YouTube video: [https://youtu.be/XSszSd-TTCQ](https://youtu.be/XSszSd-TTCQ)
 Download the compressed Helm Chart of Rook:
 
 ```bash
-test -d tmp || mkdir tmp
-cd tmp
 wget https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
 ```
 

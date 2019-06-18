@@ -32,6 +32,11 @@ across clouds.
 
 * Download and install Harbor to your cluster
 
+## Lab Architecture
+
+![Lab architecture](https://raw.githubusercontent.com/ruzickap/k8s-harbor-presentation/master/images/harbor_demo_architecture_diagram.svg?sanitize=true
+"Lab architecture")
+
 ## Content
 
 * [Part 01 - Create EKS cluster](part-01/README.md)
@@ -62,4 +67,5 @@ across clouds.
   * [Handy API Harbor calls (in Chinese)](https://cloud.tencent.com/developer/article/1151425)
   * [Swagger Editor](https://editor.swagger.io/) + Import [Harbor's swagger.yaml](https://raw.githubusercontent.com/goharbor/harbor/master/docs/swagger.yaml)
 
-![Harbor](https://raw.githubusercontent.com/cncf/artwork/ab42c9591f6e0fdccc62c7b88f353d3fdc825734/harbor/stacked/color/harbor-stacked-color.svg?sanitize=true)
+![Harbor](https://raw.githubusercontent.com/cncf/artwork/ab42c9591f6e0fdccc62c7b88f353d3fdc825734/harbor/stacked/color/harbor-stacked-color.svg?sanitize=true
+"Harbor")

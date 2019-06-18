@@ -2,19 +2,27 @@
 
 YouTube video: [https://youtu.be/DcArQEFgk5s](https://youtu.be/DcArQEFgk5s)
 
-Let's do some initial Harbor configuration...
+Lab architecture:
+
+![Lab architecture](https://raw.githubusercontent.com/ruzickap/k8s-harbor-presentation/master/images/harbor_demo_architecture_diagram.svg?sanitize=true
+"Lab architecture")
+
+Let's do some initial Harbor configuration on second Harbor instance:
+[https://core2.mylabs.dev](https://core2.mylabs.dev)
 
 If you are using Let's Encrypt "staging" you need to download and use their
 "Fake LE Root X1" certificate for curl, helm and k8s cluster:
 
 ```bash
+test -d tmp || mkdir tmp
+cd tmp
 if [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ]; then
   sudo mkdir -pv /etc/docker/certs.d/core2.${MY_DOMAIN}/
   CA_CERT=$(kubectl get secrets ingress-cert-staging -n cert-manager -o jsonpath="{.data.ca\.crt}")
-  [ "${CA_CERT}" != "<nil>" ] && echo ${CA_CERT} | base64 -d > /tmp/ca.crt
-  test -s /tmp/ca.crt || wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /tmp/ca.crt
-  sudo cp /tmp/ca.crt /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt
-  export SSL_CERT_FILE=/tmp/ca.crt
+  [ "${CA_CERT}" != "<nil>" ] && echo ${CA_CERT} | base64 -d > ca.crt
+  test -s ca.crt || wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O ca.crt
+  sudo cp ca.crt /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt
+  export SSL_CERT_FILE=$PWD/ca.crt
   for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do
     ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
       "sudo mkdir -p /etc/docker/certs.d/core2.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/core2.${MY_DOMAIN}/ca.crt"
