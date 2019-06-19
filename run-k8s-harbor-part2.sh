@@ -70,7 +70,12 @@ if [ "$#" -eq 0 ]; then
   ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"
   ansible localhost -m wait_for -a "port=5432 host=pgsql.${MY_DOMAIN}"
 
-  echo -e "\n\n*** Wait until Clair Vulnerability database will be fully updated\n"
+  cat << \EOF
+*** Wait until Clair Vulnerability database will be fully updated
+export KUBECONFIG=$PWD/kubeconfig.conf
+CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
+kubectl logs -n harbor2-system ${CLAIR_POD}
+EOF
   export KUBECONFIG=$PWD/kubeconfig.conf
   CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
   COUNT=0
