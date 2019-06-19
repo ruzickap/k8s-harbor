@@ -51,6 +51,12 @@ curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core2
 }"
 ```
 
+Create namespace which will be used later:
+
+```bash
+kubectl create namespace mytest
+```
+
 ## LDAP Authentication
 
 List users which are in Active Directory:

@@ -280,3 +280,65 @@ Vulnerability list for container image:
 
 ![Vulnerability list for container image](./harbor_container_image_vulnerability_list.png
 "Vulnerability list for container image")
+
+## Replication
+
+You can configure replication form other registries to replicate helm charts or
+containers.
+
+Create new Registry Endpoint:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://core2.${MY_DOMAIN}/api/registries" -d \
+"{
+  \"name\": \"Docker Hub\",
+  \"type\": \"docker-hub\",
+  \"url\": \"https://hub.docker.com\",
+  \"description\": \"Docker Hub Registry Endpoint\"
+}"
+```
+
+Create new Replication Rule:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://core2.${MY_DOMAIN}/api/replication/policies" -d \
+"{
+  \"name\": \"Replication of paulbouwer/hello-kubernetes\",
+  \"type\": \"docker-hub\",
+  \"url\": \"https://hub.docker.com\",
+  \"description\": \"Replication Rule for paulbouwer/hello-kubernetes\",
+  \"enabled\": true,
+  \"src_registry\": {
+    \"id\": 1
+  },
+  \"dest_namespace\": \"library/paulbouwer\",
+  \"filters\": [{
+    \"type\": \"name\",
+    \"value\": \"paulbouwer/hello-kubernetes\"
+  }],
+  \"trigger\": {
+    \"type\": \"manual\"
+  }
+}"
+```
+
+Start the replication:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://core2.${MY_DOMAIN}/api/replication/executions" -d "{ \"policy_id\": 1 }"
+```
+
+Prepare ingress for running the application `hello-kubernetes`:
+
+```bash
+export APP=hello-kubernetes
+envsubst < ../files/app_ingress.yaml | kubectl create -f -
+```
+
+Let's run the replicated docker image:
+
+```bash
+kubectl run hello-kubernetes --image=core2.${MY_DOMAIN}/library/paulbouwer/hello-kubernetes:1.5 --port=8080 --expose=true --labels="app=hello-kubernetes" -n mytest
+```
+
+Open the web browser with URL: [https://hello-kubernetes.mylabs.dev](https://hello-kubernetes.mylabs.dev)

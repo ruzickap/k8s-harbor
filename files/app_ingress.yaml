@@ -4,20 +4,20 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  name: kuard
+  name: ${APP}
   namespace: mytest
   labels:
-    app: kuard
+    app: ${APP}
 spec:
   rules:
-    - host: kuard.${MY_DOMAIN}
+    - host: ${APP}.${MY_DOMAIN}
       http:
         paths:
           - backend:
-              serviceName: kuard
+              serviceName: ${APP}
               servicePort: 8080
             path: /
   tls:
     - hosts:
-        - kuard.${MY_DOMAIN}
+        - ${APP}.${MY_DOMAIN}
       secretName: ingress-cert-${LETSENCRYPT_ENVIRONMENT}

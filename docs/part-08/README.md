@@ -78,8 +78,7 @@ curl -s -u "aduser05:admin" -X PUT "https://core2.${MY_DOMAIN}/api/projects/${PR
 Create `kuard` deployment and expose it:
 
 ```bash
-kubectl create namespace mytest
-kubectl run kuard --image=core2.${MY_DOMAIN}/library/kuard-amd64:blue --image-pull-policy Always --replicas=2 --port=8080 --expose=true --labels="app=kuard" -n mytest
+kubectl run kuard --image=core2.${MY_DOMAIN}/library/kuard-amd64:blue --port=8080 --expose=true --labels="app=kuard" -n mytest
 ```
 
 Output:
@@ -94,7 +93,8 @@ deployment.apps/kuard created
 Create Ingress for kuard service:
 
 ```bash
-envsubst < ../files/kuard_ingress.yaml | kubectl create -f -
+export APP=kuard
+envsubst < ../files/app_ingress.yaml | kubectl create -f -
 ```
 
 Output:
