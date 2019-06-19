@@ -41,7 +41,7 @@ Install Harbor using Helm:
 
 ```bash
 helm ls | grep harbor2 || \
-helm install --wait --name harbor2 --namespace harbor2-system  harbor/harbor --version v1.1.0 \
+helm install --wait --name harbor2 --namespace harbor2-system  harbor/harbor --version v1.1.1 \
   --set expose.ingress.hosts.core=core2.${MY_DOMAIN} \
   --set expose.ingress.hosts.notary=notary2.${MY_DOMAIN} \
   --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
@@ -89,7 +89,7 @@ argocd --server argocd-grpc.${MY_DOMAIN} app create harbor \
   --path . \
   --project harbor \
   --repo https://github.com/goharbor/harbor-helm.git \
-  --revision v1.1.0 \
+  --revision v1.1.1 \
   --sync-policy automated \
   -p database.type=external \
   -p database.external.host=pgsql.${MY_DOMAIN} \

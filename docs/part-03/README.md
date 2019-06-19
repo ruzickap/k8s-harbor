@@ -48,7 +48,7 @@ Install the cert-manager Helm chart:
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.8.0 --set webhook.enabled=false
+helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.8.1 --set webhook.enabled=false
 ```
 
 Output:
