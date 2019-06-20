@@ -116,6 +116,11 @@ Pushing harbor-dev.tgz to my_project_helm_repo...
 Done.
 ```
 
+Harbor Project Helm Charts:
+
+![Harbor Project Helm Charts](./harbor_project_helm_charts.png
+"Harbor Project Helm Charts")
+
 ## Upload signed Helm Chart using CLI
 
 ![GnuPG logo](https://upload.wikimedia.org/wikipedia/commons/6/61/Gnupg_logo.svg
@@ -335,6 +340,18 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "jetstack" chart repository
 ...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈ Happy Helming!⎈
+```
+
+Check the Helm Repository list:
+
+```bash
+helm repo list | grep library
+```
+
+Output:
+
+```text
+library                 https://core2.mylabs.dev/chartrepo/library
 ```
 
 Install Gitea using Helm Chart stored in Harbor:

@@ -180,6 +180,15 @@ apps        Deployment             harbor-system  harbor-harbor-notary-server  S
             PersistentVolumeClaim  harbor-system  harbor-harbor-chartmuseum    Synced  Healthy
 ```
 
+ArgoCD - Applications:
+
+![ArgoCD - Applications](./argocd_applications.png "ArgoCD - Applications")
+
+ArgoCD - Application Details:
+
+![ArgoCD - Application Details](./argocd_application_details.png
+"ArgoCD - Application Details")
+
 Harbor architecture:
 
 ![Harbor Architecture](https://raw.githubusercontent.com/goharbor/harbor/5d31dd5b57d83f300907744aabf13ca60aac19b3/docs/img/harbor-arch.png

@@ -298,6 +298,10 @@ curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://core2
 }"
 ```
 
+In the Web GUI you should see:
+
+![Harbor Registries](./harbor_registries.png "Harbor Registries")
+
 Create new Replication Rule:
 
 ```bash
@@ -334,6 +338,16 @@ Prepare ingress for running the application `hello-kubernetes`:
 export APP=hello-kubernetes
 envsubst < ../files/app_ingress.yaml | kubectl create -f -
 ```
+
+The Replications and Execution tabs looks like:
+
+![Harbor Replications](./harbor_replications.png "Harbor Replications")
+
+![Harbor Replication Execution](./harbor_replication_execution.png
+"Harbor Replication Execution")
+
+![Harbor Project Repository list](./harbor_projects_repositories_list.png
+"Harbor Project Repository list")
 
 Let's run the replicated docker image:
 
