@@ -111,7 +111,7 @@ and see this:
 Try the same with `nginx:1.13.12` image:
 
 ```bash
-kubectl run nginx --image=core2.${MY_DOMAIN}/library/nginx:1.13.12 --image-pull-policy Always --replicas=2 --port=80 --expose=true --labels="app=nginx" -n mytest
+kubectl run nginx --image=core2.${MY_DOMAIN}/library/nginx:1.13.12 --port=80 --expose=true --labels="app=nginx" -n mytest
 ```
 
 Output:

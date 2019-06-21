@@ -2,11 +2,6 @@
 
 YouTube video: [https://youtu.be/DcArQEFgk5s](https://youtu.be/DcArQEFgk5s)
 
-Lab architecture:
-
-![Lab architecture](https://raw.githubusercontent.com/ruzickap/k8s-harbor-presentation/master/images/harbor_demo_architecture_diagram.svg?sanitize=true
-"Lab architecture")
-
 Let's do some initial Harbor configuration on second Harbor instance:
 [https://core2.mylabs.dev](https://core2.mylabs.dev)
 

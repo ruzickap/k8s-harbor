@@ -114,7 +114,8 @@ interface:
 
 ![Signed container image](./harbor_signed_container_image.png "Signed container image")
 
-Install [Notary](https://github.com/theupdateframework/notary):
+Install [Notary](https://github.com/theupdateframework/notary) which can show
+you the signature form "Harbor":
 
 ```bash
 sudo curl -sL https://github.com/theupdateframework/notary/releases/download/v0.6.1/notary-Linux-amd64 -o /usr/local/bin/notary

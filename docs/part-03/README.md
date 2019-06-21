@@ -450,7 +450,22 @@ If TLS is enabled for the Ingress, a Secret containing the certificate and key m
 
 ## Create DNS records
 
-Create DNS record `mylabs.dev` for the loadbalancer created by Nginx ingress:
+nginx-ingress created the loadbalancer service. In case of AWS it is
+Classic Elastic Loadbalancer:
+
+```bash
+kubectl get service -n nginx-ingress-system
+```
+
+Output:
+
+```text
+NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP                                                                  PORT(S)                      AGE
+nginx-ingress-controller        LoadBalancer   10.100.42.219   a95a2a59593f711e9afeb0aa3c1d9f47-1857907828.eu-central-1.elb.amazonaws.com   80:32417/TCP,443:31001/TCP   4m45s
+nginx-ingress-default-backend   ClusterIP      10.100.223.78   <none>                                                                       80/TCP                       4m45s
+```
+
+Create DNS record `mylabs.dev` for the loadbalancer created by nginx-ingress:
 
 ```bash
 export LOADBALANCER_HOSTNAME=$(kubectl get svc nginx-ingress-controller -n nginx-ingress-system -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
