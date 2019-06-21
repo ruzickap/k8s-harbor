@@ -10,7 +10,7 @@ Lab architecture:
 ![Lab architecture](https://raw.githubusercontent.com/ruzickap/k8s-harbor-presentation/master/images/harbor_demo_architecture_diagram.svg?sanitize=true
 "Lab architecture")
 
-Create namespace for Harbor and copy there the secret with Let's encrypt
+Create namespace for Harbor and copy there the secret with Let's Encrypt
 certificate:
 
 ```bash
@@ -84,7 +84,7 @@ Create new `harbor` project:
 argocd --server argocd-grpc.${MY_DOMAIN} proj create harbor --description "Harbor project" --dest https://kubernetes.default.svc,harbor-system --src https://github.com/goharbor/harbor-helm.git
 ```
 
-Create namespace for Harbor and copy there the secrets with Let's encrypt
+Create namespace for Harbor and copy there the secrets with Let's Encrypt
 certificate:
 
 ```bash
