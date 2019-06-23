@@ -45,7 +45,7 @@ data:
 EOF
 
 echo "*** Configure \"DNS\" /etc/hosts"
-DNS_NAMES="core notary core2 notary2 argocd argocd-grpc"
+DNS_NAMES="harbor notary"
 grep -q "172.17.255.1 ${MY_DOMAIN}" /etc/hosts || sudo bash -c "echo '172.17.255.1 ${MY_DOMAIN}' >> /etc/hosts"
 for DNS_NAME in $DNS_NAMES; do
   if ! grep -q "172.17.255.1 ${DNS_NAME}.${MY_DOMAIN}" /etc/hosts; then
@@ -69,7 +69,10 @@ sed docs/part-{02..09}/README.md \
   -e 's/.*aws route53.*/### &/' \
   -e 's/.*aws elb.*/### &/' \
   -e 's/cert-manager-letsencrypt-aws-route53-certificate.yaml | kubectl apply -f -/cert-manager-selfsigned-certificate.yaml | kubectl apply -f - ###/' \
-  -e 's/^argocd.*app wait --health harbor.*/### &/; /^### argocd.*app wait --health harbor.*/a sleep 60' \
+  -e '/--set database./d' \
+  -e 's/--set persistence.enabled=true/--set persistence.enabled=false/' \
+  -e '/--set persistence.resourcePolicy./d' \
+  -e '/--set persistence.persistentVolumeClaim./d' \
   -e 's/^ldapsearch.*/### &/' \
   -e 's/aduser../admin/' \
   -e 's/^aws cloudformation.*/### &/' \

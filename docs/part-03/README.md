@@ -47,7 +47,6 @@ Install the cert-manager Helm chart:
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
-helm repo update
 helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.8.1 --set webhook.enabled=false
 ```
 
@@ -251,7 +250,6 @@ Add kubed helm repository:
 
 ```bash
 helm repo add appscode https://charts.appscode.com/stable/
-helm repo update
 ```
 
 Output:
@@ -630,169 +628,4 @@ Certificate:
                 Policy: 1.3.6.1.4.1.44947.1.1.1
                   CPS: http://cps.letsencrypt.org
 ...
-```
-
-## Install [Argo CD](https://github.com/argoproj/argo-cd)
-
-Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
-
-<img src="https://raw.githubusercontent.com/argoproj/argo-site/26cfe3fdb09f2c4eba3f2ae1d394878cda9c6e4a/src/assets/images/argo-wheel.png"
-width="200">
-
-Create namespace for Argo CD:
-
-```bash
-kubectl create namespace argocd-system
-kubectl label namespace argocd-system app=kubed
-```
-
-```bash
-helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update
-envsubst < files/argo-cd_helm_chart_values.yaml | helm install --name argocd --namespace argocd-system --wait argo/argo-cd --version 0.2.2 --values -
-```
-
-Output:
-
-```text
-"argo" has been added to your repositories
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "harbor" chart repository
-...Successfully got an update from the "appscode" chart repository
-...Successfully got an update from the "argo" chart repository
-...Successfully got an update from the "jetstack" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
-NAME:   argocd
-LAST DEPLOYED: Wed Jun  5 14:32:50 2019
-NAMESPACE: argocd-system
-STATUS: DEPLOYED
-
-RESOURCES:
-==> v1/ClusterRole
-NAME                           AGE
-argocd-application-controller  53s
-argocd-server                  53s
-
-==> v1/ClusterRoleBinding
-NAME                           AGE
-argocd-application-controller  53s
-argocd-server                  53s
-
-==> v1/ConfigMap
-NAME            DATA  AGE
-argocd-cm       3     53s
-argocd-rbac-cm  0     53s
-
-==> v1/Deployment
-NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-argocd-application-controller  1/1    1           1          53s
-argocd-dex-server              1/1    1           1          53s
-argocd-redis                   1/1    1           1          53s
-argocd-repo-server             1/1    1           1          53s
-argocd-server                  1/1    1           1          53s
-
-==> v1/Pod(related)
-NAME                                            READY  STATUS   RESTARTS  AGE
-argocd-application-controller-5fbf79c7b9-bxpd9  1/1    Running  0         53s
-argocd-dex-server-64869cbfcf-45mjg              1/1    Running  0         53s
-argocd-redis-78d8767bc8-4rqbs                   1/1    Running  0         53s
-argocd-repo-server-5fd94b46c-6kg9w              1/1    Running  0         53s
-argocd-server-7f95ffdf86-ct7nq                  1/1    Running  0         53s
-
-==> v1/Role
-NAME                           AGE
-argocd-application-controller  53s
-argocd-dex-server              53s
-argocd-server                  53s
-
-==> v1/RoleBinding
-NAME                           AGE
-argocd-application-controller  53s
-argocd-dex-server              53s
-argocd-server                  53s
-
-==> v1/Secret
-NAME           TYPE    DATA  AGE
-argocd-secret  Opaque  5     53s
-
-==> v1/Service
-NAME                           TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
-argocd-application-controller  ClusterIP  10.100.183.200  <none>       8082/TCP           53s
-argocd-dex-server              ClusterIP  10.100.143.184  <none>       5556/TCP,5557/TCP  53s
-argocd-metrics                 ClusterIP  10.100.5.209    <none>       8082/TCP           53s
-argocd-redis                   ClusterIP  10.100.105.250  <none>       6379/TCP           53s
-argocd-repo-server             ClusterIP  10.100.67.17    <none>       8081/TCP           53s
-argocd-server                  ClusterIP  10.100.56.192   <none>       80/TCP,443/TCP     53s
-
-==> v1/ServiceAccount
-NAME                           SECRETS  AGE
-argocd-application-controller  1        53s
-argocd-dex-server              1        53s
-argocd-server                  1        53s
-
-
-NOTES:
-In order to access the server UI you have the following options:
-
-1. kubectl port-forward svc/argocd-server -n argocd 8080:443
-
-    and then open the browser on http://localhost:8080 and accept the certificate
-
-2. enable ingress and check the first option ssl passthrough:
-    https://github.com/argoproj/argo-cd/blob/master/docs/ingress.md#option-1-ssl-passthrough
-
-After reaching the UI the first time you can login with username: admin and the password will be the
-name of the server pod. You can get the pod name by running:
-
-kubectl get pods -n argocd -l app.kubernetes.io/name=argo-cd-server -o name | cut -d'/' -f 2
-```
-
-Argo CD architecture:
-
-![Argo CD - Architecture](https://raw.githubusercontent.com/argoproj/argo-cd/f5bc901dd722290bcba63229cee6e112b9e55935/docs/assets/argocd_architecture.png
-"Argo CD - Architecture")
-
-Change Argo CD for username `admin` to have password `admin`:
-
-```bash
-kubectl patch secret argocd-secret -n argocd-system --type="json" -p="[{\"op\" : \"replace\" ,\"path\" : \"/data/admin.password\" ,\"value\" : \"JDJ5JDEwJDhtWVdWZTBrVWZibkExLnc2LmloQnVOMVZTdi5Sc0ZGYWlOOGV5U2dxQXdYM1NpOGJSM0l1\"}]"
-```
-
-Configure Ingress for Argo CD:
-
-```bash
-envsubst < files/argo-cd_ingress.yaml | kubectl apply -f -
-```
-
-Output:
-
-```text
-ingress.extensions/argocd-server-http-ingress created
-ingress.extensions/argocd-server-grpc-ingress created
-```
-
-Try to access the Argo CD using the URL [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
-with following credentials:
-
-* Username: `admin`
-* Password: `admin`
-
-Argo CD web interface:
-
-![Argo CD web interface](./argocd.png "Argo CD web interface")
-
-There are now two domains:
-
-* HTTPS: [https://argocd.mylabs.dev](https://argocd.mylabs.dev)
-* GRPC: argocd-grpc.mylabs.dev
-
-Download [Argo CD client](https://github.com/argoproj/argo-cd/releases):
-
-```bash
-if [ ! -x /usr/local/bin/argocd ]; then
-  sudo curl -s -Lo /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v1.0.0/argocd-linux-amd64
-  sudo chmod a+x /usr/local/bin/argocd
-fi
 ```

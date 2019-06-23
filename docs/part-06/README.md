@@ -17,7 +17,7 @@ Projects -> `library` -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
 Here is the API call:
 
 ```bash
-curl -s -X POST -u "admin:admin" "https://core2.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
+curl -s -X POST -u "admin:admin" "https://harbor.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
   -H "Content-Type: multipart/form-data" \
   -F "chart=@rook-ceph-v1.0.0.tgz;type=application/x-yaml" \
 | jq "."
@@ -36,7 +36,7 @@ Output:
 Add helm repository as unprivileged user:
 
 ```bash
-helm repo add --username aduser05 --password admin my_project_helm_repo https://core2.mylabs.dev/chartrepo/my_project
+helm repo add --username aduser05 --password admin my_project_helm_repo https://harbor.mylabs.dev/chartrepo/my_project
 ```
 
 Output:
@@ -54,14 +54,6 @@ helm repo list
 Output:
 
 ```text
-NAME                    URL
-stable                  https://kubernetes-charts.storage.googleapis.com
-local                   http://127.0.0.1:8879/charts
-harbor                  https://helm.goharbor.io
-jetstack                https://charts.jetstack.io
-appscode                https://charts.appscode.com/stable/
-argo                    https://argoproj.github.io/argo-helm
-my_project_helm_repo    https://core2.mylabs.dev/chartrepo/my_project
 ```
 
 Check the content of the `my_project_helm_repo` repository:
@@ -289,7 +281,7 @@ Projects -> library -> Helm Chart -> UPLOAD
 You can also do the same using the Harbor API:
 
 ```bash
-curl -s -u "aduser06:admin" -X POST "https://core2.${MY_DOMAIN}/api/chartrepo/library/charts" \
+curl -s -u "aduser06:admin" -X POST "https://harbor.${MY_DOMAIN}/api/chartrepo/library/charts" \
   -H "Content-Type: multipart/form-data" \
   -F "chart=@gitea-1.6.1.tgz;type=application/x-compressed-tar" \
   -F "prov=@gitea-1.6.1.tgz.prov" \
@@ -312,34 +304,13 @@ Output:
 Add the public "library" Helm Chart repository:
 
 ```bash
-helm repo add library https://core2.mylabs.dev/chartrepo/library
+helm repo add library https://harbor.mylabs.dev/chartrepo/library
 ```
 
 Output:
 
 ```text
 "library" has been added to your repositories
-```
-
-Refresh the Helm repositories:
-
-```bash
-helm repo update
-```
-
-Output:
-
-```text
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "library" chart repository
-...Successfully got an update from the "argo" chart repository
-...Successfully got an update from the "my_project_helm_repo" chart repository
-...Successfully got an update from the "appscode" chart repository
-...Successfully got an update from the "harbor" chart repository
-...Successfully got an update from the "jetstack" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
 ```
 
 Check the Helm Repository list:
@@ -351,7 +322,6 @@ helm repo list | grep library
 Output:
 
 ```text
-library                 https://core2.mylabs.dev/chartrepo/library
 ```
 
 Install Gitea using Helm Chart stored in Harbor:

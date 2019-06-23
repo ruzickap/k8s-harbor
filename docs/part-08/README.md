@@ -8,8 +8,8 @@ Enable automated vulnerability scan after each "image push" to the project:
 `library`:
 
 ```bash
-PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://core2.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
-curl -s -u "aduser05:admin" -X PUT "https://core2.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
+PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://harbor.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
+curl -s -u "aduser05:admin" -X PUT "https://harbor.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
 "{
   \"metadata\": {
     \"auto_scan\": \"true\"
@@ -25,26 +25,26 @@ You should see the following in the Web interface:
 Tag the image:
 
 ```bash
-docker tag nginx:1.13.12 core2.${MY_DOMAIN}/library/nginx:1.13.12
+docker tag nginx:1.13.12 harbor.${MY_DOMAIN}/library/nginx:1.13.12
 ```
 
 Push the container image to Harbor project `library`:
 
 ```bash
-docker push core2.${MY_DOMAIN}/library/nginx:1.13.12
+docker push harbor.${MY_DOMAIN}/library/nginx:1.13.12
 ```
 
 Output:
 
 ```text
-The push refers to repository [core2.mylabs.dev/library/nginx]
+The push refers to repository [harbor.mylabs.dev/library/nginx]
 7ab428981537: Mounted from my_project/nginx
 82b81d779f83: Mounted from my_project/nginx
 d626a8ad97a1: Mounted from my_project/nginx
 1.13.12: digest: sha256:e4f0474a75c510f40b37b6b7dc2516241ffa8bde5a442bde3d372c9519c84d90 size: 948
 Signing and pushing trust metadata
-Finished initializing "core2.mylabs.dev/library/nginx"
-Successfully signed core2.mylabs.dev/library/nginx:1.13.12
+Finished initializing "harbor.mylabs.dev/library/nginx"
+Successfully signed harbor.mylabs.dev/library/nginx:1.13.12
 ```
 
 All images in that repositories should be automatically checked for
@@ -60,8 +60,8 @@ Now there are two container images in the `library` repository:
 Turn on the "Prevent vulnerable images from running" feature:
 
 ```bash
-PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://core2.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
-curl -s -u "aduser05:admin" -X PUT "https://core2.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
+PROJECT_ID=$(curl -s -u "aduser05:admin" -X GET "https://harbor.${MY_DOMAIN}/api/projects?name=library" | jq ".[].project_id")
+curl -s -u "aduser05:admin" -X PUT "https://harbor.${MY_DOMAIN}/api/projects/${PROJECT_ID}" -H  "Content-Type: application/json" -d \
 "{
   \"metadata\": {
     \"prevent_vul\": \"true\",
@@ -78,7 +78,7 @@ curl -s -u "aduser05:admin" -X PUT "https://core2.${MY_DOMAIN}/api/projects/${PR
 Create `kuard` deployment and expose it:
 
 ```bash
-kubectl run kuard --image=core2.${MY_DOMAIN}/library/kuard-amd64:blue --port=8080 --expose=true --labels="app=kuard" -n mytest
+kubectl run kuard --image=harbor.${MY_DOMAIN}/library/kuard-amd64:blue --port=8080 --expose=true --labels="app=kuard" -n mytest
 ```
 
 Output:
@@ -111,7 +111,7 @@ and see this:
 Try the same with `nginx:1.13.12` image:
 
 ```bash
-kubectl run nginx --image=core2.${MY_DOMAIN}/library/nginx:1.13.12 --port=80 --expose=true --labels="app=nginx" -n mytest
+kubectl run nginx --image=harbor.${MY_DOMAIN}/library/nginx:1.13.12 --port=80 --expose=true --labels="app=nginx" -n mytest
 ```
 
 Output:
@@ -161,7 +161,7 @@ Controlled By:      ReplicaSet/nginx-6454c8664
 Containers:
   nginx:
     Container ID:
-    Image:          core2.mylabs.dev/library/nginx:1.13.12
+    Image:          harbor.mylabs.dev/library/nginx:1.13.12
     Image ID:
     Port:           80/TCP
     Host Port:      0/TCP
@@ -191,10 +191,10 @@ Events:
   Type     Reason     Age                From                                                      Message
   ----     ------     ----               ----                                                      -------
   Normal   Scheduled  15s                default-scheduler                                         Successfully assigned mytest/nginx-6454c8664-dspmz to ip-192-168-31-245.eu-central-1.compute.internal
-  Normal   Pulling    14s                kubelet, ip-192-168-31-245.eu-central-1.compute.internal  pulling image "core2.mylabs.dev/library/nginx:1.13.12"
-  Warning  Failed     14s                kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Failed to pull image "core2.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
+  Normal   Pulling    14s                kubelet, ip-192-168-31-245.eu-central-1.compute.internal  pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
+  Warning  Failed     14s                kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Failed to pull image "harbor.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
   Warning  Failed     14s                kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Error: ErrImagePull
-  Normal   BackOff    12s (x2 over 13s)  kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Back-off pulling image "core2.mylabs.dev/library/nginx:1.13.12"
+  Normal   BackOff    12s (x2 over 13s)  kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Back-off pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
   Warning  Failed     12s (x2 over 13s)  kubelet, ip-192-168-31-245.eu-central-1.compute.internal  Error: ImagePullBackOff
 ```
 
@@ -207,7 +207,7 @@ or higher than the threshold in project setting: "high".`
 Create new project called `my_rbac_test_project`
 
 ```bash
-curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core2.${MY_DOMAIN}/api/projects" -d \
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://harbor.${MY_DOMAIN}/api/projects" -d \
 "{
   \"project_name\": \"my_rbac_test_project\",
   \"public\": 0
@@ -217,9 +217,9 @@ curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://core2
 Try to push the kuard image as a "Guest" user:
 
 ```bash
-echo admin | docker login --username aduser03 --password-stdin core2.${MY_DOMAIN}
-docker tag gcr.io/kuar-demo/kuard-amd64:blue core2.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
-docker push core2.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+echo admin | docker login --username aduser03 --password-stdin harbor.${MY_DOMAIN}
+docker tag gcr.io/kuar-demo/kuard-amd64:blue harbor.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+docker push harbor.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 ```
 
 Output:
@@ -230,7 +230,7 @@ Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
-The push refers to repository [core2.mylabs.dev/my_rbac_test_project/kuard-amd64]
+The push refers to repository [harbor.mylabs.dev/my_rbac_test_project/kuard-amd64]
 656e9c47289e: Preparing
 bcf2f368fe23: Preparing
 denied: requested access to the resource is denied
@@ -242,8 +242,8 @@ denied: requested access to the resource is denied
 Add user `aduser03` on the project `my_rbac_test_project` as a Developer:
 
 ```bash
-PROJECT_ID=$(curl -s -u "admin:admin" -X GET "https://core2.${MY_DOMAIN}/api/projects?name=my_rbac_test_project" | jq ".[].project_id")
-curl -u "admin:admin" -X POST "https://core2.${MY_DOMAIN}/api/projects/${PROJECT_ID}/members" -H "Content-Type: application/json" -d \
+PROJECT_ID=$(curl -s -u "admin:admin" -X GET "https://harbor.${MY_DOMAIN}/api/projects?name=my_rbac_test_project" | jq ".[].project_id")
+curl -u "admin:admin" -X POST "https://harbor.${MY_DOMAIN}/api/projects/${PROJECT_ID}/members" -H "Content-Type: application/json" -d \
 "{
   \"role_id\": 2,
   \"member_user\": {
@@ -257,19 +257,19 @@ curl -u "admin:admin" -X POST "https://core2.${MY_DOMAIN}/api/projects/${PROJECT
 Push the container image again:
 
 ```bash
-docker push core2.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
+docker push harbor.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 ```
 
 Output:
 
 ```text
-The push refers to repository [core2.mylabs.dev/my_rbac_test_project/kuard-amd64]
+The push refers to repository [harbor.mylabs.dev/my_rbac_test_project/kuard-amd64]
 656e9c47289e: Mounted from library/kuard-amd64
 bcf2f368fe23: Mounted from library/kuard-amd64
 blue: digest: sha256:1ecc9fb2c871302fdb57a25e0c076311b7b352b0a9246d442940ca8fb4efe229 size: 739
 Signing and pushing trust metadata
-Finished initializing "core2.mylabs.dev/my_rbac_test_project/kuard-amd64"
-Successfully signed core2.mylabs.dev/my_rbac_test_project/kuard-amd64:blue
+Finished initializing "harbor.mylabs.dev/my_rbac_test_project/kuard-amd64"
+Successfully signed harbor.mylabs.dev/my_rbac_test_project/kuard-amd64:blue
 ```
 
 Now the image was successfully uploaded:

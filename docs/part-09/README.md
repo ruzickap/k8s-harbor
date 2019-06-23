@@ -26,32 +26,11 @@ helm delete --purge gitea
 kubectl delete namespace gitea-system --wait=false
 ```
 
-Clean second Harbor instance (do not remove Harbor, but only clear it's
-projects):
-
-```bash
-helm delete --purge harbor2
-kubectl delete namespace harbor2-system --wait=false
-```
-
 Remove Harbor:
 
 ```bash
-kubectl label namespace argocd-system app-
-argocd login --insecure argocd-grpc.${MY_DOMAIN} --username admin --password admin
-argocd --server argocd-grpc.${MY_DOMAIN} --insecure app delete harbor && sleep 100
-argocd --server argocd-grpc.${MY_DOMAIN} --insecure proj delete harbor
+helm delete --purge harbor
 kubectl delete namespace harbor-system --wait=false
-```
-
-Remove Argo CD:
-
-```bash
-helm delete --purge argocd
-kubectl delete namespace argocd-system --wait=false
-kubectl delete apiservices.apiregistration.k8s.io v1alpha1.argoproj.io --wait=false
-kubectl delete crd applications.argoproj.io --wait=false
-kubectl delete crd appprojects.argoproj.io --wait=false
 ```
 
 Remove PostgreSQL CloudFormation stack:
@@ -69,7 +48,6 @@ helm delete --purge kubed
 Remove cert-manager:
 
 ```bash
-helm repo remove harbor jetstack appscode argo my_project_helm_repo library
 helm delete --purge cert-manager
 kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/deploy/manifests/00-crds.yaml --wait=false
 kubectl delete namespace cert-manager --wait=false
@@ -83,9 +61,10 @@ kubectl delete namespace nginx-ingress-system --wait=false
 kubectl delete namespace mytest --wait=false
 ```
 
-Remove Helm:
+Cleanup + Remove Helm:
 
 ```bash
+helm repo remove harbor jetstack appscode my_project_helm_repo library
 helm reset --remove-helm-home
 kubectl delete serviceaccount tiller --namespace kube-system --wait=false
 kubectl delete clusterrolebinding tiller-cluster-rule --wait=false
@@ -142,12 +121,6 @@ Notary clean-up:
 
 ```bash
 test -d ~/.notary/ && rm -rf ~/.notary/
-```
-
-Remove Argo CD configuration directory:
-
-```bash
-test -d ~/.argocd/ && rm -rf ~/.argocd/
 ```
 
 Remove `tmp` directory:

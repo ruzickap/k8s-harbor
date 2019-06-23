@@ -73,13 +73,13 @@ if [ "$#" -eq 0 ]; then
   cat << \EOF
 *** Wait until Clair Vulnerability database will be fully updated
 export KUBECONFIG=$PWD/kubeconfig.conf
-CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
-kubectl logs -n harbor2-system ${CLAIR_POD}
+CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o jsonpath="{.items[0].metadata.name}")
+kubectl logs -n harbor-system ${CLAIR_POD}
 EOF
   export KUBECONFIG=$PWD/kubeconfig.conf
-  CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor2-system -o jsonpath="{.items[0].metadata.name}")
+  CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o jsonpath="{.items[0].metadata.name}")
   COUNT=0
-  while ! kubectl logs -n harbor2-system ${CLAIR_POD} | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
+  while ! kubectl logs -n harbor-system ${CLAIR_POD} | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
 
   echo -e "\n\n*** Press ENTER to start\n"
   read A
