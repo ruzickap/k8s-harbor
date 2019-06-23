@@ -81,7 +81,7 @@ Context 'argocd-grpc.mylabs.dev' updated
 Create new `harbor` project:
 
 ```bash
-argocd --server argocd-grpc.${MY_DOMAIN} proj create harbor --description "Harbor project" --dest https://kubernetes.default.svc,harbor-system --src https://github.com/goharbor/harbor-helm.git
+argocd --insecure --server argocd-grpc.${MY_DOMAIN} proj create harbor --description "Harbor project" --dest https://kubernetes.default.svc,harbor-system --src https://github.com/goharbor/harbor-helm.git
 ```
 
 Create namespace for Harbor and copy there the secrets with Let's Encrypt
@@ -95,7 +95,7 @@ kubectl label namespace harbor-system app=kubed
 Deploy Harbor:
 
 ```bash
-argocd --server argocd-grpc.${MY_DOMAIN} app create harbor \
+argocd --insecure --server argocd-grpc.${MY_DOMAIN} app create harbor \
   --auto-prune \
   --dest-namespace harbor-system \
   --dest-server https://kubernetes.default.svc \
