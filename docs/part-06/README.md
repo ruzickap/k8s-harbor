@@ -73,6 +73,7 @@ Clone `harbor-helm` repository containing Helm chart of Harbor:
 
 ```bash
 git clone https://github.com/goharbor/harbor-helm.git
+git -C harbor-helm checkout v1.1.1
 ```
 
 See the Helm chart content:
