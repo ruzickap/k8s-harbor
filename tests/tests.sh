@@ -75,6 +75,7 @@ sed docs/part-{02..09}/README.md \
   -e '/--set persistence.persistentVolumeClaim./d' \
   -e 's/^ldapsearch.*/### &/' \
   -e 's/aduser../admin/' \
+  -e '/"update finished"/d' \
   -e 's/^aws cloudformation.*/### &/' \
   -e 's/^eksctl*/### &/' \
   -e 's/^aws iam.*/### &/' \
