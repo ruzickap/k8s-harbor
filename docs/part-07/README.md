@@ -277,6 +277,8 @@ Vulnerability list for container image:
 
 ## Replication
 
+YouTube video: [https://youtu.be/1NPlzrm5ozE](https://youtu.be/1NPlzrm5ozE)
+
 You can configure replication form other registries to replicate helm charts or
 containers.
 

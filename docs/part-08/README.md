@@ -204,6 +204,8 @@ or higher than the threshold in project setting: "high".`
 
 ## Project RBAC settings
 
+YouTube video: [https://youtu.be/2ZIu9XTvsC0](https://youtu.be/2ZIu9XTvsC0)
+
 Create new project called `my_rbac_test_project`
 
 ```bash
