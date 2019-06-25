@@ -80,10 +80,10 @@ helm install --wait --name harbor --namespace harbor-system harbor/harbor --vers
   --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
   --set persistence.enabled=true \
   --set externalURL=https://harbor.${MY_DOMAIN} \
-  --set harborAdminPassword=admin \
   --set persistence.resourcePolicy=delete \
   --set persistence.persistentVolumeClaim.registry.size=1Gi \
-  --set persistence.persistentVolumeClaim.chartmuseum.size=1Gi
+  --set persistence.persistentVolumeClaim.chartmuseum.size=1Gi \
+  --set harborAdminPassword=admin
 ```
 
 Output:
