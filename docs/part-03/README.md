@@ -246,6 +246,10 @@ installed (for now).
 [kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.9.0/guides/config-syncer/)
 across Kubernetes namespaces/clusters.
 
+Kubed - synchronize secret diagram
+
+![Kubed - synchronize secret](./kubed.svg "Kubed - synchronize secret")
+
 Add kubed helm repository:
 
 ```bash
@@ -335,10 +339,6 @@ Output:
 ```text
 secret/ingress-cert-production annotated
 ```
-
-Kubed - synchronize secret diagram
-
-![Kubed - synchronize secret](./kubed.svg "Kubed - synchronize secret")
 
 ## Install nginx-ingress
 
