@@ -51,9 +51,9 @@ docker images
 Output:
 
 ```text
-REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
+gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
 harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        2 months ago        23MB
-gcr.io/kuar-demo/kuard-amd64              blue                1db936caa6ac        2 months ago        23MB
 ```
 
 ```bash
@@ -153,6 +153,12 @@ CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o
 while ! kubectl logs -n harbor-system ${CLAIR_POD} | grep "update finished"; do echo -n ". "; sleep 10; done
 ```
 
+Output:
+
+```json
+{"Event":"update finished","Level":"info","Location":"updater.go:223","Time":"2019-06-25 06:52:08.402571"}
+```
+
 See if "Vulnerability database" was successfully updated using API:
 
 ```bash
@@ -163,27 +169,27 @@ Output:
 
 ```json
 {
-  "overall_last_update": 1559737686,
+  "overall_last_update": 1561445528,
   "details": [
     {
       "namespace": "oracle",
-      "last_update": 1559737686
+      "last_update": 1561445528
     },
     {
       "namespace": "centos",
-      "last_update": 1559737686
-    },
-    {
-      "namespace": "debian",
-      "last_update": 1559737686
+      "last_update": 1561445528
     },
     {
       "namespace": "alpine",
-      "last_update": 1559737686
+      "last_update": 1561445528
+    },
+    {
+      "namespace": "debian",
+      "last_update": 1561445528
     },
     {
       "namespace": "ubuntu",
-      "last_update": 1559737686
+      "last_update": 1561445528
     }
   ]
 }
@@ -235,12 +241,12 @@ docker images
 Output:
 
 ```text
-REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
+gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
 harbor.mylabs.dev/library/kuard-amd64      blue                1db936caa6ac        2 months ago        23MB
 harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        2 months ago        23MB
-gcr.io/kuar-demo/kuard-amd64              blue                1db936caa6ac        2 months ago        23MB
-harbor.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        13 months ago       109MB
-nginx                                     1.13.12             ae513a47849c        13 months ago       109MB
+nginx                                      1.13.12             ae513a47849c        14 months ago       109MB
+harbor.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        14 months ago       109MB
 ```
 
 Push `nginx` docker image to Harbor:
@@ -335,6 +341,12 @@ export APP=hello-kubernetes
 envsubst < ../files/app_ingress.yaml | kubectl create -f -
 ```
 
+Output:
+
+```text
+ingress.extensions/hello-kubernetes created
+```
+
 The Replications and Execution tabs looks like:
 
 ![Harbor Replications](./harbor_replications.png "Harbor Replications")
@@ -349,6 +361,14 @@ Let's run the replicated docker image:
 
 ```bash
 kubectl run hello-kubernetes --image=harbor.${MY_DOMAIN}/library/paulbouwer/hello-kubernetes:1.5 --port=8080 --expose=true --labels="app=hello-kubernetes" -n mytest
+```
+
+Output:
+
+```text
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+service/hello-kubernetes created
+deployment.apps/hello-kubernetes created
 ```
 
 Open the web browser with URL: [https://hello-kubernetes.mylabs.dev](https://hello-kubernetes.mylabs.dev)

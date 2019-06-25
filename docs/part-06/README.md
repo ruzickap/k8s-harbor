@@ -10,6 +10,21 @@ Download the compressed Helm Chart of Rook:
 wget https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
 ```
 
+Output:
+
+```text
+--2019-06-25 10:12:31--  https://charts.rook.io/release/rook-ceph-v1.0.0.tgz
+Resolving charts.rook.io (charts.rook.io)... 13.32.100.58, 13.32.100.161, 13.32.100.8, ...
+Connecting to charts.rook.io (charts.rook.io)|13.32.100.58|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6246 (6.1K) [application/x-tar]
+Saving to: ‘rook-ceph-v1.0.0.tgz’
+
+rook-ceph-v1.0.0.tgz    100%[============================>]   6.10K  --.-KB/s    in 0s
+
+2019-06-25 10:12:31 (99.3 MB/s) - ‘rook-ceph-v1.0.0.tgz’ saved [6246/6246]
+```
+
 Upload manually the `rook-ceph-v1.0.0.tgz` to Harbor by clicking on
 
 Projects -> `library` -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
@@ -54,6 +69,13 @@ helm repo list
 Output:
 
 ```text
+NAME                    URL
+stable                  https://kubernetes-charts.storage.googleapis.com
+local                   http://127.0.0.1:8879/charts
+harbor                  https://helm.goharbor.io
+jetstack                https://charts.jetstack.io
+appscode                https://charts.appscode.com/stable/
+my_project_helm_repo    https://harbor.mylabs.dev/chartrepo/my_project
 ```
 
 Check the content of the `my_project_helm_repo` repository:
@@ -86,14 +108,14 @@ Output:
 
 ```text
 total 120
-drwxrwxr-x  2 pruzicka pruzicka    36 Jun  5 14:39 cert
--rw-rw-r--  1 pruzicka pruzicka   498 Jun  5 14:39 Chart.yaml
--rw-rw-r--  1 pruzicka pruzicka   577 Jun  5 14:39 CONTRIBUTING.md
-drwxrwxr-x  3 pruzicka pruzicka    63 Jun  5 14:39 docs
--rw-rw-r--  1 pruzicka pruzicka 11357 Jun  5 14:39 LICENSE
--rw-rw-r--  1 pruzicka pruzicka 84170 Jun  5 14:39 README.md
-drwxrwxr-x 13 pruzicka pruzicka   206 Jun  5 14:39 templates
--rw-rw-r--  1 pruzicka pruzicka 14157 Jun  5 14:39 values.yaml
+drwxrwxr-x  2 pruzicka pruzicka    36 Jun 25 10:14 cert
+-rw-rw-r--  1 pruzicka pruzicka   502 Jun 25 10:14 Chart.yaml
+-rw-rw-r--  1 pruzicka pruzicka   577 Jun 25 10:14 CONTRIBUTING.md
+drwxrwxr-x  3 pruzicka pruzicka    63 Jun 25 10:14 docs
+-rw-rw-r--  1 pruzicka pruzicka 11357 Jun 25 10:14 LICENSE
+-rw-rw-r--  1 pruzicka pruzicka 83718 Jun 25 10:14 README.md
+drwxrwxr-x 13 pruzicka pruzicka   206 Jun 25 10:14 templates
+-rw-rw-r--  1 pruzicka pruzicka 14092 Jun 25 10:14 values.yaml
 ```
 
 Push the `harbor-helm` to the `my_project_helm_repo` project in Harbor":
@@ -105,7 +127,7 @@ helm push --username aduser05 --password admin ./harbor-helm/ my_project_helm_re
 Output:
 
 ```text
-Pushing harbor-dev.tgz to my_project_helm_repo...
+Pushing harbor-1.1.1.tgz to my_project_helm_repo...
 Done.
 ```
 
@@ -151,18 +173,18 @@ gpg: no running gpg-agent - starting '/usr/bin/gpg-agent'
 gpg: waiting for the agent to come up ... (5s)
 gpg: connection to agent established
 gpg: writing self signature
-gpg: RSA/SHA256 signature from: "0740C464116DD6F5 [?]"
+gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 [?]"
 gpg: writing key binding signature
-gpg: RSA/SHA256 signature from: "0740C464116DD6F5 [?]"
-gpg: RSA/SHA256 signature from: "532CEA8DFE8A8A38 [?]"
+gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 [?]"
+gpg: RSA/SHA256 signature from: "F4BBFED75D895C46 [?]"
 gpg: writing public key to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx'
 gpg: /home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/trustdb.gpg: trustdb created
 gpg: using pgp trust model
-gpg: key 0740C464116DD6F5 marked as ultimately trusted
+gpg: key 6CE5FBFC0ACEF9D1 marked as ultimately trusted
 gpg: directory '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d' created
-gpg: writing to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/732BCB9A16D3AF79F1BEABB80740C464116DD6F5.rev'
-gpg: RSA/SHA256 signature from: "0740C464116DD6F5 Helm User (User) <my_helm_user@mylabs.dev>"
-gpg: revocation certificate stored as '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/732BCB9A16D3AF79F1BEABB80740C464116DD6F5.rev'
+gpg: writing to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1.rev'
+gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 Helm User (User) <my_helm_user@mylabs.dev>"
+gpg: revocation certificate stored as '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1.rev'
 ```
 
 List the GPG secret key:
@@ -179,10 +201,10 @@ gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
 /home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx
 ------------------------------------------------------------
-sec   rsa2048 2019-06-05 [SCEA]
-      732BCB9A16D3AF79F1BEABB80740C464116DD6F5
+sec   rsa2048 2019-06-25 [SCEA]
+      CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1
 uid           [ultimate] Helm User (User) <my_helm_user@mylabs.dev>
-ssb   rsa2048 2019-06-05 [SEA]
+ssb   rsa2048 2019-06-25 [SEA]
 ```
 
 Export private GPG key into `.gnupg/secring.gpg`, because Helm doesn't
@@ -229,8 +251,8 @@ ls -la gitea*tgz*
 Output:
 
 ```text
--rw-rw-r-- 1 pruzicka pruzicka 20390 Jun  5 14:39 gitea-1.6.1.tgz
--rwxr-xr-x 1 pruzicka pruzicka   966 Jun  5 14:39 gitea-1.6.1.tgz.prov
+-rw-rw-r-- 1 pruzicka pruzicka 20390 Jun 25 10:16 gitea-1.6.1.tgz
+-rwxr-xr-x 1 pruzicka pruzicka   966 Jun 25 10:16 gitea-1.6.1.tgz.prov
 ```
 
 See the provenance file:
@@ -266,7 +288,7 @@ version: 1.6.1
 
 ...
 files:
-  gitea-1.6.1.tgz: sha256:e0f722c03b94bb35c8b9e1e4e42d0d0579f93027452ce8122f5548b0c96d15af
+  gitea-1.6.1.tgz: sha256:9d897da1e11dd56a24a2fb18d235846f0c78a8359d8e21f666bcbcadebea434f
 -----BEGIN PGP SIGNATURE-----
 ...
 -----END PGP SIGNATURE-----
@@ -323,6 +345,7 @@ helm repo list | grep library
 Output:
 
 ```text
+library                 https://harbor.mylabs.dev/chartrepo/library
 ```
 
 Install Gitea using Helm Chart stored in Harbor:
@@ -340,7 +363,8 @@ Output:
 
 ```text
 NAME:   gitea
-LAST DEPLOYED: Wed Jun  5 14:39:34 2019
+E0625 10:17:15.488085    6412 portforward.go:372] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:38255->127.0.0.1:39576: write tcp4 127.0.0.1:38255->127.0.0.1:39576: write: broken pipe
+LAST DEPLOYED: Tue Jun 25 10:17:13 2019
 NAMESPACE: gitea-system
 STATUS: DEPLOYED
 
@@ -351,16 +375,16 @@ gitea-gitea  1     2s
 
 ==> v1/Pod(related)
 NAME                         READY  STATUS    RESTARTS  AGE
-gitea-gitea-f9fd8cb4b-gxhhp  0/3    Init:0/1  0         2s
+gitea-gitea-f9fd8cb4b-8p58m  0/3    Init:0/1  0         2s
 
 ==> v1/Secret
 NAME      TYPE    DATA  AGE
 gitea-db  Opaque  1     2s
 
 ==> v1/Service
-NAME              TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)   AGE
-gitea-gitea-http  ClusterIP  10.100.43.237   <none>       3000/TCP  2s
-gitea-gitea-ssh   ClusterIP  10.100.172.101  <none>       22/TCP    2s
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)   AGE
+gitea-gitea-http  ClusterIP  10.100.19.173  <none>       3000/TCP  2s
+gitea-gitea-ssh   ClusterIP  10.100.134.45  <none>       22/TCP    2s
 
 ==> v1beta1/Deployment
 NAME         READY  UP-TO-DATE  AVAILABLE  AGE

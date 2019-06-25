@@ -93,12 +93,13 @@ certificate authority.
 aws iam create-policy \
   --policy-name ${USER}-AmazonRoute53Domains-cert-manager \
   --description "Policy required by cert-manager to be able to modify Route 53 when generating wildcard certificates using Lets Encrypt" \
-  --policy-document file://files/route_53_change_policy.json
+  --policy-document file://files/route_53_change_policy.json \
+| jq
 ```
 
 Output:
 
-```text
+```json
 {
     "Policy": {
         "PolicyName": "pruzicka-AmazonRoute53Domains-cert-manager",
@@ -118,7 +119,7 @@ Create user which will use the policy above allowing the cert-manager to change
 Route 53 settings:
 
 ```bash
-aws iam create-user --user-name ${USER}-eks-cert-manager-route53 && \
+aws iam create-user --user-name ${USER}-eks-cert-manager-route53 | jq && \
 POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName==\`${USER}-AmazonRoute53Domains-cert-manager\`].{ARN:Arn}" --output text) && \
 aws iam attach-user-policy --user-name "${USER}-eks-cert-manager-route53" --policy-arn $POLICY_ARN && \
 aws iam create-access-key --user-name ${USER}-eks-cert-manager-route53 > $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN} && \
@@ -128,7 +129,7 @@ export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY=$(awk -F\" "/SecretAccessK
 
 Output:
 
-```text
+```json
 {
     "User": {
         "Path": "/",
@@ -269,9 +270,9 @@ kubectl get nodes -o wide
 Output:
 
 ```text
-NAME                                              STATUS   ROLES    AGE   VERSION   INTERNAL-IP      EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                CONTAINER-RUNTIME
-ip-192-168-31-245.eu-central-1.compute.internal   Ready    <none>   56m   v1.12.7   192.168.31.245   54.93.44.33      Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
-ip-192-168-83-237.eu-central-1.compute.internal   Ready    <none>   56m   v1.12.7   192.168.83.237   35.156.219.168   Amazon Linux 2   4.14.106-97.85.amzn2.x86_64   docker://18.6.1
+NAME                                              STATUS   ROLES    AGE    VERSION   INTERNAL-IP      EXTERNAL-IP     OS-IMAGE         KERNEL-VERSION                  CONTAINER-RUNTIME
+ip-192-168-4-142.eu-central-1.compute.internal    Ready    <none>   3h3m   v1.12.7   192.168.4.142    3.121.162.89    Amazon Linux 2   4.14.123-111.109.amzn2.x86_64   docker://18.6.1
+ip-192-168-60-201.eu-central-1.compute.internal   Ready    <none>   3h3m   v1.12.7   192.168.60.201   18.196.144.15   Amazon Linux 2   4.14.123-111.109.amzn2.x86_64   docker://18.6.1
 ```
 
 ![EKS High Level](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-high-level.svg?sanitize=true
@@ -289,11 +290,11 @@ done
 Output:
 
 ```text
-*** 54.93.44.33
- 12:29:29 up 57 min,  0 users,  load average: 1.35, 1.36, 0.84
-*** 35.156.219.168
- 12:29:29 up 57 min,  0 users,  load average: 0.09, 0.08, 0.03
- ```
+*** 3.121.162.89
+ 07:51:26 up  3:04,  0 users,  load average: 0.05, 0.09, 0.08
+*** 18.196.144.15
+ 07:51:26 up  3:04,  0 users,  load average: 0.05, 0.15, 0.11
+```
 
 At the end of the output you should see 2 IP addresses which
 should be accessible by SSH using your public key `~/.ssh/id_rsa.pub`.

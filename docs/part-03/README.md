@@ -54,47 +54,41 @@ Output:
 
 ```text
 "jetstack" has been added to your repositories
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "harbor" chart repository
-...Successfully got an update from the "jetstack" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
 NAME:   cert-manager
-LAST DEPLOYED: Wed Jun  5 14:29:52 2019
+LAST DEPLOYED: Tue Jun 25 09:54:02 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME               AGE
-cert-manager-edit  12s
-cert-manager-view  12s
+cert-manager-edit  7s
+cert-manager-view  7s
 
 ==> v1/Pod(related)
 NAME                                      READY  STATUS   RESTARTS  AGE
-cert-manager-7548788b6-94zdp              1/1    Running  0         12s
-cert-manager-cainjector-5675c6fcc7-plbkr  1/1    Running  0         12s
+cert-manager-776cd4f499-jtpjr             1/1    Running  0         7s
+cert-manager-cainjector-744b987848-7nmqp  1/1    Running  0         7s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
-cert-manager             1        12s
-cert-manager-cainjector  1        12s
+cert-manager             1        7s
+cert-manager-cainjector  1        7s
 
 ==> v1beta1/ClusterRole
 NAME                     AGE
-cert-manager             12s
-cert-manager-cainjector  12s
+cert-manager             7s
+cert-manager-cainjector  7s
 
 ==> v1beta1/ClusterRoleBinding
 NAME                     AGE
-cert-manager             12s
-cert-manager-cainjector  12s
+cert-manager             7s
+cert-manager-cainjector  7s
 
 ==> v1beta1/Deployment
 NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager             1/1    1           1          12s
-cert-manager-cainjector  1/1    1           1          12s
+cert-manager             1/1    1           1          7s
+cert-manager-cainjector  1/1    1           1          7s
 
 
 NOTES:
@@ -137,6 +131,7 @@ Output:
 
 ```text
 secret/aws-route53-secret-access-key-secret created
+clusterissuer.certmanager.k8s.io/selfsigning-issuer created
 clusterissuer.certmanager.k8s.io/letsencrypt-staging-dns created
 clusterissuer.certmanager.k8s.io/letsencrypt-production-dns created
 apiVersion: v1
@@ -146,6 +141,13 @@ metadata:
   namespace: cert-manager
 data:
   secret-access-key: $EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: selfsigning-issuer
+spec:
+  selfSigned: {}
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
@@ -260,13 +262,6 @@ Output:
 
 ```text
 "appscode" has been added to your repositories
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "appscode" chart repository
-...Successfully got an update from the "harbor" chart repository
-...Successfully got an update from the "jetstack" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
 ```
 
 Install kubed:
@@ -281,7 +276,7 @@ Output:
 
 ```text
 NAME:   kubed
-LAST DEPLOYED: Wed Jun  5 14:30:28 2019
+LAST DEPLOYED: Tue Jun 25 09:57:48 2019
 NAMESPACE: kube-system
 STATUS: DEPLOYED
 
@@ -297,7 +292,7 @@ kubed-kubed-apiserver-auth-delegator  2s
 
 ==> v1/Pod(related)
 NAME                         READY  STATUS             RESTARTS  AGE
-kubed-kubed-76b4dcd9f-qbbqw  0/1    ContainerCreating  0         2s
+kubed-kubed-76b4dcd9f-6g79p  0/1    ContainerCreating  0         2s
 
 ==> v1/RoleBinding
 NAME                                                          AGE
@@ -306,11 +301,11 @@ kubed-kubed-apiserver-extension-server-authentication-reader  2s
 ==> v1/Secret
 NAME                        TYPE    DATA  AGE
 kubed-kubed                 Opaque  1     2s
-kubed-kubed-apiserver-cert  Opaque  2     3s
+kubed-kubed-apiserver-cert  Opaque  2     2s
 
 ==> v1/Service
-NAME         TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
-kubed-kubed  ClusterIP  10.100.112.12  <none>       443/TCP  2s
+NAME         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
+kubed-kubed  ClusterIP  10.100.111.202  <none>       443/TCP  2s
 
 ==> v1/ServiceAccount
 NAME         SECRETS  AGE
@@ -359,49 +354,49 @@ Output:
 
 ```text
 NAME:   nginx-ingress
-LAST DEPLOYED: Wed Jun  5 14:30:40 2019
+LAST DEPLOYED: Tue Jun 25 09:59:52 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                      DATA  AGE
-nginx-ingress-controller  1     2s
+nginx-ingress-controller  1     3s
 
 ==> v1/Pod(related)
 NAME                                            READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-947555496-9nf54        0/1    ContainerCreating  0         2s
-nginx-ingress-default-backend-6694789b87-bkmj7  0/1    ContainerCreating  0         2s
+nginx-ingress-controller-947555496-b8cdk        0/1    ContainerCreating  0         3s
+nginx-ingress-default-backend-6694789b87-c2scz  1/1    Running            0         3s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.244.69  aba9e9103878d...  80:31279/TCP,443:31552/TCP  2s
-nginx-ingress-default-backend  ClusterIP     10.100.71.100  <none>            80/TCP                      2s
+NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.179.80   a36a632ee971f...  80:31754/TCP,443:32114/TCP  3s
+nginx-ingress-default-backend  ClusterIP     10.100.249.215  <none>            80/TCP                      3s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
-nginx-ingress  1        2s
+nginx-ingress  1        3s
 
 ==> v1beta1/ClusterRole
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  3s
 
 ==> v1beta1/ClusterRoleBinding
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  3s
 
 ==> v1beta1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-nginx-ingress-controller       0/1    1           0          2s
-nginx-ingress-default-backend  0/1    1           0          2s
+nginx-ingress-controller       0/1    1           0          3s
+nginx-ingress-default-backend  1/1    1           1          3s
 
 ==> v1beta1/Role
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  3s
 
 ==> v1beta1/RoleBinding
 NAME           AGE
-nginx-ingress  2s
+nginx-ingress  3s
 
 
 NOTES:
@@ -458,9 +453,9 @@ kubectl get service -n nginx-ingress-system
 Output:
 
 ```text
-NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP                                                                  PORT(S)                      AGE
-nginx-ingress-controller        LoadBalancer   10.100.42.219   a95a2a59593f711e9afeb0aa3c1d9f47-1857907828.eu-central-1.elb.amazonaws.com   80:32417/TCP,443:31001/TCP   4m45s
-nginx-ingress-default-backend   ClusterIP      10.100.223.78   <none>                                                                       80/TCP                       4m45s
+NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                  PORT(S)                      AGE
+nginx-ingress-controller        LoadBalancer   10.100.179.80    a36a632ee971f11e9867202d8c8e9254-1021705614.eu-central-1.elb.amazonaws.com   80:31754/TCP,443:32114/TCP   13s
+nginx-ingress-default-backend   ClusterIP      10.100.249.215   <none>                                                                       80/TCP                       13s
 ```
 
 Create DNS record `mylabs.dev` for the loadbalancer created by nginx-ingress:
@@ -470,17 +465,17 @@ export LOADBALANCER_HOSTNAME=$(kubectl get svc nginx-ingress-controller -n nginx
 export CANONICAL_HOSTED_ZONE_NAME_ID=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[?DNSName==\`$LOADBALANCER_HOSTNAME\`].CanonicalHostedZoneNameID" --output text)
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query "HostedZones[?Name==\`${MY_DOMAIN}.\`].Id" --output text)
 
-envsubst < files/aws_route53-dns_change.json | aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch=file:///dev/stdin
+envsubst < files/aws_route53-dns_change.json | aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch=file:///dev/stdin | jq
 ```
 
 Output:
 
-```text
+```json
 {
     "ChangeInfo": {
-        "Id": "/change/CWW2GSS39JTSW",
+        "Id": "/change/C3MC53EPX1MZN0",
         "Status": "PENDING",
-        "SubmittedAt": "2019-06-05T12:30:55.095Z",
+        "SubmittedAt": "2019-06-25T08:00:31.499Z",
         "Comment": "A new record set for the zone."
     }
 }
@@ -513,11 +508,11 @@ Annotations:  kubectl.kubernetes.io/last-applied-configuration:
 API Version:  certmanager.k8s.io/v1alpha1
 Kind:         Certificate
 Metadata:
-  Creation Timestamp:  2019-06-05T12:30:21Z
+  Creation Timestamp:  2019-06-25T07:56:45Z
   Generation:          1
-  Resource Version:    6493
+  Resource Version:    17630
   Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/cert-manager/certificates/ingress-cert-production
-  UID:                 afb37042-878d-11e9-9a91-0668fe0cab46
+  UID:                 c6b7f758-971e-11e9-8672-02d8c8e92542
 Spec:
   Acme:
     Config:
@@ -534,20 +529,20 @@ Spec:
   Secret Name:  ingress-cert-production
 Status:
   Conditions:
-    Last Transition Time:  2019-06-05T12:32:08Z
+    Last Transition Time:  2019-06-25T07:58:28Z
     Message:               Certificate is up to date and has not expired
     Reason:                Ready
     Status:                True
     Type:                  Ready
-  Not After:               2019-09-03T11:32:06Z
+  Not After:               2019-09-23T06:58:27Z
 Events:
   Type    Reason              Age    From          Message
   ----    ------              ----   ----          -------
-  Normal  Generated           2m15s  cert-manager  Generated new private key
-  Normal  GenerateSelfSigned  2m15s  cert-manager  Generated temporary self signed certificate
-  Normal  OrderCreated        2m15s  cert-manager  Created Order resource "ingress-cert-production-20059064"
-  Normal  OrderComplete       29s    cert-manager  Order "ingress-cert-production-20059064" completed successfully
-  Normal  CertIssued          29s    cert-manager  Certificate issued successfully
+  Normal  Generated           4m     cert-manager  Generated new private key
+  Normal  GenerateSelfSigned  4m     cert-manager  Generated temporary self signed certificate
+  Normal  OrderCreated        4m     cert-manager  Created Order resource "ingress-cert-production-20059064"
+  Normal  OrderComplete       2m17s  cert-manager  Order "ingress-cert-production-20059064" completed successfully
+  Normal  CertIssued          2m17s  cert-manager  Certificate issued successfully
 ```
 
 The Kubernetes "secret" in `cert-manager` namespace should contain the
@@ -574,9 +569,9 @@ Type:  kubernetes.io/tls
 
 Data
 ====
-tls.key:  1679 bytes
-ca.crt:   0 bytes
 tls.crt:  3550 bytes
+tls.key:  1675 bytes
+ca.crt:   0 bytes
 ```
 
 Check the SSL certificate:
@@ -589,20 +584,28 @@ echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 | openssl x509 -inf
 Output:
 
 ```text
+depth=2 O = Digital Signature Trust Co., CN = DST Root CA X3
+verify return:1
+depth=1 C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+verify return:1
+depth=0 CN = *.mylabs.dev
+verify return:1
+DONE
 Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            03:2a:03:1d:e0:c4:2e:f5:0f:2d:89:a6:b5:0e:a9:f8:32:9f
+            03:6a:44:af:11:ed:3f:58:f1:1d:68:fc:9a:dd:13:d4:06:a0
         Signature Algorithm: sha256WithRSAEncryption
         Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
         Validity
-            Not Before: Jun  5 11:32:06 2019 GMT
-            Not After : Sep  3 11:32:06 2019 GMT
+            Not Before: Jun 25 06:58:27 2019 GMT
+            Not After : Sep 23 06:58:27 2019 GMT
         Subject: CN = *.mylabs.dev
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 RSA Public-Key: (2048 bit)
+                Modulus:
 ...
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
@@ -613,7 +616,7 @@ Certificate:
             X509v3 Basic Constraints: critical
                 CA:FALSE
             X509v3 Subject Key Identifier:
-                0B:35:19:82:BD:96:C3:88:B2:F8:07:70:BE:4A:83:47:A8:08:B9:C4
+                0A:72:0D:F1:B4:51:CB:1C:76:04:84:87:D5:76:71:E0:6D:26:D0:00
             X509v3 Authority Key Identifier:
                 keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
 
