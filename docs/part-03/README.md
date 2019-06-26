@@ -1,7 +1,7 @@
-# Nginx + cert-manager installation
+# Nginx + cert-manager + kubed installation
 
 Before we move on with other tasks it is necessary to install Nginx Ingress.
-It's also handy to install cert-manager for managing TLS certificates.
+It's also handy to install cert-manager for managing SSL certificates.
 
 <img src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png" width="200">
 
