@@ -50,7 +50,7 @@ jobs:
       language: node_js
       node_js: 10
       install:
-        - npm install vuepress@next @vuepress/plugin-medium-zoom @vuepress/plugin-back-to-top vuepress-plugin-seo
+        - npm install vuepress@next @vuepress/plugin-medium-zoom @vuepress/plugin-back-to-top vuepress-plugin-seo vuepress-plugin-reading-progress vuepress-plugin-smooth-scroll
       script:
         - vuepress build docs
         - cp LICENSE docs/.vuepress/dist
