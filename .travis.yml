@@ -54,7 +54,7 @@ jobs:
       script:
         - vuepress build docs
         - cp LICENSE docs/.vuepress/dist
-        - sed -e 's@(part-@(https://github.com/ruzickap/k8s-harbor/tree/master/docs/part-@' -e 's@.\/.vuepress\/public\/@./@' docs/README.md > docs/.vuepress/dist/README.md
+        - sed -e "s@(part-@(https://github.com/${TRAVIS_REPO_SLUG%/*}/${TRAVIS_REPO_SLUG##*/}/tree/master/docs/part-@" -e 's@.\/.vuepress\/public\/@./@' docs/README.md > docs/.vuepress/dist/README.md
 
       deploy:
         provider: pages
