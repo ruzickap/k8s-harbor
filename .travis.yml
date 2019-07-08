@@ -34,12 +34,13 @@ jobs:
         - docker
       node_js: 10
       install:
-        - npm install vuepress@next @vuepress/plugin-medium-zoom @vuepress/plugin-back-to-top vuepress-plugin-seo
+        - npm install
       script:
         # Get local IP
         - export HOST_IP_ADDRESS="$(ip -4 addr show docker0 | sed -n 's/.* inet \([^/]*\).*/\1/p')"
         # Build the docs
-        - vuepress build --silent --dest ${TRAVIS_REPO_SLUG##*/} docs
+        - npm run build
+        - ln -s docs/.vuepress/dist ${TRAVIS_REPO_SLUG##*/}
         # Start Web server
         - python3 -m http.server 8080 &> /dev/null &
         # Check links on generated pages
@@ -50,9 +51,9 @@ jobs:
       language: node_js
       node_js: 10
       install:
-        - npm install vuepress@next @vuepress/plugin-medium-zoom @vuepress/plugin-back-to-top vuepress-plugin-seo vuepress-plugin-reading-progress vuepress-plugin-smooth-scroll
+        - npm install
       script:
-        - vuepress build docs
+        - npm run build
         - cp LICENSE docs/.vuepress/dist
         - sed -e "s@(part-@(https://github.com/${TRAVIS_REPO_SLUG%/*}/${TRAVIS_REPO_SLUG##*/}/tree/master/docs/part-@" -e 's@.\/.vuepress\/public\/@./@' docs/README.md > docs/.vuepress/dist/README.md
 
