@@ -15,7 +15,7 @@ Let's Encrypt certificate:
 
 ```bash
 kubectl get namespace harbor-system &> /dev/null || kubectl create namespace harbor-system
-kubectl label namespace harbor-system app=kubed
+kubectl label namespace --overwrite harbor-system app=kubed
 ```
 
 Output:
@@ -33,7 +33,7 @@ kubectl get secrets ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n harbor-system -o 
 
 Output:
 
-```json
+```json{13}
 {
   "certmanager.k8s.io/alt-names": "*.mylabs.dev",
   "certmanager.k8s.io/common-name": "*.mylabs.dev",
@@ -67,22 +67,11 @@ Install Harbor using Helm:
 ```bash
 helm ls | grep harbor || \
 helm install --wait --name harbor --namespace harbor-system harbor/harbor --version v1.1.1 \
-  --set database.type=external \
-  --set database.external.host=pgsql.${MY_DOMAIN} \
-  --set database.external.username=harbor_user \
-  --set database.external.password=harbor_user_password \
-  --set database.external.coreDatabase=harbor-registry \
-  --set database.external.clairDatabase=harbor-clair \
-  --set database.external.notaryServerDatabase=harbor-notary_server \
-  --set database.external.notarySignerDatabase=harbor-notary_signer \
   --set expose.ingress.hosts.core=harbor.${MY_DOMAIN} \
   --set expose.ingress.hosts.notary=notary.${MY_DOMAIN} \
   --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
-  --set persistence.enabled=true \
+  --set persistence.enabled=false \
   --set externalURL=https://harbor.${MY_DOMAIN} \
-  --set persistence.resourcePolicy=delete \
-  --set persistence.persistentVolumeClaim.registry.size=1Gi \
-  --set persistence.persistentVolumeClaim.chartmuseum.size=1Gi \
   --set harborAdminPassword=admin
 ```
 
@@ -180,7 +169,7 @@ kubectl describe ingresses -n harbor-system harbor-harbor-ingress
 
 Output:
 
-```text
+```text{6-7,11,18}
 Name:             harbor-harbor-ingress
 Namespace:        harbor-system
 Address:          18.196.144.15

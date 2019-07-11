@@ -44,20 +44,17 @@ data:
       - 172.17.255.1-172.17.255.250
 EOF
 
-echo "*** Configure \"DNS\" /etc/hosts"
-DNS_NAMES="harbor notary"
-grep -q "172.17.255.1 ${MY_DOMAIN}" /etc/hosts || sudo bash -c "echo '172.17.255.1 ${MY_DOMAIN}' >> /etc/hosts"
-for DNS_NAME in $DNS_NAMES; do
-  if ! grep -q "172.17.255.1 ${DNS_NAME}.${MY_DOMAIN}" /etc/hosts; then
-    echo "*** Adding \"172.17.255.1 ${DNS_NAME}.${MY_DOMAIN}\" to /etc/hosts"
-    sudo bash -c "echo '172.17.255.1 ${DNS_NAME}.${MY_DOMAIN}' >> /etc/hosts"
-  fi
-done
+echo "*** Configure \"DNS\" in /etc/hosts and in CoreDNS inside k8s"
+DNS_NAMES="${MY_DOMAIN} harbor.${MY_DOMAIN} notary.${MY_DOMAIN}"
+
+grep -q "172.17.255.1 ${DNS_NAMES}" /etc/hosts || sudo bash -c "echo '172.17.255.1 ${DNS_NAMES}' >> /etc/hosts"
+kubectl get -n kube-system cm/coredns -o yaml | sed "/kubernetes cluster.local in-addr.arpa ip6.arpa/i \ \ \ \ \ \ \ \ hosts ${MY_DOMAIN}.hosts ${MY_DOMAIN} { \n          172.17.255.1 ${DNS_NAMES}\n          fallthrough\n        }" | kubectl apply -f -
+kubectl get pods -l k8s-app=kube-dns -n kube-system -o name | xargs kubectl delete -n kube-system
 
 echo -e "\n\n******************************\n*** Main tests\n******************************\n"
 
 set +x
-test -f ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
+test -s ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
 . ./demo-magic.sh
 
 export TYPE_SPEED=60
@@ -69,10 +66,6 @@ sed docs/part-{02..09}/README.md \
   -e 's/.*aws route53.*/### &/' \
   -e 's/.*aws elb.*/### &/' \
   -e 's/cert-manager-letsencrypt-aws-route53-certificate.yaml | kubectl apply -f -/cert-manager-selfsigned-certificate.yaml | kubectl apply -f - ###/' \
-  -e '/--set database./d' \
-  -e 's/--set persistence.enabled=true/--set persistence.enabled=false/' \
-  -e '/--set persistence.resourcePolicy./d' \
-  -e '/--set persistence.persistentVolumeClaim./d' \
   -e 's/^ldapsearch.*/### &/' \
   -e 's/aduser../admin/' \
   -e '/"update finished"/d' \
@@ -80,10 +73,10 @@ sed docs/part-{02..09}/README.md \
   -e 's/^eksctl*/### &/' \
   -e 's/^aws iam.*/### &/' \
 | \
-sed -n '/^```bash$/,/^```$/p' \
+sed -n '/^```bash.*/,/^```$/p' \
 | \
 sed \
-  -e 's/^```bash$/\
+  -e 's/^```bash.*/\
 pe '"'"'/' \
   -e 's/^```$/'"'"'/' \
 > README.sh

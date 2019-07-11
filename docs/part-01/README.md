@@ -78,7 +78,7 @@ aws route53 create-hosted-zone --name ${MY_DOMAIN} --caller-reference ${MY_DOMAI
 ```
 
 Use your domain registrar to change the nameservers for your zone (for example
-`mylabs.dev`) to use the Amazon Route 53 nameservers. Here is the way how you
+"mylabs.dev") to use the Amazon Route 53 nameservers. Here is the way how you
 can find out the the Route 53 nameservers:
 
 ```bash
@@ -155,7 +155,8 @@ Generate SSH keys if not exists:
 test -f $HOME/.ssh/id_rsa || ( install -m 0700 -d $HOME/.ssh && ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N "" )
 ```
 
-Clone the `k8s-harbor` Git repository if it wasn't done already:
+Clone the [k8s-harbor](https://github.com/ruzickap/k8s-harbor) Git repository
+if it wasn't done already:
 
 ```bash
 [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
@@ -216,20 +217,6 @@ Output:
 
 ![EKS Architecture](https://raw.githubusercontent.com/aws-samples/eks-workshop/3e7da75de884d9efeec8e8ba21161169d3e80da7/static/images/introduction/eks-architecture.svg?sanitize=true
 "EKS Architecture")
-
-Create the PostgreSQL database (RDS):
-
-```bash
-ansible-playbook --connection=local -i "127.0.0.1," files/ansible/aws_postgresql_db.yml &
-```
-
-Output:
-
-```text
-...
-PLAY RECAP *********************************************************************
-127.0.0.1                  : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-```
 
 Create CloudFormation stack with Windows Server 2016, which will serve as
 Active Directory to use LDAP connection from Harbor:

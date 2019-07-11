@@ -33,12 +33,6 @@ helm delete --purge harbor
 kubectl delete namespace harbor-system --wait=false
 ```
 
-Remove PostgreSQL CloudFormation stack:
-
-```bash
-aws cloudformation delete-stack --stack-name eksctl-${USER}-k8s-harbor-cluster-pgsql
-```
-
 Remove kubed:
 
 ```bash

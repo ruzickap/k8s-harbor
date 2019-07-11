@@ -30,10 +30,10 @@ export NO_WAIT=false
 DEMO_PROMPT="${GREEN}➜ ${CYAN}$ "
 
 
-sed docs/part-{01..08}/README.md \
+sed docs/part-{01,{04..08}}/README.md \
   -e '/^## Prepare the local working environment/,/^You should be able to access Windows Server using RDP/d' \
 | \
-sed -n '/^```bash$/,/^```$/p;/^-----$/p' \
+sed -n '/^```bash/,/^```$/p;/^-----$/p' \
 | \
 sed \
   -e 's/^-----$/\
@@ -41,7 +41,7 @@ p  ""\
 p  "################################################################################################### Press <ENTER> to continue"\
 wait\
 /' \
-  -e 's/^```bash$/\
+  -e 's/^```bash.*/\
 pe '"'"'/' \
   -e 's/^```$/'"'"'/' \
 > README.sh
@@ -68,7 +68,6 @@ if [ "$#" -eq 0 ]; then
   fi
 
   ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"
-  ansible localhost -m wait_for -a "port=5432 host=pgsql.${MY_DOMAIN}"
 
   cat << \EOF
 *** Wait until Clair Vulnerability database will be fully updated
@@ -80,6 +79,8 @@ EOF
   CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o jsonpath="{.items[0].metadata.name}")
   COUNT=0
   while ! kubectl logs -n harbor-system ${CLAIR_POD} | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
+
+  grep mylabs.dev /etc/hosts
 
   echo -e "\n\n*** Press ENTER to start\n"
   read A

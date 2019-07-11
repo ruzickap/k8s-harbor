@@ -9,12 +9,12 @@
 
 [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 
-sed docs/part-0{1,2,4}/README.md \
+grep mylabs.dev /etc/hosts
+
+sed docs/part-0{1,2,3,4}/README.md \
   -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
-  -e '/^Check if the tiller was installed properly/,/^Add Harbor Helm repository/d' \
-  -e 's/^helm install --wait/helm install/' \
   -e '/^Harbor architecture:/,$d' \
 | \
-sed -n '/^```bash$/,/^```$/p' \
+sed -n '/^```bash.*/,/^```$/p' \
 | \
-sed '/^```/d' | sh -x
+sed '/^```/d' | sh -eux
