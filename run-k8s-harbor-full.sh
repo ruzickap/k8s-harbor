@@ -3,7 +3,7 @@
 ################################################
 # include the magic
 ################################################
-test -f ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
+test -s ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
 . ./demo-magic.sh
 
 ################################################
@@ -53,7 +53,7 @@ clear
 sed docs/part-{01..08}/README.md \
   -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
 | \
-sed -n '/^```bash$/,/^```$/p;/^-----$/p' \
+sed -n '/^```bash.*/,/^```$/p;/^-----$/p' \
 | \
 sed \
   -e 's/^-----$/\
@@ -61,7 +61,7 @@ p  ""\
 p  "################################################################################################### Press <ENTER> to continue"\
 wait\
 /' \
-  -e 's/^```bash$/\
+  -e 's/^```bash.*/\
 pe '"'"'/' \
   -e 's/^```$/'"'"'/' \
 > README.sh

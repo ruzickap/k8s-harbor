@@ -2,6 +2,27 @@
 
 YouTube video: [https://youtu.be/XSszSd-TTCQ](https://youtu.be/XSszSd-TTCQ)
 
+## Add Project
+
+* Go to `Projects`, click on `NEW PROJECT` and create "private"
+  `my_project` project.
+
+You can also use the API directly:
+
+```bash
+curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://harbor.${MY_DOMAIN}/api/projects" -d \
+"{
+  \"project_name\": \"my_project\",
+  \"public\": 0
+}"
+```
+
+Create namespace which will be used later:
+
+```bash
+kubectl create namespace mytest
+```
+
 ## Upload Helm Chart using Web GUI
 
 Download the compressed Helm Chart of Rook:
@@ -31,7 +52,7 @@ Projects -> `library` -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
 
 Here is the API call:
 
-```bash
+```bash{3}
 curl -s -X POST -u "admin:admin" "https://harbor.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
   -H "Content-Type: multipart/form-data" \
   -F "chart=@rook-ceph-v1.0.0.tgz;type=application/x-yaml" \
@@ -68,7 +89,7 @@ helm repo list
 
 Output:
 
-```text
+```text{7}
 NAME                    URL
 stable                  https://kubernetes-charts.storage.googleapis.com
 local                   http://127.0.0.1:8879/charts
@@ -143,7 +164,7 @@ Harbor Project Helm Charts:
 
 Create GPG key in `.gnupg` directory:
 
-```bash
+```bash{12}
 export GNUPGHOME=$PWD/.gnupg
 mkdir ${GNUPGHOME} && chmod 0700 $PWD/.gnupg
 
@@ -166,7 +187,7 @@ gpg2 --verbose --batch --gen-key ${GNUPGHOME}/my_gpg_key
 
 Output:
 
-```text
+```text{17}
 gpg: keybox '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx' created
 gpg: Generating a basic OpenPGP key
 gpg: no running gpg-agent - starting '/usr/bin/gpg-agent'
@@ -195,7 +216,7 @@ gpg2 --list-secret-keys
 
 Output:
 
-```text
+```text{8}
 gpg: checking the trustdb
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
@@ -361,7 +382,7 @@ helm install --wait --name gitea --namespace gitea-system library/gitea \
 
 Output:
 
-```text
+```text{31}
 NAME:   gitea
 E0625 10:17:15.488085    6412 portforward.go:372] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:38255->127.0.0.1:39576: write tcp4 127.0.0.1:38255->127.0.0.1:39576: write: broken pipe
 LAST DEPLOYED: Tue Jun 25 10:17:13 2019

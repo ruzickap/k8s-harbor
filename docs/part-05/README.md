@@ -8,7 +8,7 @@ Let's do some initial Harbor configuration on second Harbor instance:
 If you are using Let's Encrypt "staging" you need to download and use their
 "Fake LE Root X1" certificate for curl, helm and k8s cluster:
 
-```bash
+```bash{9}
 test -d tmp || mkdir tmp
 cd tmp
 if [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ]; then
@@ -29,27 +29,6 @@ fi
 Output:
 
 ```text
-```
-
-## Add Project
-
-* Go to `Projects`, click on `NEW PROJECT` and create "private"
-  `my_project` project.
-
-You can also use the API directly:
-
-```bash
-curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://harbor.${MY_DOMAIN}/api/projects" -d \
-"{
-  \"project_name\": \"my_project\",
-  \"public\": 0
-}"
-```
-
-Create namespace which will be used later:
-
-```bash
-kubectl create namespace mytest
 ```
 
 ## LDAP Authentication
@@ -102,7 +81,7 @@ ldapsearch -LLL -x -h winad01.${MY_DOMAIN} -D cn=ansible,cn=Users,dc=mylabs,dc=d
 
 Output:
 
-```text
+```text{13-17}
 dn: CN=adgroup01,CN=Users,DC=mylabs,DC=dev
 description: AD User Group  01
 member: CN=aduser02,CN=Users,DC=mylabs,DC=dev
@@ -139,7 +118,7 @@ Configure LDAP/Active Directory authentication in Harbor by going to
 
 It's possible to use API call as well:
 
-```bash
+```bash{6}
 curl -u "admin:admin" -X PUT "https://harbor.${MY_DOMAIN}/api/configurations" -H "Content-Type: application/json" -d \
 "{
   \"auth_mode\": \"ldap_auth\",
