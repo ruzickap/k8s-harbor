@@ -1,7 +1,9 @@
 _
+ansible
 Asciinema
 Auth
 awscli
+bookinfo
 ChartMuseum
 Clair
 Cleanup
@@ -13,10 +15,12 @@ CustomResourceDefinition
 eksctl
 Gitea
 GitOps
+Istio
 Jetstack
 Jia
 Jiang
 k8s
+k8s-harbor
 kuard
 kubectl
 kubed

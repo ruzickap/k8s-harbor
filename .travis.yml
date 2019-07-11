@@ -16,16 +16,16 @@ jobs:
       node_js: 10
       install:
         # Install markdownlint and markdown-link-check
-        - npm install -g markdownlint-cli markdown-link-check markdown-spellcheck > /dev/null
+        - npm install -g markdownlint-cli markdown-link-check markdown-spellcheck
       script:
         # Markdown check
         - 'echo "{ MD013: { code_blocks: false } }" > /tmp/markdownlint_config.json'
-        - find . -name "*.md" -print0 | xargs -0 markdownlint -c /tmp/markdownlint_config.json
+        - find . -path ./node_modules -prune -o -name "*.md" -print0 | xargs -t -0 markdownlint -c /tmp/markdownlint_config.json
         # Link Checks
         - 'echo "{ \"ignorePatterns\": [ { \"pattern\": \"^(http|https)://localhost\" }, { \"pattern\": \"^(http|https)://.*${MY_DOMAIN}\" } ] }" > /tmp/config.json'
-        - find . -name "*.md" -print0 | xargs -0 markdown-link-check --config /tmp/config.json --quiet
+        - find . -path ./node_modules -prune -o -name "*.md" -print0 | xargs -t -0 markdown-link-check --config /tmp/config.json --quiet
         # Spell Check
-        - mdspell '**/*.md' --ignore-numbers --ignore-acronyms --report --en-gb
+        - mdspell '**/*.md' '!**/node_modules/**/*.md' --ignore-numbers --ignore-acronyms --report --en-gb
 
     - stage: Tests
       name: "Web links check"

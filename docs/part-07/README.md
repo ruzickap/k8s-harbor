@@ -50,11 +50,13 @@ docker images
 
 Output:
 
-```text
+```text{3}
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
 gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
 harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        2 months ago        23MB
 ```
+
+Push docker image to Harbor:
 
 ```bash
 docker push harbor.${MY_DOMAIN}/my_project/kuard-amd64:blue
@@ -99,7 +101,7 @@ docker push harbor.${MY_DOMAIN}/library/kuard-amd64:blue
 
 Output:
 
-```text
+```text{5}
 The push refers to repository [harbor.mylabs.dev/library/kuard-amd64]
 656e9c47289e: Mounted from my_project/kuard-amd64
 bcf2f368fe23: Mounted from my_project/kuard-amd64
@@ -240,7 +242,7 @@ docker images
 
 Output:
 
-```text
+```text{6}
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
 gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
 harbor.mylabs.dev/library/kuard-amd64      blue                1db936caa6ac        2 months ago        23MB
@@ -317,7 +319,7 @@ curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://harbo
   \"src_registry\": {
     \"id\": 1
   },
-  \"dest_namespace\": \"library/paulbouwer\",
+  \"dest_namespace\": \"library\",
   \"filters\": [{
     \"type\": \"name\",
     \"value\": \"paulbouwer/hello-kubernetes\"

@@ -21,6 +21,7 @@ across clouds.
 
 ## Requirements
 
+* [ansible](https://ansible.com)
 * [awscli](https://aws.amazon.com/cli/)
 * [AWS IAM Authenticator for Kubernetes](https://github.com/kubernetes-sigs/aws-iam-authenticator)
 * [AWS account](https://aws.amazon.com/account/)
@@ -30,7 +31,7 @@ across clouds.
 
 ## Objectives
 
-* Download and install Harbor to your cluster
+* Download and install Harbor to your Kubernetes cluster
 
 ## Lab Architecture
 

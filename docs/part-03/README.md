@@ -3,7 +3,8 @@
 Before we move on with other tasks it is necessary to install Nginx Ingress.
 It's also handy to install cert-manager for managing SSL certificates.
 
-<img src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png" width="200">
+<img src="https://raw.githubusercontent.com/jetstack/cert-manager/ed2c0e0b3df1d10c3ad219348ed7b1ba56771655/logo/logo.svg?sanitize=true"
+width="200">
 
 ## Install cert-manager
 
@@ -129,7 +130,7 @@ cat files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
 
 Output:
 
-```text
+```text{16,23,48}
 secret/aws-route53-secret-access-key-secret created
 clusterissuer.certmanager.k8s.io/selfsigning-issuer created
 clusterissuer.certmanager.k8s.io/letsencrypt-staging-dns created
@@ -212,7 +213,7 @@ envsubst < files/cert-manager-letsencrypt-aws-route53-certificate.yaml
 
 Output:
 
-```text
+```text{5}
 certificate.certmanager.k8s.io/ingress-cert-production created
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
@@ -248,7 +249,7 @@ installed (for now).
 [kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.9.0/guides/config-syncer/)
 across Kubernetes namespaces/clusters.
 
-Kubed - synchronize secret diagram
+Kubed - synchronize secret diagram:
 
 ![Kubed - synchronize secret](./kubed.svg "Kubed - synchronize secret")
 
@@ -452,7 +453,7 @@ kubectl get service -n nginx-ingress-system
 
 Output:
 
-```text
+```text{2}
 NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                  PORT(S)                      AGE
 nginx-ingress-controller        LoadBalancer   10.100.179.80    a36a632ee971f11e9867202d8c8e9254-1021705614.eu-central-1.elb.amazonaws.com   80:31754/TCP,443:32114/TCP   13s
 nginx-ingress-default-backend   ClusterIP      10.100.249.215   <none>                                                                       80/TCP                       13s
@@ -499,7 +500,7 @@ kubectl describe certificates -n cert-manager ingress-cert-${LETSENCRYPT_ENVIRON
 
 Output
 
-```text
+```text{26}
 Name:         ingress-cert-production
 Namespace:    cert-manager
 Labels:       <none>
@@ -583,7 +584,7 @@ echo | openssl s_client -showcerts -connect ${MY_DOMAIN}:443 | openssl x509 -inf
 
 Output:
 
-```text
+```text{14}
 depth=2 O = Digital Signature Trust Co., CN = DST Root CA X3
 verify return:1
 depth=1 C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3

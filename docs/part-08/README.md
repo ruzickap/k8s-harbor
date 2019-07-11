@@ -47,6 +47,53 @@ d626a8ad97a1: Mounted from my_project/nginx
 All images in that repositories should be automatically checked for
 vulnerabilities.
 
+## Scan existing application
+
+I'm going to replicate the "bookinfo" application used for testing Istio:
+[https://istio.io/docs/examples/bookinfo/](https://istio.io/docs/examples/bookinfo/)
+When the replication completes all images should be automatically scanned
+because I'm going to replicate everything into `library` project which has
+"Automatically scan images on push" feature enabled.
+
+Create new Replication Rule and initiate replication:
+
+```bash
+COUNTER=0
+for DOCKER_HUB_REPOSITORY in istio/examples-bookinfo-details-v1 istio/examples-bookinfo-ratings-v1 istio/examples-bookinfo-productpage-v1 istio/examples-bookinfo-reviews-v{1..3}; do
+  COUNTER=$((COUNTER+1))
+  echo "Replicating (${COUNTER}): ${DOCKER_HUB_REPOSITORY}"
+  curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://harbor.${MY_DOMAIN}/api/replication/policies" -d \
+    "{
+      \"name\": \"Replication of ${DOCKER_HUB_REPOSITORY}\",
+      \"type\": \"docker-hub\",
+      \"url\": \"https://hub.docker.com\",
+      \"description\": \"Replication Rule for ${DOCKER_HUB_REPOSITORY}\",
+      \"enabled\": true,
+      \"src_registry\": {
+        \"id\": 1
+      },
+      \"dest_namespace\": \"library\",
+      \"filters\": [{
+        \"type\": \"name\",
+        \"value\": \"${DOCKER_HUB_REPOSITORY}\"
+      },
+      {
+        \"type\": \"tag\",
+        \"value\": \"1.1*\"
+      }],
+      \"trigger\": {
+        \"type\": \"manual\"
+      }
+    }"
+  curl -X POST -H "Content-Type: application/json" -u "admin:admin" "https://harbor.${MY_DOMAIN}/api/replication/executions" -d "{ \"policy_id\": $((COUNTER+1)) }"
+done
+```
+
+![DockerHub Replication](./DockerHub_Replication.svg "DockerHub Replication")
+
+After a while all images used by "bookinfo" application should be replicated
+into `library` project and all should be automatically scanned.
+
 ## Prevent vulnerable images from running
 
 Now there are two container images in the `library` repository:
@@ -141,7 +188,7 @@ kubectl -n mytest describe pod $POD_NAME
 
 Output:
 
-```text
+```text{49}
 Name:               nginx-74469d5d6f-ztc6w
 Namespace:          mytest
 Priority:           0
@@ -222,7 +269,7 @@ docker push harbor.${MY_DOMAIN}/my_rbac_test_project/kuard-amd64:blue
 
 Output:
 
-```text
+```text{9}
 WARNING! Your password will be stored unencrypted in /home/pruzicka/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
