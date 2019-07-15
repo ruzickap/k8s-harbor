@@ -362,7 +362,7 @@ The Replications and Execution tabs looks like:
 Let's run the replicated docker image:
 
 ```bash
-kubectl run hello-kubernetes --image=harbor.${MY_DOMAIN}/library/paulbouwer/hello-kubernetes:1.5 --port=8080 --expose=true --labels="app=hello-kubernetes" -n mytest
+kubectl run hello-kubernetes --image=harbor.${MY_DOMAIN}/library/hello-kubernetes:1.5 --port=8080 --expose=true --labels="app=hello-kubernetes" -n mytest
 ```
 
 Output:
