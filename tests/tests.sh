@@ -53,7 +53,6 @@ kubectl get pods -l k8s-app=kube-dns -n kube-system -o name | xargs kubectl dele
 
 echo -e "\n\n******************************\n*** Main tests\n******************************\n"
 
-set +x
 test -s ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
 . ./demo-magic.sh
 

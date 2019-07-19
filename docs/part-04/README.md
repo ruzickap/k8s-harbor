@@ -40,7 +40,7 @@ Output:
   "certmanager.k8s.io/ip-sans": "",
   "certmanager.k8s.io/issuer-kind": "ClusterIssuer",
   "certmanager.k8s.io/issuer-name": "letsencrypt-production-dns",
-  "kubed.appscode.com/origin": "{\"namespace\":\"cert-manager\",\"name\":\"ingress-cert-production\",\"uid\":\"c6e141f7-971e-11e9-8672-02d8c8e92542\",\"resourceVersion\":\"17751\"}"
+  "kubed.appscode.com/origin": "{\"namespace\":\"cert-manager\",\"name\":\"ingress-cert-production\",\"uid\":\"51b889ad-aa0a-11e9-8d10-06a66d4e34ba\",\"resourceVersion\":\"2916\"}"
 }
 {
   "certmanager.k8s.io/certificate-name": "ingress-cert-production",
@@ -79,75 +79,73 @@ Output:
 
 ```text
 NAME:   harbor
-LAST DEPLOYED: Tue Jun 25 11:24:31 2019
+LAST DEPLOYED: Fri Jul 19 11:49:59 2019
 NAMESPACE: harbor-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                         DATA  AGE
-harbor-harbor-chartmuseum    23    1s
-harbor-harbor-clair          1     1s
-harbor-harbor-core           34    1s
-harbor-harbor-jobservice     1     1s
-harbor-harbor-notary-server  5     1s
-harbor-harbor-registry       2     1s
+harbor-harbor-chartmuseum    23    65s
+harbor-harbor-clair          1     65s
+harbor-harbor-core           34    65s
+harbor-harbor-jobservice     1     65s
+harbor-harbor-notary-server  5     65s
+harbor-harbor-registry       2     65s
 
 ==> v1/Deployment
 NAME                         READY  UP-TO-DATE  AVAILABLE  AGE
-harbor-harbor-chartmuseum    0/1    1           0          1s
-harbor-harbor-clair          0/1    1           0          1s
-harbor-harbor-core           0/1    1           0          1s
-harbor-harbor-jobservice     0/1    1           0          1s
-harbor-harbor-notary-server  0/1    1           0          1s
-harbor-harbor-notary-signer  0/1    0           0          1s
-harbor-harbor-portal         0/1    0           0          1s
-harbor-harbor-registry       0/1    0           0          1s
-
-==> v1/PersistentVolumeClaim
-NAME                       STATUS  VOLUME                                    CAPACITY  ACCESS MODES  STORAGECLASS  AGE
-harbor-harbor-chartmuseum  Bound   pvc-0afcf35c-972b-11e9-8199-063f437da27c  1Gi       RWO           gp2           1s
-harbor-harbor-jobservice   Bound   pvc-0afdc358-972b-11e9-8199-063f437da27c  1Gi       RWO           gp2           1s
-harbor-harbor-registry     Bound   pvc-0aff05c7-972b-11e9-8199-063f437da27c  1Gi       RWO           gp2           1s
+harbor-harbor-chartmuseum    1/1    1           1          65s
+harbor-harbor-clair          1/1    1           1          65s
+harbor-harbor-core           1/1    1           1          65s
+harbor-harbor-jobservice     1/1    1           1          65s
+harbor-harbor-notary-server  1/1    1           1          65s
+harbor-harbor-notary-signer  1/1    1           1          65s
+harbor-harbor-portal         1/1    1           1          65s
+harbor-harbor-registry       1/1    1           1          65s
 
 ==> v1/Pod(related)
-NAME                                         READY  STATUS             RESTARTS  AGE
-harbor-harbor-chartmuseum-d495cf79c-pn2xx    0/1    Pending            0         1s
-harbor-harbor-clair-6f46474c5d-2bpl8         0/1    ContainerCreating  0         1s
-harbor-harbor-core-5d54dbc867-hb9b9          0/1    ContainerCreating  0         1s
-harbor-harbor-jobservice-9944fd86-gc2sc      0/1    Pending            0         1s
-harbor-harbor-notary-server-c8f6557cc-rdvfs  0/1    ContainerCreating  0         1s
-harbor-harbor-notary-signer-d8f96fd5-4twbh   0/1    ContainerCreating  0         1s
-harbor-harbor-portal-76c496bd6c-mpdhp        0/1    ContainerCreating  0         1s
-harbor-harbor-redis-0                        0/1    Pending            0         1s
-harbor-harbor-registry-54cc857d87-j7rqn      0/2    ContainerCreating  0         1s
+NAME                                          READY  STATUS   RESTARTS  AGE
+harbor-harbor-chartmuseum-8647f45994-8nvd7    1/1    Running  0         65s
+harbor-harbor-clair-55c56ccf4-kjc67           1/1    Running  2         65s
+harbor-harbor-core-8554f8c5cd-n5dks           1/1    Running  0         65s
+harbor-harbor-database-0                      1/1    Running  0         64s
+harbor-harbor-jobservice-5989b8c6c4-nwxns     1/1    Running  0         65s
+harbor-harbor-notary-server-694d84d7-vwgdm    1/1    Running  0         65s
+harbor-harbor-notary-signer-749cbf5948-b7b6g  1/1    Running  0         65s
+harbor-harbor-portal-64899d584-gtr4x          1/1    Running  0         64s
+harbor-harbor-redis-0                         1/1    Running  0         64s
+harbor-harbor-registry-69bb76d7-8pcf9         2/2    Running  0         64s
 
 ==> v1/Secret
 NAME                       TYPE    DATA  AGE
-harbor-harbor-chartmuseum  Opaque  1     1s
-harbor-harbor-core         Opaque  7     1s
-harbor-harbor-jobservice   Opaque  1     1s
-harbor-harbor-registry     Opaque  2     1s
+harbor-harbor-chartmuseum  Opaque  1     65s
+harbor-harbor-core         Opaque  7     65s
+harbor-harbor-database     Opaque  1     65s
+harbor-harbor-jobservice   Opaque  1     65s
+harbor-harbor-registry     Opaque  2     65s
 
 ==> v1/Service
 NAME                         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
-harbor-harbor-chartmuseum    ClusterIP  10.100.105.225  <none>       80/TCP             1s
-harbor-harbor-clair          ClusterIP  10.100.176.139  <none>       6060/TCP,6061/TCP  1s
-harbor-harbor-core           ClusterIP  10.100.162.127  <none>       80/TCP             1s
-harbor-harbor-jobservice     ClusterIP  10.100.119.204  <none>       80/TCP             1s
-harbor-harbor-notary-server  ClusterIP  10.100.233.82   <none>       4443/TCP           1s
-harbor-harbor-notary-signer  ClusterIP  10.100.3.202    <none>       7899/TCP           1s
-harbor-harbor-portal         ClusterIP  10.100.232.228  <none>       80/TCP             1s
-harbor-harbor-redis          ClusterIP  10.100.48.79    <none>       6379/TCP           1s
-harbor-harbor-registry       ClusterIP  10.100.153.160  <none>       5000/TCP,8080/TCP  1s
+harbor-harbor-chartmuseum    ClusterIP  10.100.188.79   <none>       80/TCP             65s
+harbor-harbor-clair          ClusterIP  10.100.157.91   <none>       6060/TCP,6061/TCP  65s
+harbor-harbor-core           ClusterIP  10.100.95.26    <none>       80/TCP             65s
+harbor-harbor-database       ClusterIP  10.100.126.163  <none>       5432/TCP           65s
+harbor-harbor-jobservice     ClusterIP  10.100.210.198  <none>       80/TCP             65s
+harbor-harbor-notary-server  ClusterIP  10.100.249.4    <none>       4443/TCP           65s
+harbor-harbor-notary-signer  ClusterIP  10.100.192.142  <none>       7899/TCP           65s
+harbor-harbor-portal         ClusterIP  10.100.154.171  <none>       80/TCP             65s
+harbor-harbor-redis          ClusterIP  10.100.156.84   <none>       6379/TCP           65s
+harbor-harbor-registry       ClusterIP  10.100.27.218   <none>       5000/TCP,8080/TCP  65s
 
 ==> v1/StatefulSet
-NAME                 READY  AGE
-harbor-harbor-redis  0/1    1s
+NAME                    READY  AGE
+harbor-harbor-database  1/1    65s
+harbor-harbor-redis     1/1    64s
 
 ==> v1beta1/Ingress
-NAME                   HOSTS                                ADDRESS  PORTS  AGE
-harbor-harbor-ingress  harbor.mylabs.dev,notary.mylabs.dev  80, 443  1s
+NAME                   HOSTS                                ADDRESS      PORTS    AGE
+harbor-harbor-ingress  harbor.mylabs.dev,notary.mylabs.dev  54.93.96.15  80, 443  64s
 
 
 NOTES:
@@ -172,7 +170,7 @@ Output:
 ```text{6-7,11,18}
 Name:             harbor-harbor-ingress
 Namespace:        harbor-system
-Address:          18.196.144.15
+Address:          54.93.96.15
 Default backend:  default-http-backend:80 (<none>)
 TLS:
   ingress-cert-production terminates harbor.mylabs.dev
@@ -181,24 +179,24 @@ Rules:
   Host               Path  Backends
   ----               ----  --------
   harbor.mylabs.dev
-                     /             harbor-harbor-portal:80 (192.168.58.78:80)
-                     /api/         harbor-harbor-core:80 (192.168.19.87:8080)
-                     /service/     harbor-harbor-core:80 (192.168.19.87:8080)
-                     /v2/          harbor-harbor-core:80 (192.168.19.87:8080)
-                     /chartrepo/   harbor-harbor-core:80 (192.168.19.87:8080)
-                     /c/           harbor-harbor-core:80 (192.168.19.87:8080)
+                     /             harbor-harbor-portal:80 (192.168.52.252:80)
+                     /api/         harbor-harbor-core:80 (192.168.34.28:8080)
+                     /service/     harbor-harbor-core:80 (192.168.34.28:8080)
+                     /v2/          harbor-harbor-core:80 (192.168.34.28:8080)
+                     /chartrepo/   harbor-harbor-core:80 (192.168.34.28:8080)
+                     /c/           harbor-harbor-core:80 (192.168.34.28:8080)
   notary.mylabs.dev
-                     /   harbor-harbor-notary-server:4443 (192.168.22.110:4443)
+                     /   harbor-harbor-notary-server:4443 (192.168.47.135:4443)
 Annotations:
-  ingress.kubernetes.io/proxy-body-size:        0
   ingress.kubernetes.io/ssl-redirect:           true
   nginx.ingress.kubernetes.io/proxy-body-size:  0
   nginx.ingress.kubernetes.io/ssl-redirect:     true
+  ingress.kubernetes.io/proxy-body-size:        0
 Events:
-  Type    Reason  Age    From                      Message
-  ----    ------  ----   ----                      -------
-  Normal  CREATE  6m56s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
-  Normal  UPDATE  6m56s  nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Type    Reason  Age   From                      Message
+  ----    ------  ----  ----                      -------
+  Normal  CREATE  29m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Normal  UPDATE  29m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
 ```
 
 Open the [https://harbor.mylabs.dev](https://harbor.mylabs.dev):

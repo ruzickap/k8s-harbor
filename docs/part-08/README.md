@@ -89,10 +89,27 @@ for DOCKER_HUB_REPOSITORY in istio/examples-bookinfo-details-v1 istio/examples-b
 done
 ```
 
+Output:
+
+```text
+Replicating (1): istio/examples-bookinfo-details-v1
+Replicating (2): istio/examples-bookinfo-ratings-v1
+Replicating (3): istio/examples-bookinfo-productpage-v1
+Replicating (4): istio/examples-bookinfo-reviews-v1
+Replicating (5): istio/examples-bookinfo-reviews-v2
+Replicating (6): istio/examples-bookinfo-reviews-v3
+```
+
 ![DockerHub Replication](./DockerHub_Replication.svg "DockerHub Replication")
 
 After a while all images used by "bookinfo" application should be replicated
 into `library` project and all should be automatically scanned.
+
+![Harbor Project Repository list](./harbor_project_repository_list.png
+"Harbor Project Repository list")
+
+![Harbor Project library image list](./harbor_project_library_examples-bookinfo-reviews-v3.png
+"Harbor Project library image list")
 
 ## Prevent vulnerable images from running
 
@@ -175,8 +192,8 @@ kubectl -n mytest get pods --selector=app=nginx
 Output:
 
 ```text
-NAME                     READY   STATUS             RESTARTS   AGE
-nginx-74469d5d6f-ztc6w   0/1     ImagePullBackOff   0          13s
+NAME                    READY   STATUS             RESTARTS   AGE
+nginx-d879bd8db-nmzc8   0/1     ImagePullBackOff   0          25s
 ```
 
 The details of one of the pods looks like:
@@ -189,18 +206,18 @@ kubectl -n mytest describe pod $POD_NAME
 Output:
 
 ```text{49}
-Name:               nginx-74469d5d6f-ztc6w
+Name:               nginx-d879bd8db-nmzc8
 Namespace:          mytest
 Priority:           0
 PriorityClassName:  <none>
-Node:               ip-192-168-4-142.eu-central-1.compute.internal/192.168.4.142
-Start Time:         Tue, 25 Jun 2019 10:31:30 +0200
+Node:               ip-192-168-56-161.eu-central-1.compute.internal/192.168.56.161
+Start Time:         Fri, 19 Jul 2019 12:52:21 +0200
 Labels:             app=nginx
-                    pod-template-hash=74469d5d6f
-Annotations:        <none>
+                    pod-template-hash=d879bd8db
+Annotations:        kubernetes.io/psp: eks.privileged
 Status:             Pending
-IP:                 192.168.17.1
-Controlled By:      ReplicaSet/nginx-74469d5d6f
+IP:                 192.168.61.206
+Controlled By:      ReplicaSet/nginx-d879bd8db
 Containers:
   nginx:
     Container ID:
@@ -214,7 +231,7 @@ Containers:
     Restart Count:  0
     Environment:    <none>
     Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-86xhr (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-5lzmk (ro)
 Conditions:
   Type              Status
   Initialized       True
@@ -222,23 +239,23 @@ Conditions:
   ContainersReady   False
   PodScheduled      True
 Volumes:
-  default-token-86xhr:
+  default-token-5lzmk:
     Type:        Secret (a volume populated by a Secret)
-    SecretName:  default-token-86xhr
+    SecretName:  default-token-5lzmk
     Optional:    false
 QoS Class:       BestEffort
 Node-Selectors:  <none>
 Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
                  node.kubernetes.io/unreachable:NoExecute for 300s
 Events:
-  Type     Reason     Age                From                                                     Message
-  ----     ------     ----               ----                                                     -------
-  Normal   Scheduled  20s                default-scheduler                                        Successfully assigned mytest/nginx-74469d5d6f-ztc6w to ip-192-168-4-142.eu-central-1.compute.internal
-  Normal   BackOff    18s (x2 over 19s)  kubelet, ip-192-168-4-142.eu-central-1.compute.internal  Back-off pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
-  Warning  Failed     18s (x2 over 19s)  kubelet, ip-192-168-4-142.eu-central-1.compute.internal  Error: ImagePullBackOff
-  Normal   Pulling    7s (x2 over 20s)   kubelet, ip-192-168-4-142.eu-central-1.compute.internal  pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
-  Warning  Failed     7s (x2 over 19s)   kubelet, ip-192-168-4-142.eu-central-1.compute.internal  Failed to pull image "harbor.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
-  Warning  Failed     7s (x2 over 19s)   kubelet, ip-192-168-4-142.eu-central-1.compute.internal  Error: ErrImagePull
+  Type     Reason     Age                From                                                      Message
+  ----     ------     ----               ----                                                      -------
+  Normal   Scheduled  47s                default-scheduler                                         Successfully assigned mytest/nginx-d879bd8db-nmzc8 to ip-192-168-56-161.eu-central-1.compute.internal
+  Normal   BackOff    16s (x3 over 45s)  kubelet, ip-192-168-56-161.eu-central-1.compute.internal  Back-off pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
+  Warning  Failed     16s (x3 over 45s)  kubelet, ip-192-168-56-161.eu-central-1.compute.internal  Error: ImagePullBackOff
+  Normal   Pulling    2s (x3 over 46s)   kubelet, ip-192-168-56-161.eu-central-1.compute.internal  pulling image "harbor.mylabs.dev/library/nginx:1.13.12"
+  Warning  Failed     2s (x3 over 46s)   kubelet, ip-192-168-56-161.eu-central-1.compute.internal  Failed to pull image "harbor.mylabs.dev/library/nginx:1.13.12": rpc error: code = Unknown desc = Error response from daemon: unknown: The severity of vulnerability of the image: "high" is equal or higher than the threshold in project setting: "high".
+  Warning  Failed     2s (x3 over 46s)   kubelet, ip-192-168-56-161.eu-central-1.compute.internal  Error: ErrImagePull
 ```
 
 You are not able to run docker images with "High" security issues. You can see
@@ -297,7 +314,11 @@ curl -u "admin:admin" -X POST "https://harbor.${MY_DOMAIN}/api/projects/${PROJEC
 }"
 ```
 
-![Harbor - Project members](./harbor_project_members.png "Harbor - Project members")
+![Harbor - Project add new member](./harbor_project_new_member.png
+"Harbor - Project add new member")
+
+![Harbor - Project members](./harbor_project_members.png
+"Harbor - Project members")
 
 Push the container image again:
 

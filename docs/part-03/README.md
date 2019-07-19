@@ -56,40 +56,40 @@ Output:
 ```text
 "jetstack" has been added to your repositories
 NAME:   cert-manager
-LAST DEPLOYED: Tue Jun 25 09:54:02 2019
+LAST DEPLOYED: Fri Jul 19 11:47:58 2019
 NAMESPACE: cert-manager
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME               AGE
-cert-manager-edit  7s
-cert-manager-view  7s
+cert-manager-edit  10s
+cert-manager-view  10s
 
 ==> v1/Pod(related)
 NAME                                      READY  STATUS   RESTARTS  AGE
-cert-manager-776cd4f499-jtpjr             1/1    Running  0         7s
-cert-manager-cainjector-744b987848-7nmqp  1/1    Running  0         7s
+cert-manager-578fc6ff6-qjvrr              1/1    Running  0         10s
+cert-manager-cainjector-5975fd64c5-82c8x  1/1    Running  0         10s
 
 ==> v1/ServiceAccount
 NAME                     SECRETS  AGE
-cert-manager             1        7s
-cert-manager-cainjector  1        7s
+cert-manager             1        10s
+cert-manager-cainjector  1        10s
 
 ==> v1beta1/ClusterRole
 NAME                     AGE
-cert-manager             7s
-cert-manager-cainjector  7s
+cert-manager             10s
+cert-manager-cainjector  10s
 
 ==> v1beta1/ClusterRoleBinding
 NAME                     AGE
-cert-manager             7s
-cert-manager-cainjector  7s
+cert-manager             10s
+cert-manager-cainjector  10s
 
 ==> v1beta1/Deployment
 NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
-cert-manager             1/1    1           1          7s
-cert-manager-cainjector  1/1    1           1          7s
+cert-manager             1/1    1           1          10s
+cert-manager-cainjector  1/1    1           1          10s
 
 
 NOTES:
@@ -277,44 +277,44 @@ Output:
 
 ```text
 NAME:   kubed
-LAST DEPLOYED: Tue Jun 25 09:57:48 2019
+LAST DEPLOYED: Fri Jul 19 11:48:10 2019
 NAMESPACE: kube-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ClusterRole
 NAME         AGE
-kubed-kubed  2s
+kubed-kubed  4s
 
 ==> v1/ClusterRoleBinding
 NAME                                  AGE
-kubed-kubed                           2s
-kubed-kubed-apiserver-auth-delegator  2s
+kubed-kubed                           4s
+kubed-kubed-apiserver-auth-delegator  4s
 
 ==> v1/Pod(related)
-NAME                         READY  STATUS             RESTARTS  AGE
-kubed-kubed-76b4dcd9f-6g79p  0/1    ContainerCreating  0         2s
+NAME                          READY  STATUS             RESTARTS  AGE
+kubed-kubed-75789b6cc6-6zrst  0/1    ContainerCreating  0         4s
 
 ==> v1/RoleBinding
 NAME                                                          AGE
-kubed-kubed-apiserver-extension-server-authentication-reader  2s
+kubed-kubed-apiserver-extension-server-authentication-reader  4s
 
 ==> v1/Secret
 NAME                        TYPE    DATA  AGE
-kubed-kubed                 Opaque  1     2s
-kubed-kubed-apiserver-cert  Opaque  2     2s
+kubed-kubed                 Opaque  1     4s
+kubed-kubed-apiserver-cert  Opaque  2     4s
 
 ==> v1/Service
 NAME         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
-kubed-kubed  ClusterIP  10.100.111.202  <none>       443/TCP  2s
+kubed-kubed  ClusterIP  10.100.193.123  <none>       443/TCP  4s
 
 ==> v1/ServiceAccount
 NAME         SECRETS  AGE
-kubed-kubed  1        2s
+kubed-kubed  1        4s
 
 ==> v1beta1/Deployment
 NAME         READY  UP-TO-DATE  AVAILABLE  AGE
-kubed-kubed  0/1    1           0          2s
+kubed-kubed  0/1    1           0          4s
 
 
 NOTES:
@@ -355,49 +355,49 @@ Output:
 
 ```text
 NAME:   nginx-ingress
-LAST DEPLOYED: Tue Jun 25 09:59:52 2019
+LAST DEPLOYED: Fri Jul 19 11:48:17 2019
 NAMESPACE: nginx-ingress-system
 STATUS: DEPLOYED
 
 RESOURCES:
 ==> v1/ConfigMap
 NAME                      DATA  AGE
-nginx-ingress-controller  1     3s
+nginx-ingress-controller  1     8s
 
 ==> v1/Pod(related)
 NAME                                            READY  STATUS             RESTARTS  AGE
-nginx-ingress-controller-947555496-b8cdk        0/1    ContainerCreating  0         3s
-nginx-ingress-default-backend-6694789b87-c2scz  1/1    Running            0         3s
+nginx-ingress-controller-7b59c7c7bc-nhmq8       0/1    ContainerCreating  0         8s
+nginx-ingress-default-backend-6d489448cb-d9brb  1/1    Running            0         8s
 
 ==> v1/Service
-NAME                           TYPE          CLUSTER-IP      EXTERNAL-IP       PORT(S)                     AGE
-nginx-ingress-controller       LoadBalancer  10.100.179.80   a36a632ee971f...  80:31754/TCP,443:32114/TCP  3s
-nginx-ingress-default-backend  ClusterIP     10.100.249.215  <none>            80/TCP                      3s
+NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.37.102  a55fd2fadaa0a...  80:30958/TCP,443:31932/TCP  8s
+nginx-ingress-default-backend  ClusterIP     10.100.15.87   <none>            80/TCP                      8s
 
 ==> v1/ServiceAccount
 NAME           SECRETS  AGE
-nginx-ingress  1        3s
+nginx-ingress  1        8s
 
 ==> v1beta1/ClusterRole
 NAME           AGE
-nginx-ingress  3s
+nginx-ingress  8s
 
 ==> v1beta1/ClusterRoleBinding
 NAME           AGE
-nginx-ingress  3s
+nginx-ingress  8s
 
 ==> v1beta1/Deployment
 NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
-nginx-ingress-controller       0/1    1           0          3s
-nginx-ingress-default-backend  1/1    1           1          3s
+nginx-ingress-controller       0/1    1           0          8s
+nginx-ingress-default-backend  1/1    1           1          8s
 
 ==> v1beta1/Role
 NAME           AGE
-nginx-ingress  3s
+nginx-ingress  8s
 
 ==> v1beta1/RoleBinding
 NAME           AGE
-nginx-ingress  3s
+nginx-ingress  8s
 
 
 NOTES:
@@ -454,9 +454,9 @@ kubectl get service -n nginx-ingress-system
 Output:
 
 ```text{2}
-NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                  PORT(S)                      AGE
-nginx-ingress-controller        LoadBalancer   10.100.179.80    a36a632ee971f11e9867202d8c8e9254-1021705614.eu-central-1.elb.amazonaws.com   80:31754/TCP,443:32114/TCP   13s
-nginx-ingress-default-backend   ClusterIP      10.100.249.215   <none>                                                                       80/TCP                       13s
+NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP                                                                  PORT(S)                      AGE
+nginx-ingress-controller        LoadBalancer   10.100.37.102   a55fd2fadaa0a11e9bcf2026dca96845-1478956562.eu-central-1.elb.amazonaws.com   80:30958/TCP,443:31932/TCP   8s
+nginx-ingress-default-backend   ClusterIP      10.100.15.87    <none>                                                                       80/TCP                       8s
 ```
 
 Create DNS record `mylabs.dev` for the loadbalancer created by nginx-ingress:
@@ -473,12 +473,12 @@ Output:
 
 ```json
 {
-    "ChangeInfo": {
-        "Id": "/change/C3MC53EPX1MZN0",
-        "Status": "PENDING",
-        "SubmittedAt": "2019-06-25T08:00:31.499Z",
-        "Comment": "A new record set for the zone."
-    }
+  "ChangeInfo": {
+    "Id": "/change/C2YV79SSX0CS95",
+    "Status": "PENDING",
+    "SubmittedAt": "2019-07-19T09:48:29.092Z",
+    "Comment": "A new record set for the zone."
+  }
 }
 ```
 
@@ -509,11 +509,11 @@ Annotations:  kubectl.kubernetes.io/last-applied-configuration:
 API Version:  certmanager.k8s.io/v1alpha1
 Kind:         Certificate
 Metadata:
-  Creation Timestamp:  2019-06-25T07:56:45Z
-  Generation:          1
-  Resource Version:    17630
+  Creation Timestamp:  2019-07-19T09:48:10Z
+  Generation:          4
+  Resource Version:    2919
   Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/cert-manager/certificates/ingress-cert-production
-  UID:                 c6b7f758-971e-11e9-8672-02d8c8e92542
+  UID:                 5131721b-aa0a-11e9-bcf2-026dca968456
 Spec:
   Acme:
     Config:
@@ -530,20 +530,21 @@ Spec:
   Secret Name:  ingress-cert-production
 Status:
   Conditions:
-    Last Transition Time:  2019-06-25T07:58:28Z
+    Last Transition Time:  2019-07-19T09:49:54Z
     Message:               Certificate is up to date and has not expired
     Reason:                Ready
     Status:                True
     Type:                  Ready
-  Not After:               2019-09-23T06:58:27Z
+  Not After:               2019-10-17T08:49:53Z
 Events:
-  Type    Reason              Age    From          Message
-  ----    ------              ----   ----          -------
-  Normal  Generated           4m     cert-manager  Generated new private key
-  Normal  GenerateSelfSigned  4m     cert-manager  Generated temporary self signed certificate
-  Normal  OrderCreated        4m     cert-manager  Created Order resource "ingress-cert-production-20059064"
-  Normal  OrderComplete       2m17s  cert-manager  Order "ingress-cert-production-20059064" completed successfully
-  Normal  CertIssued          2m17s  cert-manager  Certificate issued successfully
+  Type     Reason              Age                  From          Message
+  ----     ------              ----                 ----          -------
+  Warning  IssuerNotReady      105s (x2 over 105s)  cert-manager  Issuer letsencrypt-production-dns not ready
+  Normal   Generated           105s                 cert-manager  Generated new private key
+  Normal   GenerateSelfSigned  105s                 cert-manager  Generated temporary self signed certificate
+  Normal   OrderCreated        105s                 cert-manager  Created Order resource "ingress-cert-production-20059064"
+  Normal   OrderComplete       1s                   cert-manager  Order "ingress-cert-production-20059064" completed successfully
+  Normal   CertIssued          1s                   cert-manager  Certificate issued successfully
 ```
 
 The Kubernetes "secret" in `cert-manager` namespace should contain the
@@ -570,9 +571,9 @@ Type:  kubernetes.io/tls
 
 Data
 ====
+ca.crt:   0 bytes
 tls.crt:  3550 bytes
 tls.key:  1675 bytes
-ca.crt:   0 bytes
 ```
 
 Check the SSL certificate:
@@ -596,12 +597,12 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            03:6a:44:af:11:ed:3f:58:f1:1d:68:fc:9a:dd:13:d4:06:a0
+            03:cf:14:18:90:0e:c8:7f:c2:39:eb:e5:dc:42:d7:c6:7a:a6
         Signature Algorithm: sha256WithRSAEncryption
         Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
         Validity
-            Not Before: Jun 25 06:58:27 2019 GMT
-            Not After : Sep 23 06:58:27 2019 GMT
+            Not Before: Jul 19 08:49:53 2019 GMT
+            Not After : Oct 17 08:49:53 2019 GMT
         Subject: CN = *.mylabs.dev
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
@@ -617,7 +618,7 @@ Certificate:
             X509v3 Basic Constraints: critical
                 CA:FALSE
             X509v3 Subject Key Identifier:
-                0A:72:0D:F1:B4:51:CB:1C:76:04:84:87:D5:76:71:E0:6D:26:D0:00
+                44:C9:D2:B1:71:D6:94:92:67:DB:8C:C9:7E:0C:68:10:C3:10:41:D9
             X509v3 Authority Key Identifier:
                 keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
 

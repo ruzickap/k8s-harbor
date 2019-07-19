@@ -60,7 +60,7 @@ Output:
 
 ```text
 NAME                             READY   STATUS    RESTARTS   AGE
-tiller-deploy-7b659b7fbd-rwqmr   1/1     Running   0          165m
+tiller-deploy-845fb7cfc6-k47c2   1/1     Running   0          9s
 ```
 
 Add [Helm plugin](https://github.com/chartmuseum/helm-push) to push chart

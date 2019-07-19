@@ -52,8 +52,8 @@ Output:
 
 ```text{3}
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
-gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
-harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        2 months ago        23MB
+gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        3 months ago        23MB
+harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        3 months ago        23MB
 ```
 
 Push docker image to Harbor:
@@ -97,6 +97,7 @@ export DOCKER_CONTENT_TRUST_SERVER=https://notary.${MY_DOMAIN}
 export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="mypassphrase123"
 export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="rootpassphrase123"
 docker push harbor.${MY_DOMAIN}/library/kuard-amd64:blue
+unset DOCKER_CONTENT_TRUST
 ```
 
 Output:
@@ -158,7 +159,7 @@ while ! kubectl logs -n harbor-system ${CLAIR_POD} | grep "update finished"; do 
 Output:
 
 ```json
-{"Event":"update finished","Level":"info","Location":"updater.go:223","Time":"2019-06-25 06:52:08.402571"}
+{"Event":"update finished","Level":"info","Location":"updater.go:223","Time":"2019-07-19 10:15:24.517724"}
 ```
 
 See if "Vulnerability database" was successfully updated using API:
@@ -171,27 +172,27 @@ Output:
 
 ```json
 {
-  "overall_last_update": 1561445528,
+  "overall_last_update": 1563531324,
   "details": [
     {
-      "namespace": "oracle",
-      "last_update": 1561445528
-    },
-    {
-      "namespace": "centos",
-      "last_update": 1561445528
+      "namespace": "debian",
+      "last_update": 1563531324
     },
     {
       "namespace": "alpine",
-      "last_update": 1561445528
-    },
-    {
-      "namespace": "debian",
-      "last_update": 1561445528
+      "last_update": 1563531324
     },
     {
       "namespace": "ubuntu",
-      "last_update": 1561445528
+      "last_update": 1563531324
+    },
+    {
+      "namespace": "oracle",
+      "last_update": 1563531324
+    },
+    {
+      "namespace": "centos",
+      "last_update": 1563531324
     }
   ]
 }
@@ -213,7 +214,6 @@ Stretch from Docker Hub. The image is is one year old:
 [https://hub.docker.com/_/nginx?tab=tags&page=5](https://hub.docker.com/_/nginx?tab=tags&page=5)
 
 ```bash
-unset DOCKER_CONTENT_TRUST
 docker pull nginx:1.13.12
 ```
 
@@ -244,9 +244,9 @@ Output:
 
 ```text{6}
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
-gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        2 months ago        23MB
-harbor.mylabs.dev/library/kuard-amd64      blue                1db936caa6ac        2 months ago        23MB
-harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        2 months ago        23MB
+gcr.io/kuar-demo/kuard-amd64               blue                1db936caa6ac        3 months ago        23MB
+harbor.mylabs.dev/library/kuard-amd64      blue                1db936caa6ac        3 months ago        23MB
+harbor.mylabs.dev/my_project/kuard-amd64   blue                1db936caa6ac        3 months ago        23MB
 nginx                                      1.13.12             ae513a47849c        14 months ago       109MB
 harbor.mylabs.dev/my_project/nginx         1.13.12             ae513a47849c        14 months ago       109MB
 ```

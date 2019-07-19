@@ -58,7 +58,7 @@ kubectl delete namespace mytest --wait=false
 Cleanup + Remove Helm:
 
 ```bash
-helm repo remove harbor jetstack appscode my_project_helm_repo library
+helm repo remove harbor jetstack appscode library
 helm reset --remove-helm-home
 kubectl delete serviceaccount tiller --namespace kube-system --wait=false
 kubectl delete clusterrolebinding tiller-cluster-rule --wait=false
@@ -83,11 +83,10 @@ Output:
 [ℹ]  using region eu-central-1
 [ℹ]  deleting EKS cluster "pruzicka-k8s-harbor"
 [✔]  kubeconfig has been updated
-[ℹ]  2 sequential tasks: { delete nodegroup "ng-a9d9c670", delete cluster control plane "pruzicka-k8s-harbor" }
-[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670"
-[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-a9d9c670" to get deleted
+[ℹ]  2 sequential tasks: { delete nodegroup "ng-d1b535b2", delete cluster control plane "pruzicka-k8s-harbor" [async] }
+[ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d1b535b2"
+[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-nodegroup-ng-d1b535b2" to get deleted
 [ℹ]  will delete stack "eksctl-pruzicka-k8s-harbor-cluster"
-[ℹ]  waiting for stack "eksctl-pruzicka-k8s-harbor-cluster" to get deleted
 [✔]  all cluster resources were deleted
 ```
 

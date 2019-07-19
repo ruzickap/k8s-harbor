@@ -9,7 +9,7 @@ YouTube video: [https://youtu.be/XSszSd-TTCQ](https://youtu.be/XSszSd-TTCQ)
 
 You can also use the API directly:
 
-```bash
+```bash{3}
 curl -u "admin:admin" -X POST -H "Content-Type: application/json" "https://harbor.${MY_DOMAIN}/api/projects" -d \
 "{
   \"project_name\": \"my_project\",
@@ -23,94 +23,7 @@ Create namespace which will be used later:
 kubectl create namespace mytest
 ```
 
-## Upload Helm Chart using Web GUI
-
-Download the compressed Helm Chart of Rook:
-
-```bash
-wget https://charts.rook.io/release/rook-ceph-v1.0.0.tgz -O rook-ceph-v1.0.0.tgz
-```
-
-Output:
-
-```text
---2019-06-25 10:12:31--  https://charts.rook.io/release/rook-ceph-v1.0.0.tgz
-Resolving charts.rook.io (charts.rook.io)... 13.32.100.58, 13.32.100.161, 13.32.100.8, ...
-Connecting to charts.rook.io (charts.rook.io)|13.32.100.58|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 6246 (6.1K) [application/x-tar]
-Saving to: ‘rook-ceph-v1.0.0.tgz’
-
-rook-ceph-v1.0.0.tgz    100%[============================>]   6.10K  --.-KB/s    in 0s
-
-2019-06-25 10:12:31 (99.3 MB/s) - ‘rook-ceph-v1.0.0.tgz’ saved [6246/6246]
-```
-
-Upload manually the `rook-ceph-v1.0.0.tgz` to Harbor by clicking on
-
-Projects -> `library` -> Helm Chart -> UPLOAD -> `rook-ceph-v1.0.0.tgz`
-
-Here is the API call:
-
-```bash{3}
-curl -s -X POST -u "admin:admin" "https://harbor.${MY_DOMAIN}/api/chartrepo/my_project/charts" \
-  -H "Content-Type: multipart/form-data" \
-  -F "chart=@rook-ceph-v1.0.0.tgz;type=application/x-yaml" \
-| jq "."
-```
-
-Output:
-
-```json
-{
-  "saved": true
-}
-```
-
 ## Upload Helm Chart using CLI
-
-Add helm repository as unprivileged user:
-
-```bash
-helm repo add --username aduser05 --password admin my_project_helm_repo https://harbor.mylabs.dev/chartrepo/my_project
-```
-
-Output:
-
-```text
-"my_project_helm_repo" has been added to your repositories
-```
-
-Check the list of Helm repositories:
-
-```bash
-helm repo list
-```
-
-Output:
-
-```text{7}
-NAME                    URL
-stable                  https://kubernetes-charts.storage.googleapis.com
-local                   http://127.0.0.1:8879/charts
-harbor                  https://helm.goharbor.io
-jetstack                https://charts.jetstack.io
-appscode                https://charts.appscode.com/stable/
-my_project_helm_repo    https://harbor.mylabs.dev/chartrepo/my_project
-```
-
-Check the content of the `my_project_helm_repo` repository:
-
-```bash
-helm search -l my_project_helm_repo
-```
-
-Output:
-
-```text
-NAME                            CHART VERSION   APP VERSION     DESCRIPTION
-my_project_helm_repo/rook-ceph  v1.0.0                          File, Block, and Object Storage Services for your Cloud-N...
-```
 
 Clone `harbor-helm` repository containing Helm chart of Harbor:
 
@@ -122,34 +35,78 @@ git -C harbor-helm checkout v1.1.1
 See the Helm chart content:
 
 ```bash
-ls -l ./harbor-helm/
+ls ./harbor-helm/
 ```
 
 Output:
 
 ```text
-total 120
-drwxrwxr-x  2 pruzicka pruzicka    36 Jun 25 10:14 cert
--rw-rw-r--  1 pruzicka pruzicka   502 Jun 25 10:14 Chart.yaml
--rw-rw-r--  1 pruzicka pruzicka   577 Jun 25 10:14 CONTRIBUTING.md
-drwxrwxr-x  3 pruzicka pruzicka    63 Jun 25 10:14 docs
--rw-rw-r--  1 pruzicka pruzicka 11357 Jun 25 10:14 LICENSE
--rw-rw-r--  1 pruzicka pruzicka 83718 Jun 25 10:14 README.md
-drwxrwxr-x 13 pruzicka pruzicka   206 Jun 25 10:14 templates
--rw-rw-r--  1 pruzicka pruzicka 14092 Jun 25 10:14 values.yaml
+cert  Chart.yaml  CONTRIBUTING.md  docs  LICENSE  README.md  templates  values.yaml
 ```
 
-Push the `harbor-helm` to the `my_project_helm_repo` project in Harbor":
+Add the public "library" Helm Chart repository:
 
 ```bash
-helm push --username aduser05 --password admin ./harbor-helm/ my_project_helm_repo
+helm repo add library https://harbor.mylabs.dev/chartrepo/library
 ```
 
 Output:
 
 ```text
-Pushing harbor-1.1.1.tgz to my_project_helm_repo...
+"library" has been added to your repositories
+```
+
+Push the `harbor-helm` to the `library` project in Harbor":
+
+```bash
+helm push --username aduser05 --password admin ./harbor-helm/ library
+```
+
+Output:
+
+```text
+Pushing harbor-1.1.1.tgz to library...
 Done.
+```
+
+Check the Helm Repository list:
+
+```bash
+helm repo list
+```
+
+Output:
+
+```text
+NAME            URL
+stable          https://kubernetes-charts.storage.googleapis.com
+local           http://127.0.0.1:8879/charts
+jetstack        https://charts.jetstack.io
+appscode        https://charts.appscode.com/stable/
+harbor          https://helm.goharbor.io
+library         https://harbor.mylabs.dev/chartrepo/library
+```
+
+Check the content of the `library` repository:
+
+```bash
+helm repo update
+helm search -l library/
+```
+
+Output:
+
+```text{10}
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "harbor" chart repository
+...Successfully got an update from the "appscode" chart repository
+...Successfully got an update from the "library" chart repository
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
+NAME            CHART VERSION   APP VERSION     DESCRIPTION
+library/harbor  1.1.1           1.8.1           An open source trusted cloud native registry that stores,...
 ```
 
 Harbor Project Helm Charts:
@@ -188,24 +145,24 @@ gpg2 --verbose --batch --gen-key ${GNUPGHOME}/my_gpg_key
 Output:
 
 ```text{17}
-gpg: keybox '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx' created
+gpg: keybox '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/pubring.kbx' created
 gpg: Generating a basic OpenPGP key
 gpg: no running gpg-agent - starting '/usr/bin/gpg-agent'
 gpg: waiting for the agent to come up ... (5s)
 gpg: connection to agent established
 gpg: writing self signature
-gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 [?]"
+gpg: RSA/SHA256 signature from: "6733D8DA847797FE [?]"
 gpg: writing key binding signature
-gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 [?]"
-gpg: RSA/SHA256 signature from: "F4BBFED75D895C46 [?]"
-gpg: writing public key to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx'
-gpg: /home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/trustdb.gpg: trustdb created
+gpg: RSA/SHA256 signature from: "6733D8DA847797FE [?]"
+gpg: RSA/SHA256 signature from: "C8B680F790B62239 [?]"
+gpg: writing public key to '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/pubring.kbx'
+gpg: /home/pruzicka/git/k8s-harbor/tmp/.gnupg/trustdb.gpg: trustdb created
 gpg: using pgp trust model
-gpg: key 6CE5FBFC0ACEF9D1 marked as ultimately trusted
-gpg: directory '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d' created
-gpg: writing to '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1.rev'
-gpg: RSA/SHA256 signature from: "6CE5FBFC0ACEF9D1 Helm User (User) <my_helm_user@mylabs.dev>"
-gpg: revocation certificate stored as '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1.rev'
+gpg: key 6733D8DA847797FE marked as ultimately trusted
+gpg: directory '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/openpgp-revocs.d' created
+gpg: writing to '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/4DA54853FC984FF42EDD2C9B6733D8DA847797FE.rev'
+gpg: RSA/SHA256 signature from: "6733D8DA847797FE Helm User (User) <my_helm_user@mylabs.dev>"
+gpg: revocation certificate stored as '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/openpgp-revocs.d/4DA54853FC984FF42EDD2C9B6733D8DA847797FE.rev'
 ```
 
 List the GPG secret key:
@@ -220,12 +177,12 @@ Output:
 gpg: checking the trustdb
 gpg: marginals needed: 3  completes needed: 1  trust model: pgp
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/pubring.kbx
-------------------------------------------------------------
-sec   rsa2048 2019-06-25 [SCEA]
-      CC11B974DC5DBB4AFD63D8F96CE5FBFC0ACEF9D1
+/home/pruzicka/git/k8s-harbor/tmp/.gnupg/pubring.kbx
+----------------------------------------------------
+sec   rsa2048 2019-07-19 [SCEA]
+      4DA54853FC984FF42EDD2C9B6733D8DA847797FE
 uid           [ultimate] Helm User (User) <my_helm_user@mylabs.dev>
-ssb   rsa2048 2019-06-25 [SEA]
+ssb   rsa2048 2019-07-19 [SEA]
 ```
 
 Export private GPG key into `.gnupg/secring.gpg`, because Helm doesn't
@@ -239,7 +196,7 @@ Output:
 
 ```text
 gpg: starting migration from earlier GnuPG versions
-gpg: porting secret keys from '/home/pruzicka/data/github/k8s-harbor/tmp/.gnupg/secring.gpg' to gpg-agent
+gpg: porting secret keys from '/home/pruzicka/git/k8s-harbor/tmp/.gnupg/secring.gpg' to gpg-agent
 gpg: migration succeeded
 ```
 
@@ -248,6 +205,16 @@ Download and unpack Gitea Helm chart:
 ```bash
 git clone --quiet https://github.com/jfelten/gitea-helm-chart gitea
 git -C ./gitea/ checkout --quiet 8c9adad
+```
+
+```bash
+ls ./gitea/
+```
+
+Output:
+
+```text
+Chart.yaml  LICENSE  postgres-values.yaml  README.md  templates  values.yaml
 ```
 
 Create signed Helm package:
@@ -259,7 +226,7 @@ helm package --sign --key "my_helm_user@${MY_DOMAIN}" --keyring ${GNUPGHOME}/sec
 Output:
 
 ```text
-Successfully packaged chart and saved it to: /home/pruzicka/data/github/k8s-harbor/tmp/gitea-1.6.1.tgz
+Successfully packaged chart and saved it to: /home/pruzicka/git/k8s-harbor/tmp/gitea-1.6.1.tgz
 ```
 
 There should be 2 files in current directory - the archive with the Helm Chart
@@ -272,8 +239,8 @@ ls -la gitea*tgz*
 Output:
 
 ```text
--rw-rw-r-- 1 pruzicka pruzicka 20390 Jun 25 10:16 gitea-1.6.1.tgz
--rwxr-xr-x 1 pruzicka pruzicka   966 Jun 25 10:16 gitea-1.6.1.tgz.prov
+-rw-rw-r-- 1 pruzicka pruzicka 20391 Jul 19 12:27 gitea-1.6.1.tgz
+-rwxr-xr-x 1 pruzicka pruzicka   966 Jul 19 12:27 gitea-1.6.1.tgz.prov
 ```
 
 See the provenance file:
@@ -309,7 +276,7 @@ version: 1.6.1
 
 ...
 files:
-  gitea-1.6.1.tgz: sha256:9d897da1e11dd56a24a2fb18d235846f0c78a8359d8e21f666bcbcadebea434f
+  gitea-1.6.1.tgz: sha256:f2e1989577cea950226abe714103709dca8574d82b7a0035b32e97f8d956bcae
 -----BEGIN PGP SIGNATURE-----
 ...
 -----END PGP SIGNATURE-----
@@ -321,6 +288,9 @@ Upload manually Gitea Helm Chart to Harbor by clicking on:
 
 Projects -> library -> Helm Chart -> UPLOAD
 -> `gitea-1.6.1.tgz` + `gitea-1.6.1.tgz.prov`
+
+![Harbor Upload Chart Files](./harbor_upload_chart_files.png
+"Harbor Upload Chart Files")
 
 You can also do the same using the Harbor API:
 
@@ -345,33 +315,10 @@ Output:
 ![ChartMuseum logo](https://raw.githubusercontent.com/helm/chartmuseum/0cfa25360682f66069d595fb0ede0fcc69bad41f/logo.png
 "ChartMuseum logo")
 
-Add the public "library" Helm Chart repository:
-
-```bash
-helm repo add library https://harbor.mylabs.dev/chartrepo/library
-```
-
-Output:
-
-```text
-"library" has been added to your repositories
-```
-
-Check the Helm Repository list:
-
-```bash
-helm repo list | grep library
-```
-
-Output:
-
-```text
-library                 https://harbor.mylabs.dev/chartrepo/library
-```
-
 Install Gitea using Helm Chart stored in Harbor:
 
 ```bash
+helm repo update
 helm install --wait --name gitea --namespace gitea-system library/gitea \
   --set ingress.enabled=true \
   --set ingress.tls[0].secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} \
@@ -382,10 +329,17 @@ helm install --wait --name gitea --namespace gitea-system library/gitea \
 
 Output:
 
-```text{31}
+```text{38}
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "appscode" chart repository
+...Successfully got an update from the "library" chart repository
+...Successfully got an update from the "harbor" chart repository
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
 NAME:   gitea
-E0625 10:17:15.488085    6412 portforward.go:372] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:38255->127.0.0.1:39576: write tcp4 127.0.0.1:38255->127.0.0.1:39576: write: broken pipe
-LAST DEPLOYED: Tue Jun 25 10:17:13 2019
+LAST DEPLOYED: Fri Jul 19 12:34:25 2019
 NAMESPACE: gitea-system
 STATUS: DEPLOYED
 
@@ -395,17 +349,17 @@ NAME         DATA  AGE
 gitea-gitea  1     2s
 
 ==> v1/Pod(related)
-NAME                         READY  STATUS    RESTARTS  AGE
-gitea-gitea-f9fd8cb4b-8p58m  0/3    Init:0/1  0         2s
+NAME                        READY  STATUS    RESTARTS  AGE
+gitea-gitea-5fff4b9c-4k4xq  0/3    Init:0/1  0         2s
 
 ==> v1/Secret
 NAME      TYPE    DATA  AGE
 gitea-db  Opaque  1     2s
 
 ==> v1/Service
-NAME              TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)   AGE
-gitea-gitea-http  ClusterIP  10.100.19.173  <none>       3000/TCP  2s
-gitea-gitea-ssh   ClusterIP  10.100.134.45  <none>       22/TCP    2s
+NAME              TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)   AGE
+gitea-gitea-http  ClusterIP  10.100.121.156  <none>       3000/TCP  2s
+gitea-gitea-ssh   ClusterIP  10.100.181.96   <none>       22/TCP    2s
 
 ==> v1beta1/Deployment
 NAME         READY  UP-TO-DATE  AVAILABLE  AGE
