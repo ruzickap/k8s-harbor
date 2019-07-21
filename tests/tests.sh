@@ -26,7 +26,7 @@ cp $(kind get kubeconfig-path --name k8s-harbor-test) kubeconfig.conf
 export KUBECONFIG=${KUBECONFIG:-$PWD/kubeconfig.conf}
 
 echo "*** Install MetalLB"
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.0/manifests/metallb.yaml
 
 echo "*** Configure MetalLB"
 cat << EOF | kubectl apply -f -
