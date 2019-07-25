@@ -16,7 +16,7 @@ cert-manager architecture:
 Install the CRDs resources separately:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.8/deploy/manifests/00-crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
 ```
 
 Output:
@@ -48,7 +48,7 @@ Install the cert-manager Helm chart:
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
-helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.8.1 --set webhook.enabled=false
+helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.9.0
 ```
 
 Output:
