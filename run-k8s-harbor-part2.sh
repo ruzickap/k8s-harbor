@@ -53,6 +53,7 @@ if [ "$#" -eq 0 ]; then
   # mkdir /var/tmp/test && cd /var/tmp/test
   # git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 
+  export LETSENCRYPT_ENVIRONMENT=${LETSENCRYPT_ENVIRONMENT:-staging}
   # export LETSENCRYPT_ENVIRONMENT="production" # Use with care - Let's Encrypt will generate real certificates
   # ./run-k8s-harbor-part2.sh
 
@@ -67,8 +68,6 @@ if [ "$#" -eq 0 ]; then
     exit 1
   fi
 
-  ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"
-
   cat << \EOF
 *** Wait until Clair Vulnerability database will be fully updated
 export KUBECONFIG=$PWD/kubeconfig.conf
@@ -80,7 +79,13 @@ EOF
   COUNT=0
   while ! kubectl logs -n harbor-system ${CLAIR_POD} | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
 
-  grep mylabs.dev /etc/hosts
+  set -eux
+  ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"
+
+  kubectl get secrets ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n harbor-system
+
+  awk "/${MY_DOMAIN}/" /etc/hosts
+  set +eux
 
   echo -e "\n\n*** Press ENTER to start\n"
   read A
