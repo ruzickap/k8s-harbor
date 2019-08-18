@@ -3,9 +3,14 @@
   "version": "0.3.0",
   "description": "Harbor in Kubernetes",
   "author": "Petr Ruzicka <petr.ruzicka@gmail.com>",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "homepage": "https://ruzickap.github.io/k8s-harbor",
-  "keywords": [ "harbor", "kubernetes", "demo", "presentation" ],
+  "keywords": [
+    "harbor",
+    "kubernetes",
+    "demo",
+    "presentation"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -19,9 +24,12 @@
     "build": "vuepress build docs"
   },
   "dependencies": {
-    "vuepress": "^1.0.2",
+    "vuepress": "^1.0.3",
+    "@vuepress/plugin-back-to-top": "^1.0.3",
+    "@vuepress/plugin-medium-zoom": "^1.0.3",
+    "@vuepress/plugin-search": "^1.0.3",
     "vuepress-plugin-seo": "^0.1.2",
-    "vuepress-plugin-reading-progress": "^1.0.7",
-    "vuepress-plugin-smooth-scroll": "^0.0.3"
+    "vuepress-plugin-smooth-scroll": "^0.0.3",
+    "vuepress-plugin-reading-progress": "^1.0.7"
   }
 }
