@@ -5,8 +5,8 @@ env:
   - MY_DOMAIN=mylabs.dev
 
 branches:
-  except:
-    - gh-pages
+  only:
+  - master
 
 jobs:
   include:
