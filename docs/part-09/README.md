@@ -119,7 +119,7 @@ test -d ~/.notary/ && rm -rf ~/.notary/
 Docker certificate cleanup if exists:
 
 ```bash
-rm -rf /etc/docker/certs.d/harbor.${MY_DOMAIN}
+sudo rm -rf /etc/docker/certs.d/harbor.${MY_DOMAIN}
 ```
 
 Remove `tmp` directory:
