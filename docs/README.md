@@ -62,7 +62,6 @@ across clouds.
 
   * [Deploying Harbor Container Registry in Production](https://medium.com/@ikod/deploy-harbor-container-registry-in-production-89352fb1a114)
   * [How to install and use VMware Harbor private registry with Kubernetes](https://blog.inkubate.io/how-to-use-harbor-private-registry-with-kubernetes/)
-  * [Set up your cluster to use a private Docker image registry](https://developer.rackspace.com/docs/rkaas/latest/external/rkaas-userguide/configure-docker-registry/)
   * [Use the Notary client for advanced users](https://docs.docker.com/notary/advanced_usage/)
   * [Signing Docker images with Notary server](https://werner-dijkerman.nl/2019/02/24/signing-docker-images-with-notary-server/)
   * [Handy API Harbor calls (in Chinese)](https://cloud.tencent.com/developer/article/1151425)
