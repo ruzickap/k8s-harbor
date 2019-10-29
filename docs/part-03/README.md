@@ -246,7 +246,7 @@ spec:
 It's necessary to copy the wildcard certificate across all "future" namespaces
 and that's the reason why [kubed](https://github.com/appscode/kubed) needs to be
 installed (for now).
-[kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.11.0/guides/config-syncer/)
+[kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/)
 across Kubernetes namespaces/clusters.
 
 Kubed - synchronize secret diagram:

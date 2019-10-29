@@ -12,8 +12,8 @@ kind get clusters | grep 'k8s-harbor-test' && kind delete cluster --name k8s-har
 
 echo "*** Create a new Kubernetes cluster using kind"
 cat << EOF | kind create cluster --name k8s-harbor-test --config -
-kind: Config
-apiVersion: kind.sigs.k8s.io/v1alpha2
+kind: Cluster
+apiVersion: kind.sigs.k8s.io/v1alpha3
 nodes:
 - role: control-plane
   replicas: 1
