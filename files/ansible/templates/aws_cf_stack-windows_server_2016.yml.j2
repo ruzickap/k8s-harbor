@@ -10,7 +10,7 @@ Parameters:
   InstanceType :
     Description: WebServer EC2 instance type
     Type : String
-    Default: t2.medium
+    Default: t3.large
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base'
