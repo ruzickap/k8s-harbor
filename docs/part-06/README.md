@@ -318,6 +318,7 @@ Output:
 Install Gitea using Helm Chart stored in Harbor:
 
 ```bash
+helm repo list | grep -q library || helm repo add library https://harbor.mylabs.dev/chartrepo/library
 helm repo update
 helm install --wait --name gitea --namespace gitea-system library/gitea \
   --set ingress.enabled=true \
