@@ -16,7 +16,7 @@ cert-manager architecture:
 Install the CRDs resources separately:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml
 ```
 
 Output:
@@ -48,7 +48,7 @@ Install the cert-manager Helm chart:
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
-helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.9.0
+helm install --name cert-manager --namespace cert-manager --wait jetstack/cert-manager --version v0.10.0
 ```
 
 Output:
@@ -246,7 +246,7 @@ spec:
 It's necessary to copy the wildcard certificate across all "future" namespaces
 and that's the reason why [kubed](https://github.com/appscode/kubed) needs to be
 installed (for now).
-[kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.9.0/guides/config-syncer/)
+[kubed](https://github.com/appscode/kubed) can [synchronize ConfigMaps/Secrets](https://appscode.com/products/kubed/0.11.0/guides/config-syncer/)
 across Kubernetes namespaces/clusters.
 
 Kubed - synchronize secret diagram:
@@ -268,7 +268,7 @@ Output:
 Install kubed:
 
 ```bash
-helm install appscode/kubed --name kubed --version 0.10.0 --namespace kube-system --wait \
+helm install appscode/kubed --name kubed --version 0.11.0 --namespace kube-system --wait \
   --set config.clusterName=my_k8s_cluster \
   --set apiserver.enabled=false
 ```
@@ -346,7 +346,7 @@ secret/ingress-cert-production annotated
 Install nginx-ingress which will also create a new loadbalancer:
 
 ```bash
-helm install stable/nginx-ingress --wait --name nginx-ingress --namespace nginx-ingress-system --version 1.6.11 \
+helm install stable/nginx-ingress --wait --name nginx-ingress --namespace nginx-ingress-system --version 1.24.3 \
   --set rbac.create=true \
   --set controller.extraArgs.default-ssl-certificate=cert-manager/ingress-cert-${LETSENCRYPT_ENVIRONMENT}
 ```

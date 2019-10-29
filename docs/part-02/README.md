@@ -9,7 +9,7 @@ Helm Architecture:
 Install [Helm](https://helm.sh/) binary:
 
 ```bash
-curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.14.2
+curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash -s -- --version v2.14.3
 ```
 
 Output:
