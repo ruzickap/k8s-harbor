@@ -47,7 +47,7 @@ cert  Chart.yaml  CONTRIBUTING.md  docs  LICENSE  README.md  templates  values.y
 Add the public "library" Helm Chart repository:
 
 ```bash
-helm repo add library https://harbor.mylabs.dev/chartrepo/library
+helm repo add library https://harbor.${MY_DOMAIN}/chartrepo/library
 ```
 
 Output:
@@ -318,7 +318,7 @@ Output:
 Install Gitea using Helm Chart stored in Harbor:
 
 ```bash
-helm repo list | grep -q library || helm repo add library https://harbor.mylabs.dev/chartrepo/library
+helm repo list | grep -q library || helm repo add library https://harbor.${MY_DOMAIN}/chartrepo/library
 helm repo update
 helm install --wait --name gitea --namespace gitea-system library/gitea \
   --set ingress.enabled=true \
