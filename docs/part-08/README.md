@@ -126,7 +126,7 @@ curl -s -u "aduser05:admin" -X PUT "https://harbor.${MY_DOMAIN}/api/projects/${P
 "{
   \"metadata\": {
     \"prevent_vul\": \"true\",
-    \"severity\": \"high\"
+    \"severity\": \"low\"
   }
 }"
 ```
