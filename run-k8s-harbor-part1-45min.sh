@@ -4,8 +4,7 @@
 # cd /var/tmp/
 
 # export LETSENCRYPT_ENVIRONMENT="production"  # Use with care - Let's Encrypt will generate real certificates
-# export MY_DOMAIN="mylabs.dev"
-# ./run-k8s-harbor-part1.sh
+# ./run-k8s-harbor-part1-45min.sh
 
 [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 

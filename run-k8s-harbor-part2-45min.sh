@@ -56,7 +56,7 @@ if [ "$#" -eq 0 ]; then
 
   export LETSENCRYPT_ENVIRONMENT=${LETSENCRYPT_ENVIRONMENT:-staging}
   # export LETSENCRYPT_ENVIRONMENT="production" # Use with care - Let's Encrypt will generate real certificates
-  # ./run-k8s-harbor-part2.sh
+  # ./run-k8s-harbor-part2-45min.sh
 
   export MY_DOMAIN="mylabs.dev"
   export EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID=$(awk -F\" "/AccessKeyId/ { print \$4 }" $HOME/.aws/${USER}-eks-cert-manager-route53-${MY_DOMAIN})
@@ -88,16 +88,26 @@ EOF
   if [ ${LETSENCRYPT_ENVIRONMENT} = "staging" ]; then
     sudo mkdir -pv /etc/docker/certs.d/harbor.${MY_DOMAIN}/
     CA_CERT=$(kubectl get secrets ingress-cert-staging -n cert-manager -o jsonpath="{.data.ca\.crt}")
-    [ "${CA_CERT}" != "<nil>" ] && echo ${CA_CERT} | base64 -d > ca.crt
-    test -s ca.crt || wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O ca.crt
-    sudo cp ca.crt /etc/docker/certs.d/harbor.${MY_DOMAIN}/ca.crt
-    export SSL_CERT_FILE=$PWD/ca.crt
+    [ "${CA_CERT}" != "<nil>" ] && echo ${CA_CERT} | base64 -d > /tmp/ca.crt
+    test -s /tmp/ca.crt || wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /tmp/ca.crt
+    sudo cp /tmp/ca.crt /etc/docker/certs.d/harbor.${MY_DOMAIN}/ca.crt
+    export SSL_CERT_FILE=/tmp/ca.crt
     for EXTERNAL_IP in $(kubectl get nodes --output=jsonpath="{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}"); do
       ssh -q -o StrictHostKeyChecking=no -l ec2-user ${EXTERNAL_IP} \
         "sudo mkdir -p /etc/docker/certs.d/harbor.${MY_DOMAIN}/ && sudo wget -q https://letsencrypt.org/certs/fakelerootx1.pem -O /etc/docker/certs.d/harbor.${MY_DOMAIN}/ca.crt"
     done
     echo "*** Done"
   fi
+
+  # Upload kuard image to harbor.${MY_DOMAIN}/library - necessary for part-08 (Use image hosted by Harbor in k8s deployment)
+  echo admin | docker login --username aduser05 --password-stdin harbor.${MY_DOMAIN}
+  docker pull gcr.io/kuar-demo/kuard-amd64:blue
+  docker tag gcr.io/kuar-demo/kuard-amd64:blue harbor.${MY_DOMAIN}/library/kuard-amd64:blue
+  docker push harbor.${MY_DOMAIN}/library/kuard-amd64:blue
+  docker rmi harbor.${MY_DOMAIN}/library/kuard-amd64:blue
+
+  # Pull docker image (prefetch)
+  docker pull nginx:1.13.12
 
   cd tmp
 
