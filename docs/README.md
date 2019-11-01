@@ -65,7 +65,7 @@ across clouds.
   * [Use the Notary client for advanced users](https://docs.docker.com/notary/advanced_usage/)
   * [Signing Docker images with Notary server](https://werner-dijkerman.nl/2019/02/24/signing-docker-images-with-notary-server/)
   * [Handy API Harbor calls (in Chinese)](https://cloud.tencent.com/developer/article/1151425)
-  * [Swagger Editor](https://editor.swagger.io/) + Import [Harbor's swagger.yaml](https://raw.githubusercontent.com/goharbor/harbor/master/docs/swagger.yaml)
+  * [Swagger Editor](https://editor.swagger.io/) + Import [Harbor's swagger.yaml](https://raw.githubusercontent.com/goharbor/harbor/7b6e83090e26d171c0d0e0dacd14e2b61fab45e1/API/harbor/swagger.yaml)
 
 ![Harbor](https://raw.githubusercontent.com/cncf/artwork/ab42c9591f6e0fdccc62c7b88f353d3fdc825734/harbor/stacked/color/harbor-stacked-color.svg?sanitize=true
 "Harbor")
