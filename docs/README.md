@@ -17,7 +17,9 @@ across clouds.
 * Demo Web Pages: [https://ruzickap.github.io/k8s-harbor](https://ruzickap.github.io/k8s-harbor)
 * Presentation git repository: [https://github.com/ruzickap/k8s-harbor-presentation](https://github.com/ruzickap/k8s-harbor-presentation)
 * Presentation URL: [https://ruzickap.github.io/k8s-harbor-presentation](https://ruzickap.github.io/k8s-harbor-presentation)
+* YouTube: [Harbor presentation in Czech language](https://youtu.be/niZJOM7ND24)
 * Asciinema screencast: [https://asciinema.org/a/253519](https://asciinema.org/a/253519)
+* Asciinema screencast (45 minutes): [https://asciinema.org/a/278803](https://asciinema.org/a/278803)
 
 ## Requirements
 
