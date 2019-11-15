@@ -76,7 +76,7 @@ jobs:
     name: "VuePress build"
     runs-on: ubuntu-18.04
     needs:
-      - command-check
+  #    - command-check
       - markdown-lint-check
       - markdown-spell-check
 
