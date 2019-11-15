@@ -11,7 +11,7 @@ on:
     - package-lock.json
 
 env:
-  EXCLUDE_WEB_PAGES: "(mylabs.dev)"
+  EXCLUDE_WEB_PAGES: "(mylabs.dev|ruzickap.github.io/k8s-harbor-presentation)"
 
 jobs:
   markdown-lint-check:
