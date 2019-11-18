@@ -11,14 +11,14 @@ echo "*** Remove cluster (if exists)"
 kind get clusters | grep 'k8s-harbor-test' && kind delete cluster --name k8s-harbor-test
 
 echo "*** Create a new Kubernetes cluster using kind"
-cat << EOF | kind create cluster --name k8s-harbor-test --config -
+cat << EOF | kind create cluster --name k8s-harbor-test --config - --image=kindest/node:v1.15.6
 kind: Cluster
-apiVersion: kind.sigs.k8s.io/v1alpha3
+apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
-  replicas: 1
 - role: worker
-  replicas: 3
+- role: worker
+- role: worker
 EOF
 
 echo "*** Set KUBECONFIG environment variable"
@@ -26,7 +26,7 @@ cp $(kind get kubeconfig-path --name k8s-harbor-test) kubeconfig.conf
 export KUBECONFIG=${KUBECONFIG:-$PWD/kubeconfig.conf}
 
 echo "*** Install MetalLB"
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.2/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 
 echo "*** Configure MetalLB"
 cat << EOF | kubectl apply -f -
