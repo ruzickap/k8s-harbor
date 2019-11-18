@@ -54,29 +54,29 @@ jobs:
     - name: "Run mdspell"
       run: mdspell '**/*.md' '!**/node_modules/**/*.md' --ignore-numbers --ignore-acronyms --report --en-gb
 
-  # command-check:
-  #   name: "Command check"
-  #   runs-on: ubuntu-18.04
+  command-check:
+    name: "Command check"
+    runs-on: ubuntu-18.04
 
-  #   steps:
-  #   - uses: actions/checkout@v1
+    steps:
+    - uses: actions/checkout@v1
 
-  #   - name: "Install necessary tools"
-  #     run: |
-  #       sudo apt-get update -qq
-  #       sudo apt-get install -y -qq gnupg2 jq pv > /dev/null
-  #       curl -s -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-  #       curl -s -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.5.1/kind-linux-amd64 && chmod +x kind && sudo mv kind /usr/local/bin/
+    - name: "Install necessary tools"
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq gnupg2 jq pv > /dev/null
+        curl -s -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+        curl -s -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.6.0/kind-linux-amd64 && chmod +x kind && sudo mv kind /usr/local/bin/
 
-  #   - name: "Run tests"
-  #     run: |
-  #       tests/tests.sh
+    - name: "Run tests"
+      run: |
+        tests/tests.sh
 
   vuepress-build:
     name: "VuePress build"
     runs-on: ubuntu-18.04
     needs:
-  #    - command-check
+      - command-check
       - markdown-lint-check
       - markdown-spell-check
 
