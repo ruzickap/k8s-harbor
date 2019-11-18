@@ -43,7 +43,7 @@ Remove cert-manager:
 
 ```bash
 helm delete --purge cert-manager
-kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml --wait=false
+kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml --wait=false
 kubectl delete namespace cert-manager --wait=false
 ```
 
