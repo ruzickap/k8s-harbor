@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: "Install Node.js 12"
       uses: actions/setup-node@v1
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: "Install Node.js 12"
       uses: actions/setup-node@v1
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: "Update repositories"
       run: sudo apt-get update
@@ -83,7 +83,7 @@ jobs:
       - markdown-spell-check
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: "Install Node.js 12"
       uses: actions/setup-node@v1
