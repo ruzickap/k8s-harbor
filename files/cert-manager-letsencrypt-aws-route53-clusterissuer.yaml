@@ -30,13 +30,13 @@ spec:
     dns01:
       # Here we define a list of DNS-01 providers that can solve DNS challenges
       providers:
-      - name: aws-route53
-        route53:
-          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
-          region: eu-central-1
-          secretAccessKeySecretRef:
-            name: aws-route53-secret-access-key-secret
-            key: secret-access-key
+        - name: aws-route53
+          route53:
+            accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+            region: eu-central-1
+            secretAccessKeySecretRef:
+              name: aws-route53-secret-access-key-secret
+              key: secret-access-key
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
@@ -56,10 +56,10 @@ spec:
       # Here we define a list of DNS-01 providers that can solve DNS challenges
       # https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/index.html
       providers:
-      - name: aws-route53
-        route53:
-          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
-          region: eu-central-1
-          secretAccessKeySecretRef:
-            name: aws-route53-secret-access-key-secret
-            key: secret-access-key
+        - name: aws-route53
+          route53:
+            accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+            region: eu-central-1
+            secretAccessKeySecretRef:
+              name: aws-route53-secret-access-key-secret
+              key: secret-access-key

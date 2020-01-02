@@ -10,10 +10,10 @@ spec:
     name: letsencrypt-${LETSENCRYPT_ENVIRONMENT}-dns
   commonName: "*.${MY_DOMAIN}"
   dnsNames:
-  - "*.${MY_DOMAIN}"
+    - "*.${MY_DOMAIN}"
   acme:
     config:
-    - dns01:
-        provider: aws-route53
-      domains:
-      - "*.${MY_DOMAIN}"
+      - dns01:
+          provider: aws-route53
+        domains:
+          - "*.${MY_DOMAIN}"
