@@ -8,3 +8,5 @@ README.sh
 docs/.vuepress/dist
 # ignore tmp directory
 tmp
+# pre-commit config file
+.pre-commit-config.yaml
