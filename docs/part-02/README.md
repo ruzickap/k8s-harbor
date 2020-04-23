@@ -4,7 +4,7 @@ Helm Architecture:
 
 ![Helm Architecture](https://cdn.app.compendium.com/uploads/user/e7c690e8-6ff9-102a-ac6d-e4aebca50425/5a29c3c1-7c6b-41fa-8082-bdc8a36177c9/Image/c64c01d08df64f4420e81f962fd13a23/screen_shot_2018_09_11_at_4_48_19_pm.png
 "Helm Architecture")
-([https://blogs.oracle.com/cloudnative/helm-kubernetes-package-management](https://blogs.oracle.com/cloudnative/helm-kubernetes-package-management))
+(blogs.oracle.com/cloudnative/helm-kubernetes-package-management)
 
 Install [Helm](https://helm.sh/) binary:
 

@@ -3,12 +3,14 @@ ansible
 Asciinema
 Auth
 awscli
+blogs.oracle.com
 bookinfo
 ChartMuseum
 Clair
-Cleanup
 cleanup
+Cleanup
 CloudFormation
+cloudnative
 ClusterIssuer
 ConfigMaps
 CRDs
@@ -16,6 +18,7 @@ CustomResourceDefinition
 eksctl
 Gitea
 GitOps
+helm-kubernetes-package-management
 Istio
 Jetstack
 Jia
