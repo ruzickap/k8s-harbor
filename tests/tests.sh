@@ -54,6 +54,7 @@ kubectl get pods -l k8s-app=kube-dns -n kube-system -o name | xargs kubectl dele
 echo -e "\n\n******************************\n*** Main tests\n******************************\n"
 
 test -s ./demo-magic.sh || curl --silent https://raw.githubusercontent.com/paxtonhare/demo-magic/master/demo-magic.sh > demo-magic.sh
+# shellcheck disable=SC1091
 . ./demo-magic.sh
 
 export TYPE_SPEED=60
@@ -79,6 +80,7 @@ sed \
   -e 's/^```$/'"'"'/' \
 > README.sh
 
+# shellcheck disable=SC1091
 source README.sh
 
 sudo sed -i '/172.17.255.1/d' /etc/hosts
