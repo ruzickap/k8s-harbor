@@ -1,3 +1,9 @@
+# pre-commit configuration file
+.pre-commit-config.yaml
+
+# release-it configuration file
+.release-it.yml
+
 # demo-magic.sh script
 demo-magic.sh
 
@@ -15,6 +21,3 @@ tmp/
 
 # Node modules
 node_modules/
-
-# pre-commit config file
-.pre-commit-config.yaml
