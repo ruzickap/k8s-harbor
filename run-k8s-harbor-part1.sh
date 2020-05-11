@@ -7,7 +7,7 @@
 # export MY_DOMAIN="mylabs.dev"
 # ./run-k8s-harbor-part1.sh
 
-[ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
+[ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor || return
 
 grep mylabs.dev /etc/hosts
 
@@ -15,6 +15,6 @@ sed docs/part-0{1,2,3,4}/README.md \
   -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
   -e '/^Harbor architecture:/,$d' \
 | \
-sed -n '/^```bash.*/,/^```$/p' \
+sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" \
 | \
-sed '/^```/d' | sh -eux
+sed "/^\`\`\`*/d" | sh -eux

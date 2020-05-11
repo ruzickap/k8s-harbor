@@ -22,7 +22,7 @@ nodes:
 EOF
 
 echo "*** Set KUBECONFIG environment variable"
-cp $(kind get kubeconfig-path --name k8s-harbor-test) kubeconfig.conf
+cp "$(kind get kubeconfig-path --name k8s-harbor-test)" kubeconfig.conf
 export KUBECONFIG=${KUBECONFIG:-$PWD/kubeconfig.conf}
 
 echo "*** Install MetalLB"
@@ -72,11 +72,10 @@ sed docs/part-{02..09}/README.md \
   -e 's/^eksctl*/### &/' \
   -e 's/^aws iam.*/### &/' \
 | \
-sed -n '/^```bash.*/,/^```$/p' \
+sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" \
 | \
 sed \
-  -e 's/^```bash.*/\
-pe '"'"'/' \
+  -e 's/^```bash.*/\npe '"'"'/' \
   -e 's/^```$/'"'"'/' \
 > README.sh
 
