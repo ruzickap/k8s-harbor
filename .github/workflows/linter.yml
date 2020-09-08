@@ -43,6 +43,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: docker://github/super-linter
+        uses: github/super-linter@v3
         env:
-          VALIDATE_STATES: flase
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_STATES: false
