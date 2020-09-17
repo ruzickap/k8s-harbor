@@ -1,11 +1,23 @@
 # Changelog
 
+## [v1.0.2](https://github.com/ruzickap/k8s-harbor/compare/v1.0.1...v1.0.2) (2020-09-17)
+
+- Disable command-check [`#70`](https://github.com/ruzickap/k8s-harbor/pull/70)
+- Add actions/checkout with gh-page add use GITHUB_TOKEN with super-linter [`#69`](https://github.com/ruzickap/k8s-harbor/pull/69)
+- Disable the linting process for AWS States Language (VALIDATE_STATES) [`#64`](https://github.com/ruzickap/k8s-harbor/pull/64)
+- Replace markdown linter [`#55`](https://github.com/ruzickap/k8s-harbor/pull/55)
+- Add super-linter + fix related issues [`#51`](https://github.com/ruzickap/k8s-harbor/pull/51)
+- Fix GH variables to pass the tests [`#50`](https://github.com/ruzickap/k8s-harbor/pull/50)
+- Move to GitHub's Dependabot (version 2) [`#43`](https://github.com/ruzickap/k8s-harbor/pull/43)
+- Use shell-linter in latest version [`#38`](https://github.com/ruzickap/k8s-harbor/pull/38)
+- Bump @vuepress/plugin-back-to-top from 1.4.1 to 1.5.0 [`#33`](https://github.com/ruzickap/k8s-harbor/pull/33)
+- Bump @vuepress/plugin-medium-zoom from 1.4.1 to 1.5.0 [`#34`](https://github.com/ruzickap/k8s-harbor/pull/34)
+- Bump vuepress from 1.4.1 to 1.5.0 [`#35`](https://github.com/ruzickap/k8s-harbor/pull/35)
+- Ignore CHANGELOG.md when doing markdown checks [`#36`](https://github.com/ruzickap/k8s-harbor/pull/36)
+- CHANGELOG file update [`#32`](https://github.com/ruzickap/k8s-harbor/pull/32)
+
 ## [v1.0.1](https://github.com/ruzickap/k8s-harbor/compare/v1.0.0...v1.0.1) (2020-05-11)
 
-- Bump acorn from 6.4.0 to 6.4.1 [`#24`](https://github.com/ruzickap/k8s-harbor/pull/24)
-- Bump @vuepress/plugin-medium-zoom from 1.0.4 to 1.1.0 [`#1`](https://github.com/ruzickap/k8s-harbor/pull/1)
-- Bump @vuepress/plugin-back-to-top from 1.0.4 to 1.1.0 [`#2`](https://github.com/ruzickap/k8s-harbor/pull/2)
-- Bump vuepress from 1.0.4 to 1.1.0 [`#3`](https://github.com/ruzickap/k8s-harbor/pull/3)
 - Fix shellcheck when source non-existing files [`de86918`](https://github.com/ruzickap/k8s-harbor/commit/de86918e0a2fea783e9d47fff87b066914226355)
 - Add .release-it.yml to .gitignore [`5f059cb`](https://github.com/ruzickap/k8s-harbor/commit/5f059cb1066161535c0f80c54d8d0cdefbaed734)
 - Add shellcheck + necessary changes in the scripts [`b996387`](https://github.com/ruzickap/k8s-harbor/commit/b996387d37c71ff11e7ede5660f4962ff92191ea)
@@ -63,7 +75,7 @@
 - Adding more "environment" checks to run-k8s-harbor-part2.sh [`545d6b6`](https://github.com/ruzickap/k8s-harbor/commit/545d6b6e7d7c1201852b9bf7378540e51fbfe590)
 - cert-manager version increased from v0.8.1 -&gt; v0.9.0 [`81e2533`](https://github.com/ruzickap/k8s-harbor/commit/81e253304a52264998b2596637025179e5cb883b)
 
-## v1.0.0 (2019-07-21)
+## [v1.0.0](https://github.com/ruzickap/k8s-harbor/compare/v0.0.2...v1.0.0) (2019-07-21)
 
 - MetalLB version increased to 0.8.0 [`ac4e575`](https://github.com/ruzickap/k8s-harbor/commit/ac4e575aaa5fe51b9008316f4b09d9b79e522d6d)
 - Simplify the helm chart part + addes few screenshots + all outputs updated [`6f8f8aa`](https://github.com/ruzickap/k8s-harbor/commit/6f8f8aa46481edb18a320cc848b0f46790b262a1)
@@ -75,6 +87,9 @@
 - Add package.json and change .travis.yml to use it [`10d568b`](https://github.com/ruzickap/k8s-harbor/commit/10d568b82d8bb2ddc58d7ec361ab239f2236bd89)
 - Make .travis.yaml more "generic" [`2d235eb`](https://github.com/ruzickap/k8s-harbor/commit/2d235ebd918b57a4bf5021b106a90653f3bceb20)
 - Adding reading-progress and smooth-scroll vuepress plugins [`89b42c7`](https://github.com/ruzickap/k8s-harbor/commit/89b42c787af5e9f7de27e5a9d519f337695f7ee8)
+
+## [v0.0.2](https://github.com/ruzickap/k8s-harbor/compare/v0.0.1...v0.0.2) (2019-06-26)
+
 - Add kubed into title [`6437a8d`](https://github.com/ruzickap/k8s-harbor/commit/6437a8d4c2875c7ee0b9a368bf1291efbe863134)
 - Asciinema link updated [`2c0b6af`](https://github.com/ruzickap/k8s-harbor/commit/2c0b6af554bb1ea5d08c7de8d7cffbf869c4cc8d)
 - Move harborAdminPassword to the last parameter of "helm install" [`7e65c43`](https://github.com/ruzickap/k8s-harbor/commit/7e65c43c6f4067f9eeff3d2ca6faec78d920fb82)
@@ -85,6 +100,9 @@
 - Skip Clair DB updates when doing the tests (tests/tests.sh) [`fdea0b4`](https://github.com/ruzickap/k8s-harbor/commit/fdea0b4327fcfdd31899049edef6aed5b6296acb)
 - Use specific version of Helm Chart for "harbor-helm" [`a0412e5`](https://github.com/ruzickap/k8s-harbor/commit/a0412e50882d2c7e1a710b91b2397c74a8183141)
 - ArgoCD removed - now using one Harbor instance only [`0635b6b`](https://github.com/ruzickap/k8s-harbor/commit/0635b6ba9fb0bbea0d620d4efab352711b958e2b)
+
+## v0.0.1 (2019-06-23)
+
 - ArgoCD - add "--insecure" to let it work with self-signed certs [`5ae682f`](https://github.com/ruzickap/k8s-harbor/commit/5ae682fd8d43a336fa23b0b0c694fa77b2a5de58)
 - Fix Let's encrypt -&gt; Let's Encrypt [`6a5f68a`](https://github.com/ruzickap/k8s-harbor/commit/6a5f68acdad9a849cdee9ac76fbdc019de29c8ba)
 - Fix typo in getting secrets from ingress-cert-production -&gt; ingress-cert-${LETSENCRYPT_ENVIRONMENT} [`2669a05`](https://github.com/ruzickap/k8s-harbor/commit/2669a053e701acaf0c4d58dd131e1e8134d3973a)
