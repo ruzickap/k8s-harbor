@@ -72,7 +72,7 @@ jobs:
   vuepress-build-check-deploy:
     runs-on: ubuntu-latest
     needs:
-      - command-check
+      # - command-check
       - markdownlint-check
       - markdown-spell-check
     steps:
