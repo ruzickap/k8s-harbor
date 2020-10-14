@@ -47,3 +47,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_STATES: false
+          VALIDATE_KUBERNETES_KUBEVAL: false
+          FILTER_REGEX_EXCLUDE: CHANGELOG.md
