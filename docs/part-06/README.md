@@ -116,9 +116,6 @@ Harbor Project Helm Charts:
 
 ## Upload signed Helm Chart using CLI
 
-![GnuPG logo](https://upload.wikimedia.org/wikipedia/commons/6/61/Gnupg_logo.svg
-"GnuPG logo")
-
 Create GPG key in `.gnupg` directory:
 
 ```bash{12}
