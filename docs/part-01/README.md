@@ -64,7 +64,7 @@ fi
 
 ## Configure AWS
 
-Authorize to AWS using AWS CLI: [https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+Authorize to AWS using AWS CLI: [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
 ```bash
 aws configure
@@ -103,7 +103,7 @@ Output:
 {
     "Policy": {
         "PolicyName": "pruzicka-AmazonRoute53Domains-cert-manager",
-        "PolicyId": "ANPA36ZNO4Q4MTW5T5ZLX",
+        "PolicyId": "xxxxxxxxxxxxxxxxxxxx",
         "Arn": "arn:aws:iam::822044714040:policy/pruzicka-AmazonRoute53Domains-cert-manager",
         "Path": "/",
         "DefaultVersionId": "v1",
@@ -134,7 +134,7 @@ Output:
     "User": {
         "Path": "/",
         "UserName": "pruzicka-eks-cert-manager-route53",
-        "UserId": "AIDA36ZNO4Q4NSQJW6T7V",
+        "UserId": "xxxxxxxxxxxxxxxxxxxx",
         "Arn": "arn:aws:iam::822044714040:user/pruzicka-eks-cert-manager-route53",
         "CreateDate": "2019-06-05T11:16:59Z"
     }
