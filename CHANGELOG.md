@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.0.3](https://github.com/ruzickap/k8s-harbor/compare/v1.0.2...v1.0.3) (2021-12-20)
+
+- Improve GH Action files [`#100`](https://github.com/ruzickap/k8s-harbor/pull/100)
+- Fix linter issues [`#99`](https://github.com/ruzickap/k8s-harbor/pull/99)
+- Upgrade GH Actions versions [`#98`](https://github.com/ruzickap/k8s-harbor/pull/98)
+- npm update [`#97`](https://github.com/ruzickap/k8s-harbor/pull/97)
+- Upgrade action-my-broken-link-checker [`#85`](https://github.com/ruzickap/k8s-harbor/pull/85)
+- Ignore CHANGELOG.md from being checked by super-linter [`#82`](https://github.com/ruzickap/k8s-harbor/pull/82)
+- Fix My Broken Link Checker parameter [`#75`](https://github.com/ruzickap/k8s-harbor/pull/75)
+- Disable command-check as dependency [`#73`](https://github.com/ruzickap/k8s-harbor/pull/73)
+- Update package-lock.json [`#72`](https://github.com/ruzickap/k8s-harbor/pull/72)
+
 ## [v1.0.2](https://github.com/ruzickap/k8s-harbor/compare/v1.0.1...v1.0.2) (2020-09-17)
 
 - Disable command-check [`#70`](https://github.com/ruzickap/k8s-harbor/pull/70)
@@ -14,7 +26,6 @@
 - Bump @vuepress/plugin-medium-zoom from 1.4.1 to 1.5.0 [`#34`](https://github.com/ruzickap/k8s-harbor/pull/34)
 - Bump vuepress from 1.4.1 to 1.5.0 [`#35`](https://github.com/ruzickap/k8s-harbor/pull/35)
 - Ignore CHANGELOG.md when doing markdown checks [`#36`](https://github.com/ruzickap/k8s-harbor/pull/36)
-- CHANGELOG file update [`#32`](https://github.com/ruzickap/k8s-harbor/pull/32)
 
 ## [v1.0.1](https://github.com/ruzickap/k8s-harbor/compare/v1.0.0...v1.0.1) (2020-05-11)
 
