@@ -209,8 +209,8 @@ Everything should be "green" - no vulnerability found:
 ![Scanned container image in Harbor UI](./harbor_scanned_container_image.png
 "Scanned container image in Harbor UI")
 
-Let's download popular web server [Nginx](https://nginx.com) based on Debian
-Stretch from Docker Hub. The image is is one year old:
+Let's download popular web server [Nginx](https://en.wikipedia.org/wiki/Nginx)
+based on Debian Stretch from Docker Hub. The image is is one year old:
 [https://hub.docker.com/_/nginx?tab=tags&page=5](https://hub.docker.com/_/nginx?tab=tags&page=5)
 
 ```bash
