@@ -236,9 +236,6 @@ spec:
       - "*.mylabs.dev"
 ```
 
-![cert-manager - Create certificate](https://www.openshift.com/hs-fs/hubfs/Imported_Blog_Media/OCP-PKI-and-certificates-cert-manager.png
-"cert-manager - Create certificate")
-
 ([https://www.openshift.com/blog/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift](https://www.openshift.com/blog/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift))
 
 ## Install kubed
