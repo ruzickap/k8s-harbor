@@ -3,9 +3,6 @@
 Before we move on with other tasks it is necessary to install Nginx Ingress.
 It's also handy to install cert-manager for managing SSL certificates.
 
-<img src="https://raw.githubusercontent.com/jetstack/cert-manager/ed2c0e0b3df1d10c3ad219348ed7b1ba56771655/logo/logo.svg?sanitize=true"
-width="200">
-
 ## Install cert-manager
 
 cert-manager architecture:
