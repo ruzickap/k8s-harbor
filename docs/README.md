@@ -1,6 +1,6 @@
 # Kubernetes + Harbor
 
-[![Build Status](https://github.com/ruzickap/k8s-harbor/actions/workflows/vuepress-build-check-deploy.yml/badge.svg)](https://github.com/ruzickap/k8s-harbor)
+[![Build Status](https://github.com/ruzickap/k8s-harbor/actions/workflows/vuepress-build.yml/badge.svg)](https://github.com/ruzickap/k8s-harbor)
 
 [Harbor](https://goharbor.io/) is an open source cloud native registry that
 stores, signs, and scans container images for vulnerabilities.
