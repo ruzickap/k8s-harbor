@@ -36,16 +36,13 @@ export DEMO_PROMPT="${GREEN}➜ ${CYAN}$ "
 #clear
 
 sed docs/part-{01,{04..08}}/README.md \
-  -e '/^## Prepare the local working environment/,/^You should be able to access Windows Server using RDP/d' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" \
-| \
-sed \
-  -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
-  -e 's/^```bash.*/\npe '"'"'/' \
-  -e 's/^```$/'"'"'/' \
-> README.sh
-
+  -e '/^## Prepare the local working environment/,/^You should be able to access Windows Server using RDP/d' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" |
+  sed \
+    -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
+    -e 's/^```bash.*/\npe '"'"'/' \
+    -e 's/^```$/'"'"'/' \
+    > README.sh
 
 if [ "$#" -eq 0 ]; then
   ### Please run these commands before running the script
@@ -66,7 +63,7 @@ if [ "$#" -eq 0 ]; then
   echo -e "\n${MY_DOMAIN} | ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID} | ${EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY}\n$(kubectl --kubeconfig=./kubeconfig.conf cluster-info)"
 
   if [ -z "${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}" ] || [ -z "${EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY}" ]; then
-    echo -e "\n*** One of the mandatory variables 'EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID' or 'EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY' is not set !!\n";
+    echo -e "\n*** One of the mandatory variables 'EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID' or 'EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY' is not set !!\n"
     exit 1
   fi
 
@@ -79,7 +76,11 @@ EOF
   export KUBECONFIG=$PWD/kubeconfig.conf
   CLAIR_POD=$(kubectl get pods -l "app=harbor,component=clair" -n harbor-system -o jsonpath="{.items[0].metadata.name}")
   COUNT=0
-  while ! kubectl logs -n harbor-system "${CLAIR_POD}" | grep "update finished"; do COUNT=$((COUNT+1)); echo -n "${COUNT} "; sleep 10; done
+  while ! kubectl logs -n harbor-system "${CLAIR_POD}" | grep "update finished"; do
+    COUNT=$((COUNT + 1))
+    echo -n "${COUNT} "
+    sleep 10
+  done
 
   set -eux
   ansible localhost -m wait_for -a "port=5986 host=winad01.${MY_DOMAIN}"

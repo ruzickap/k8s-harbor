@@ -37,16 +37,13 @@ export DEMO_PROMPT="${GREEN}➜ ${CYAN}$ "
 
 sed docs/part-0{6..8}/README.md \
   -e '/^## Upload Helm Chart using CLI/,/^## Upload signed Helm Chart using CLI/d' \
-  -e '/^## Signed container image/,/^## Vulnerability scan/d' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" \
-| \
-sed \
-  -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
-  -e 's/^```bash.*/\npe '"'"'/' \
-  -e 's/^```$/'"'"'/' \
-> README.sh
-
+  -e '/^## Signed container image/,/^## Vulnerability scan/d' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" |
+  sed \
+    -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
+    -e 's/^```bash.*/\npe '"'"'/' \
+    -e 's/^```$/'"'"'/' \
+    > README.sh
 
 if [ "$#" -eq 0 ]; then
   ### Please run these commands before running the script
@@ -67,7 +64,7 @@ if [ "$#" -eq 0 ]; then
   echo -e "\n${MY_DOMAIN} | ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID} | ${EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY}\n$(kubectl --kubeconfig=./kubeconfig.conf cluster-info)"
 
   if [ -z "${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}" ] || [ -z "${EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY}" ]; then
-    echo -e "\n*** One of the mandatory variables 'EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID' or 'EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY' is not set !!\n";
+    echo -e "\n*** One of the mandatory variables 'EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID' or 'EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY' is not set !!\n"
     exit 1
   fi
 

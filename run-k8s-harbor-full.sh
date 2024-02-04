@@ -54,16 +54,13 @@ clear
 [ ! -d .git ] && git clone --quiet https://github.com/ruzickap/k8s-harbor && cd k8s-harbor
 
 sed docs/part-{01..08}/README.md \
-  -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" \
-| \
-sed \
-  -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
-  -e 's/^```bash.*/\npe '"'"'/' \
-  -e 's/^```$/'"'"'/' \
-> README.sh
-
+  -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p;/^-----$/p" |
+  sed \
+    -e 's/^-----$/\np  ""\np  "################################################################################################### Press <ENTER> to continue"\nwait\n/' \
+    -e 's/^```bash.*/\npe '"'"'/' \
+    -e 's/^```$/'"'"'/' \
+    > README.sh
 
 if [ "$#" -eq 0 ]; then
   # shellcheck disable=SC1091
