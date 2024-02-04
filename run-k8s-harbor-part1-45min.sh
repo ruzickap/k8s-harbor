@@ -11,12 +11,9 @@
 grep mylabs.dev /etc/hosts
 
 sed docs/part-0{1..5}/README.md \
-  -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" \
-| \
-sed "/^\`\`\`*/d" \
-> README.sh
+  -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" |
+  sed "/^\`\`\`*/d" > README.sh
 
 if [ "$#" -eq 0 ]; then
   # shellcheck disable=SC1091

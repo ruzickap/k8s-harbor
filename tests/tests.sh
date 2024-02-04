@@ -5,7 +5,10 @@ export LETSENCRYPT_ENVIRONMENT="staging"
 export EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID="none"
 export EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY="none"
 
-test -d files || ( echo -e "\n*** Run in top level directory\n"; exit 1 )
+test -d files || (
+  echo -e "\n*** Run in top level directory\n"
+  exit 1
+)
 
 echo "*** Remove cluster (if exists)"
 kind get clusters | grep 'k8s-harbor-test' && kind delete cluster --name k8s-harbor-test
@@ -71,14 +74,12 @@ sed docs/part-{02..09}/README.md \
   -e '/"update finished"/d' \
   -e 's/^aws cloudformation.*/### &/' \
   -e 's/^eksctl*/### &/' \
-  -e 's/^aws iam.*/### &/' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" \
-| \
-sed \
-  -e 's/^```bash.*/\npe '"'"'/' \
-  -e 's/^```$/'"'"'/' \
-> README.sh
+  -e 's/^aws iam.*/### &/' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" |
+  sed \
+    -e 's/^```bash.*/\npe '"'"'/' \
+    -e 's/^```$/'"'"'/' \
+    > README.sh
 
 # shellcheck disable=SC1091
 source README.sh

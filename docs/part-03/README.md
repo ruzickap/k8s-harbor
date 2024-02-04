@@ -188,7 +188,6 @@ spec:
       name: letsencrypt-production-dns
     dns01:
       # Here we define a list of DNS-01 providers that can solve DNS challenges
-      # https://docs.cert-manager.io/en/latest/tasks/acme/configuring-dns01/index.html
       providers:
       - name: aws-route53
         route53:

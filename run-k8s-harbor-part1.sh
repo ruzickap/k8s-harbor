@@ -13,8 +13,6 @@ grep mylabs.dev /etc/hosts
 
 sed docs/part-0{1,2,3,4}/README.md \
   -e '/^## Configure AWS/,/^Create policy allowing the cert-manager to change Route 53 settings./d' \
-  -e '/^Harbor architecture:/,$d' \
-| \
-sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" \
-| \
-sed "/^\`\`\`*/d" | sh -eux
+  -e '/^Harbor architecture:/,$d' |
+  sed -n "/^\`\`\`bash.*/,/^\`\`\`$/p" |
+  sed "/^\`\`\`*/d" | sh -eux

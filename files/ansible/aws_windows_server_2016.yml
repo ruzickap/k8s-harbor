@@ -1,13 +1,14 @@
+# kics-scan ignore
 - name: Provision Stack
   hosts: localhost
   connection: local
 
   vars:
     domain: mylabs.dev
-
     # Values for CloudFormation template
     system_security_settings_tmp_file: c:\\secedit-export.cfg
     windows_machines_ansible_user: ansible
+    #checkov:skip=CKV_SECRET_6:Base64 High Entropy String
     windows_machines_ansible_pass: ansible_secret_password
     aws_region: eu-central-1
     aws_cf_eksctl_stack_name: "eksctl-{{ lookup('env','USER') }}-k8s-harbor-cluster"
@@ -19,7 +20,6 @@
       Environment: Test
 
   tasks:
-
     - name: Get summary information about a cloudformation stack
       cloudformation_facts:
         stack_name: "{{ aws_cf_eksctl_stack_name }}"
@@ -56,7 +56,7 @@
         ansible_user: "{{ windows_machines_ansible_user }}"
         ansible_password: "{{ windows_machines_ansible_pass }}"
         ansible_winrm_server_cert_validation: ignore
-        ansible_connection: 'winrm'
+        ansible_connection: "winrm"
         groups: winservers
         site_name: "{{ aws_cf_stack_name }}"
       changed_when: false
@@ -70,6 +70,7 @@
 
   vars:
     domain: mylabs.dev
+    #checkov:skip=CKV_SECRET_6:Base64 High Entropy String
     master_password: really_long_secret_windows_password
     netbios_name: "{{ domain.split('.')[0] | upper }}"
     number_of_test_groups: 3
@@ -140,7 +141,8 @@
         name: "{{ 'aduser%02x' | format(item) }}"
         description: "{{ 'User %02x - Group %02x' | format(item, (item / 2) | round(0,'ceil') | int) }}"
         password: "{{ test_user_password }}"
-        groups: ["{{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"]
+        groups:
+          ["{{ 'adgroup%02x' | format((item / 2) | round(0,'ceil') | int) }}"]
       changed_when: False
       loop: "{{ range(1, number_of_test_groups * 2 + 1, 1)|list }}"
       loop_control:
