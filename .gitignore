@@ -6,8 +6,6 @@ kubeconfig*.conf*
 
 # Vuepress Pages
 docs/.vuepress/dist
-docs/.vuepress/.temp/
-docs/.vuepress/.cache/
 
 # tmp directory
 tmp/
@@ -20,8 +18,3 @@ README.sh
 
 # demo-magic.sh script
 demo-magic.sh
-
-# Terraform files
-.terraform
-*.tfstate*
-crash.log
