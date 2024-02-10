@@ -18,3 +18,11 @@ README.sh
 
 # demo-magic.sh script
 demo-magic.sh
+
+# Terraform files
+.terraform*
+*.tfstate*
+crash.log
+
+# nohup output
+nohup.out

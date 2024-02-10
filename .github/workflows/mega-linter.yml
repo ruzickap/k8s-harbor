@@ -33,6 +33,7 @@ jobs:
             # Extract:   ```bash ... ```
             sed -n "/^  \`\`\`\(bash\|shell\)$/,/^  \`\`\`$/p" "${FILE}" | sed '/^  ```*/d; s/^  //' >> README.sh
           done
+          ls -la README.sh
           chmod a+x README.sh
 
       - name: 💡 MegaLinter
