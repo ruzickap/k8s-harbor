@@ -61,7 +61,6 @@ across clouds.
 * Pages:
 
   * [Deploying Harbor Container Registry in Production](https://ikod.medium.com/deploy-harbor-container-registry-in-production-89352fb1a114)
-  * [How to install and use VMware Harbor private registry with Kubernetes](https://blog.inkubate.io/how-to-use-harbor-private-registry-with-kubernetes/)
   * [Use the Notary client for advanced users](https://docs.docker.com/notary/advanced_usage/)
   * [Handy API Harbor calls (in Chinese)](https://cloud.tencent.com/developer/article/1151425)
   * [Swagger Editor](https://editor.swagger.io/) + Import [Harbor's swagger.yaml](https://raw.githubusercontent.com/goharbor/harbor/7b6e83090e26d171c0d0e0dacd14e2b61fab45e1/API/harbor/swagger.yaml)
