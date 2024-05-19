@@ -43,7 +43,7 @@ jobs:
         with:
           url: ${{ steps.pages.outputs.base_url }}
           pages_path: .
-          cmd_params: '--exclude=(mylabs.dev|localhost|stackoverflow.com) --buffer-size=8192 --ignore-fragments --max-connections-per-host=5 --color=always --rate-limit=5 --header="User-Agent:Mozilla" --skip-tls-verification'
+          cmd_params: '--exclude=(mylabs.dev|localhost|stackoverflow.com) --buffer-size=8192 --ignore-fragments --max-connections-per-host=5 --color=always --rate-limit=5 --header="User-Agent:Mozilla" --skip-tls-verification --timeout=20'
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0

@@ -331,7 +331,7 @@ secret/ingress-cert-production annotated
 
 ## Install nginx-ingress
 
-![Nginx Ingress controller](https://www.nginx.com/wp-content/uploads/2018/12/multiple-ingress-controllers.png
+![Nginx Ingress controller](https://camo.githubusercontent.com/b2184aaf45a035d28011cf0eb4de2d2e70a2b5c43cc2b5645889bc156251f23e/68747470733a2f2f7869616f7275692d63632e6f73732d636e2d68616e677a686f752e616c6979756e63732e636f6d2f696d616765732f3230323330312f3230323330313031303032313439372e706e67
 "Nginx Ingress controller")
 
 ([https://www.nginx.com/blog/](https://www.nginx.com/blog/))
