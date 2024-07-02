@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/ruzickap/k8s-harbor/compare/v1.0.3...v1.1.0) (2024-07-02)
+
+
+### Features
+
+* **gh:** add default GitHub repo files ([#153](https://github.com/ruzickap/k8s-harbor/issues/153)) ([435ecf9](https://github.com/ruzickap/k8s-harbor/commit/435ecf9de397b43ba69b4bd7d8f64cf3be093b71))
+* **gh:** add default GitHub repo files ([#154](https://github.com/ruzickap/k8s-harbor/issues/154)) ([fee6c0d](https://github.com/ruzickap/k8s-harbor/commit/fee6c0ddd4a8447cd4da01ffcb1abd35358f166f))
+* **gh:** add default GitHub repo files ([#155](https://github.com/ruzickap/k8s-harbor/issues/155)) ([edddbb6](https://github.com/ruzickap/k8s-harbor/commit/edddbb639c15cf18fe123e6e55a39f8f16d77dab))
+* **gh:** add default GitHub repo files ([#156](https://github.com/ruzickap/k8s-harbor/issues/156)) ([d2e752b](https://github.com/ruzickap/k8s-harbor/commit/d2e752bd4de1553e2c1460033e18be263d292605))
+* **gh:** add default GitHub repo files ([#163](https://github.com/ruzickap/k8s-harbor/issues/163)) ([e066355](https://github.com/ruzickap/k8s-harbor/commit/e066355d7a2ec7291980b6ddec4f95243937339d))
+* **gha:** fix badge + build ([#152](https://github.com/ruzickap/k8s-harbor/issues/152)) ([0c7add3](https://github.com/ruzickap/k8s-harbor/commit/0c7add321ea8e157e48ab3942c6ea8db3d451ecc))
+* **gha:** unify GHA - renovate, megalinter, markdown, and others ([#150](https://github.com/ruzickap/k8s-harbor/issues/150)) ([075c049](https://github.com/ruzickap/k8s-harbor/commit/075c049ffbb70d36b490aa4f36bab3cbca38531f))
+* **gha:** update gha + add ignore-unfixed to trivy ([#171](https://github.com/ruzickap/k8s-harbor/issues/171)) ([32128cf](https://github.com/ruzickap/k8s-harbor/commit/32128cfb0967afb21865d3acd47e115b7fce8d27))
+
+
+### Bug Fixes
+
+* **links:** fix broken url for multiple-ingress-controllers ([#175](https://github.com/ruzickap/k8s-harbor/issues/175)) ([6228778](https://github.com/ruzickap/k8s-harbor/commit/6228778c4a777d3e1b51212576066cdc53ab317a))
+* **links:** remove dead url ([#160](https://github.com/ruzickap/k8s-harbor/issues/160)) ([3317a32](https://github.com/ruzickap/k8s-harbor/commit/3317a324e68fa6155e5a6f21df47845423e8fc38))
+
 ## [v1.0.3](https://github.com/ruzickap/k8s-harbor/compare/v1.0.2...v1.0.3) (2021-12-20)
 
 - Improve GH Action files [`#100`](https://github.com/ruzickap/k8s-harbor/pull/100)
