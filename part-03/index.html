@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nginx + cert-manager + kubed installation | Kubernetes and Harbor</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="icon" href="/k8s-harbor/favicon.ico">
+    <meta name="description" content="Kubernetes and Harbor">
+    
+    <link rel="preload" href="/k8s-harbor/assets/css/0.styles.c9a2aaca.css" as="style"><link rel="preload" href="/k8s-harbor/assets/js/app.f7b38e4a.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/2.521d4de5.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/1.f0fb5331.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/29.d09a07de.js" as="script"><link rel="prefetch" href="/k8s-harbor/assets/js/10.4c38d8c7.js"><link rel="prefetch" href="/k8s-harbor/assets/js/11.7e8c2753.js"><link rel="prefetch" href="/k8s-harbor/assets/js/12.7275a82a.js"><link rel="prefetch" href="/k8s-harbor/assets/js/13.20402ba3.js"><link rel="prefetch" href="/k8s-harbor/assets/js/14.dfba7a00.js"><link rel="prefetch" href="/k8s-harbor/assets/js/15.e1917aa1.js"><link rel="prefetch" href="/k8s-harbor/assets/js/16.86a83cf4.js"><link rel="prefetch" href="/k8s-harbor/assets/js/17.0662481b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/18.184ee69b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/19.669973b5.js"><link rel="prefetch" href="/k8s-harbor/assets/js/20.c0980bf6.js"><link rel="prefetch" href="/k8s-harbor/assets/js/21.307fb84e.js"><link rel="prefetch" href="/k8s-harbor/assets/js/22.66b4b5c7.js"><link rel="prefetch" href="/k8s-harbor/assets/js/23.e984e1a2.js"><link rel="prefetch" href="/k8s-harbor/assets/js/24.db412079.js"><link rel="prefetch" href="/k8s-harbor/assets/js/25.f7323b51.js"><link rel="prefetch" href="/k8s-harbor/assets/js/26.30631009.js"><link rel="prefetch" href="/k8s-harbor/assets/js/27.6981350f.js"><link rel="prefetch" href="/k8s-harbor/assets/js/28.49150c67.js"><link rel="prefetch" href="/k8s-harbor/assets/js/3.d9eaaa0b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/30.7bad3658.js"><link rel="prefetch" href="/k8s-harbor/assets/js/31.b1273fb8.js"><link rel="prefetch" href="/k8s-harbor/assets/js/4.54426d1d.js"><link rel="prefetch" href="/k8s-harbor/assets/js/5.57e51451.js"><link rel="prefetch" href="/k8s-harbor/assets/js/6.ca1ab2fc.js"><link rel="prefetch" href="/k8s-harbor/assets/js/7.b9b9e65d.js"><link rel="prefetch" href="/k8s-harbor/assets/js/vendors~docsearch.89026c5a.js">
+    <link rel="stylesheet" href="/k8s-harbor/assets/css/0.styles.c9a2aaca.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/k8s-harbor/" class="home-link router-link-active"><img src="/k8s-harbor/harbor-horizontal-color.svg" alt="Kubernetes and Harbor" class="logo"> <span class="site-name can-hide">Kubernetes and Harbor</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/k8s-harbor/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Harbor links" class="dropdown-title"><span class="title">Harbor links</span> <span class="arrow down"></span></button> <button type="button" aria-label="Harbor links" class="mobile-dropdown-title"><span class="title">Harbor links</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://goharbor.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/blog/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/docs/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Docs
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/goharbor/harbor/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/community/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Community
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/ruzickap/k8s-harbor" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/k8s-harbor/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Harbor links" class="dropdown-title"><span class="title">Harbor links</span> <span class="arrow down"></span></button> <button type="button" aria-label="Harbor links" class="mobile-dropdown-title"><span class="title">Harbor links</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://goharbor.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/blog/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/docs/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Docs
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/goharbor/harbor/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/community/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Community
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/ruzickap/k8s-harbor" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/k8s-harbor/" aria-current="page" class="sidebar-link">Kubernetes + Harbor</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/#requirements" class="sidebar-link">Requirements</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#objectives" class="sidebar-link">Objectives</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#lab-architecture" class="sidebar-link">Lab Architecture</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#content" class="sidebar-link">Content</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#links" class="sidebar-link">Links</a></li></ul></li><li><a href="/k8s-harbor/part-01/" class="sidebar-link">Create EKS cluster</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#prepare-the-local-working-environment" class="sidebar-link">Prepare the local working environment</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#configure-aws" class="sidebar-link">Configure AWS</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#create-amazon-eks" class="sidebar-link">Create Amazon EKS</a></li></ul></li><li><a href="/k8s-harbor/part-02/" class="sidebar-link">Install Helm</a></li><li><a href="/k8s-harbor/part-03/" aria-current="page" class="active sidebar-link">Nginx + cert-manager + kubed installation</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-cert-manager" class="sidebar-link">Install cert-manager</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#generate-tls-certificate" class="sidebar-link">Generate TLS certificate</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-kubed" class="sidebar-link">Install kubed</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-nginx-ingress" class="sidebar-link">Install nginx-ingress</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#create-dns-records" class="sidebar-link">Create DNS records</a></li></ul></li><li><a href="/k8s-harbor/part-04/" class="sidebar-link">Install Harbor</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-04/#install-harbor-using-helm" class="sidebar-link">Install Harbor using Helm</a></li></ul></li><li><a href="/k8s-harbor/part-05/" class="sidebar-link">Initial Harbor tasks</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-05/#ldap-authentication" class="sidebar-link">LDAP Authentication</a></li></ul></li><li><a href="/k8s-harbor/part-06/" class="sidebar-link">Harbor and Helm charts</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#add-project" class="sidebar-link">Add Project</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#upload-helm-chart-using-cli" class="sidebar-link">Upload Helm Chart using CLI</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#upload-signed-helm-chart-using-cli" class="sidebar-link">Upload signed Helm Chart using CLI</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#use-harbor-helm-chart-repository" class="sidebar-link">Use Harbor Helm Chart repository</a></li></ul></li><li><a href="/k8s-harbor/part-07/" class="sidebar-link">Harbor and container images</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#upload-docker-image" class="sidebar-link">Upload docker image</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#signed-container-image" class="sidebar-link">Signed container image</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#vulnerability-scan" class="sidebar-link">Vulnerability scan</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#replication" class="sidebar-link">Replication</a></li></ul></li><li><a href="/k8s-harbor/part-08/" class="sidebar-link">Project settings</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#automatically-scan-images-on-push" class="sidebar-link">Automatically scan images on push</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#scan-existing-application" class="sidebar-link">Scan existing application</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#prevent-vulnerable-images-from-running" class="sidebar-link">Prevent vulnerable images from running</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#use-image-hosted-by-harbor-in-k8s-deployment" class="sidebar-link">Use image hosted by Harbor in k8s deployment</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#project-rbac-settings" class="sidebar-link">Project RBAC settings</a></li></ul></li><li><a href="/k8s-harbor/part-09/" class="sidebar-link">Clean-up</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="nginx-cert-manager-kubed-installation"><a href="#nginx-cert-manager-kubed-installation" class="header-anchor">#</a> Nginx + cert-manager + kubed installation</h1> <p>Before we move on with other tasks it is necessary to install Nginx Ingress.
+It's also handy to install cert-manager for managing SSL certificates.</p> <h2 id="install-cert-manager"><a href="#install-cert-manager" class="header-anchor">#</a> Install cert-manager</h2> <p>cert-manager architecture:</p> <p><img src="https://raw.githubusercontent.com/jetstack/cert-manager/4f30ed75e88e5d0defeb950501b5cac6da7fa7fe/docs/images/high-level-overview.png" alt="cert-manager high level overview" title="cert-manager high level overview"></p> <p>Install the CRDs resources separately:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl apply <span class="token parameter variable">-f</span> https://raw.githubusercontent.com/jetstack/cert-manager/release-0.10/deploy/manifests/00-crds.yaml
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>customresourcedefinition.apiextensions.k8s.io/certificates.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/challenges.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/issuers.certmanager.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/orders.certmanager.k8s.io created
+</code></pre></div><p>Create the namespace for cert-manager and label it to disable resource
+validation:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl create namespace cert-manager
+kubectl label namespace cert-manager certmanager.k8s.io/disable-validation<span class="token operator">=</span>true
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>namespace/cert-manager created
+namespace/cert-manager labeled
+</code></pre></div><p>Install the cert-manager Helm chart:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm repo <span class="token function">add</span> jetstack https://charts.jetstack.io
+helm <span class="token function">install</span> <span class="token parameter variable">--name</span> cert-manager <span class="token parameter variable">--namespace</span> cert-manager <span class="token parameter variable">--wait</span> jetstack/cert-manager <span class="token parameter variable">--version</span> v0.10.0
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>&quot;jetstack&quot; has been added to your repositories
+NAME:   cert-manager
+LAST DEPLOYED: Fri Jul 19 11:47:58 2019
+NAMESPACE: cert-manager
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/ClusterRole
+NAME               AGE
+cert-manager-edit  10s
+cert-manager-view  10s
+
+==&gt; v1/Pod(related)
+NAME                                      READY  STATUS   RESTARTS  AGE
+cert-manager-578fc6ff6-qjvrr              1/1    Running  0         10s
+cert-manager-cainjector-5975fd64c5-82c8x  1/1    Running  0         10s
+
+==&gt; v1/ServiceAccount
+NAME                     SECRETS  AGE
+cert-manager             1        10s
+cert-manager-cainjector  1        10s
+
+==&gt; v1beta1/ClusterRole
+NAME                     AGE
+cert-manager             10s
+cert-manager-cainjector  10s
+
+==&gt; v1beta1/ClusterRoleBinding
+NAME                     AGE
+cert-manager             10s
+cert-manager-cainjector  10s
+
+==&gt; v1beta1/Deployment
+NAME                     READY  UP-TO-DATE  AVAILABLE  AGE
+cert-manager             1/1    1           1          10s
+cert-manager-cainjector  1/1    1           1          10s
+
+
+NOTES:
+cert-manager has been deployed successfully!
+
+In order to begin issuing certificates, you will need to set up a ClusterIssuer
+or Issuer resource (for example, by creating a 'letsencrypt-staging' issuer).
+
+More information on the different types of issuers and how to configure them
+can be found in our documentation:
+
+https://docs.cert-manager.io/en/latest/reference/issuers.html
+
+For information on how to configure cert-manager to automatically provision
+Certificates for Ingress resources, take a look at the `ingress-shim`
+documentation:
+
+https://docs.cert-manager.io/en/latest/reference/ingress-shim.html
+</code></pre></div><h3 id="create-clusterissuer-for-let-s-encrypt"><a href="#create-clusterissuer-for-let-s-encrypt" class="header-anchor">#</a> Create ClusterIssuer for Let's Encrypt</h3> <p>Create <code>ClusterIssuer</code> for Route53 used by cert-manager. It will allow Let's
+Encrypt to generate certificate. Route53 (DNS) method of requesting certificate
+from Let's Encrypt must be used to create wildcard certificate <code>*.mylabs.dev</code>
+(details <a href="https://community.letsencrypt.org/t/wildcard-certificates-via-http-01/51223" target="_blank" rel="noopener noreferrer">here<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>).</p> <p><img src="https://b3n.org/wp-content/uploads/2016/09/acme_letsencrypt_dns-01-challenge.png" alt="ACME DNS Challenge" title="ACME DNS Challenge"></p> <p>(<a href="https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/" target="_blank" rel="noopener noreferrer">https://b3n.org/intranet-ssl-certificates-using-lets-encrypt-dns-01/<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">echo</span> <span class="token parameter variable">-n</span> <span class="token string">&quot;<span class="token variable">$EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY</span>&quot;</span> <span class="token operator">|</span> base64<span class="token variable">)</span></span>
+envsubst <span class="token operator">&lt;</span> files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml <span class="token operator">|</span> kubectl apply <span class="token parameter variable">-f</span> -
+<span class="token function">cat</span> files/cert-manager-letsencrypt-aws-route53-clusterissuer.yaml
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>secret/aws-route53-secret-access-key-secret created
+clusterissuer.certmanager.k8s.io/selfsigning-issuer created
+clusterissuer.certmanager.k8s.io/letsencrypt-staging-dns created
+clusterissuer.certmanager.k8s.io/letsencrypt-production-dns created
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-route53-secret-access-key-secret
+  namespace: cert-manager
+data:
+  secret-access-key: $EKS_CERT_MANAGER_ROUTE53_AWS_SECRET_ACCESS_KEY_BASE64
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: selfsigning-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-dns
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: petr.ruzicka@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-staging-dns
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      providers:
+      - name: aws-route53
+        route53:
+          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+          region: eu-central-1
+          secretAccessKeySecretRef:
+            name: aws-route53-secret-access-key-secret
+            key: secret-access-key
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production-dns
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: petr.ruzicka@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-production-dns
+    dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      providers:
+      - name: aws-route53
+        route53:
+          accessKeyID: ${EKS_CERT_MANAGER_ROUTE53_AWS_ACCESS_KEY_ID}
+          region: eu-central-1
+          secretAccessKeySecretRef:
+            name: aws-route53-secret-access-key-secret
+            key: secret-access-key
+</code></pre></div><h2 id="generate-tls-certificate"><a href="#generate-tls-certificate" class="header-anchor">#</a> Generate TLS certificate</h2> <p>Create certificate using cert-manager:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>envsubst <span class="token operator">&lt;</span> files/cert-manager-letsencrypt-aws-route53-certificate.yaml <span class="token operator">|</span> kubectl apply <span class="token parameter variable">-f</span> -
+envsubst <span class="token operator">&lt;</span> files/cert-manager-letsencrypt-aws-route53-certificate.yaml
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>certificate.certmanager.k8s.io/ingress-cert-production created
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: ingress-cert-production
+  namespace: cert-manager
+spec:
+  secretName: ingress-cert-production
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-production-dns
+  commonName: &quot;*.mylabs.dev&quot;
+  dnsNames:
+  - &quot;*.mylabs.dev&quot;
+  acme:
+    config:
+    - dns01:
+        provider: aws-route53
+      domains:
+      - &quot;*.mylabs.dev&quot;
+</code></pre></div><p>(<a href="https://www.openshift.com/blog/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift" target="_blank" rel="noopener noreferrer">https://www.openshift.com/blog/self-serviced-end-to-end-encryption-approaches-for-applications-deployed-in-openshift<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)</p> <h2 id="install-kubed"><a href="#install-kubed" class="header-anchor">#</a> Install kubed</h2> <p>It's necessary to copy the wildcard certificate across all &quot;future&quot; namespaces
+and that's the reason why <a href="https://github.com/appscode/kubed" target="_blank" rel="noopener noreferrer">kubed<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> needs to be
+installed (for now).
+<a href="https://github.com/appscode/kubed" target="_blank" rel="noopener noreferrer">kubed<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> can <a href="https://appscode.com/products/kubed/" target="_blank" rel="noopener noreferrer">synchronize ConfigMaps/Secrets<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+across Kubernetes namespaces/clusters.</p> <p>Kubed - synchronize secret diagram:</p> <p><img src="/k8s-harbor/assets/img/kubed.e88b1fb6.svg" alt="Kubed - synchronize secret" title="Kubed - synchronize secret"></p> <p>Add kubed helm repository:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm repo <span class="token function">add</span> appscode https://charts.appscode.com/stable/
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>&quot;appscode&quot; has been added to your repositories
+</code></pre></div><p>Install kubed:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm <span class="token function">install</span> appscode/kubed <span class="token parameter variable">--name</span> kubed <span class="token parameter variable">--version</span> <span class="token number">0.11</span>.0 <span class="token parameter variable">--namespace</span> kube-system <span class="token parameter variable">--wait</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">config.clusterName</span><span class="token operator">=</span>my_k8s_cluster <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">apiserver.enabled</span><span class="token operator">=</span>false
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>NAME:   kubed
+LAST DEPLOYED: Fri Jul 19 11:48:10 2019
+NAMESPACE: kube-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/ClusterRole
+NAME         AGE
+kubed-kubed  4s
+
+==&gt; v1/ClusterRoleBinding
+NAME                                  AGE
+kubed-kubed                           4s
+kubed-kubed-apiserver-auth-delegator  4s
+
+==&gt; v1/Pod(related)
+NAME                          READY  STATUS             RESTARTS  AGE
+kubed-kubed-75789b6cc6-6zrst  0/1    ContainerCreating  0         4s
+
+==&gt; v1/RoleBinding
+NAME                                                          AGE
+kubed-kubed-apiserver-extension-server-authentication-reader  4s
+
+==&gt; v1/Secret
+NAME                        TYPE    DATA  AGE
+kubed-kubed                 Opaque  1     4s
+kubed-kubed-apiserver-cert  Opaque  2     4s
+
+==&gt; v1/Service
+NAME         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)  AGE
+kubed-kubed  ClusterIP  10.100.193.123  &amp;lt;none&gt;       443/TCP  4s
+
+==&gt; v1/ServiceAccount
+NAME         SECRETS  AGE
+kubed-kubed  1        4s
+
+==&gt; v1beta1/Deployment
+NAME         READY  UP-TO-DATE  AVAILABLE  AGE
+kubed-kubed  0/1    1           0          4s
+
+
+NOTES:
+To verify that Kubed has started, run:
+
+  kubectl --namespace=kube-system get deployments -l &quot;release=kubed, app=kubed&quot;
+</code></pre></div><p>Annotate (mark) the cert-manager secret to be copied to other namespaces
+if necessary:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl annotate secret ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span> <span class="token parameter variable">-n</span> cert-manager kubed.appscode.com/sync<span class="token operator">=</span><span class="token string">&quot;app=kubed&quot;</span>
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>secret/ingress-cert-production annotated
+</code></pre></div><h2 id="install-nginx-ingress"><a href="#install-nginx-ingress" class="header-anchor">#</a> Install nginx-ingress</h2> <p><img src="https://camo.githubusercontent.com/b2184aaf45a035d28011cf0eb4de2d2e70a2b5c43cc2b5645889bc156251f23e/68747470733a2f2f7869616f7275692d63632e6f73732d636e2d68616e677a686f752e616c6979756e63732e636f6d2f696d616765732f3230323330312f3230323330313031303032313439372e706e67" alt="Nginx Ingress controller" title="Nginx Ingress controller"></p> <p>(<a href="https://www.nginx.com/blog/" target="_blank" rel="noopener noreferrer">https://www.nginx.com/blog/<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)</p> <p>Install nginx-ingress which will also create a new loadbalancer:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm <span class="token function">install</span> stable/nginx-ingress <span class="token parameter variable">--wait</span> <span class="token parameter variable">--name</span> nginx-ingress <span class="token parameter variable">--namespace</span> nginx-ingress-system <span class="token parameter variable">--version</span> <span class="token number">1.24</span>.3 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">rbac.create</span><span class="token operator">=</span>true <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> controller.extraArgs.default-ssl-certificate<span class="token operator">=</span>cert-manager/ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span>
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>NAME:   nginx-ingress
+LAST DEPLOYED: Fri Jul 19 11:48:17 2019
+NAMESPACE: nginx-ingress-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/ConfigMap
+NAME                      DATA  AGE
+nginx-ingress-controller  1     8s
+
+==&gt; v1/Pod(related)
+NAME                                            READY  STATUS             RESTARTS  AGE
+nginx-ingress-controller-7b59c7c7bc-nhmq8       0/1    ContainerCreating  0         8s
+nginx-ingress-default-backend-6d489448cb-d9brb  1/1    Running            0         8s
+
+==&gt; v1/Service
+NAME                           TYPE          CLUSTER-IP     EXTERNAL-IP       PORT(S)                     AGE
+nginx-ingress-controller       LoadBalancer  10.100.37.102  a55fd2fadaa0a...  80:30958/TCP,443:31932/TCP  8s
+nginx-ingress-default-backend  ClusterIP     10.100.15.87   &amp;lt;none&gt;            80/TCP                      8s
+
+==&gt; v1/ServiceAccount
+NAME           SECRETS  AGE
+nginx-ingress  1        8s
+
+==&gt; v1beta1/ClusterRole
+NAME           AGE
+nginx-ingress  8s
+
+==&gt; v1beta1/ClusterRoleBinding
+NAME           AGE
+nginx-ingress  8s
+
+==&gt; v1beta1/Deployment
+NAME                           READY  UP-TO-DATE  AVAILABLE  AGE
+nginx-ingress-controller       0/1    1           0          8s
+nginx-ingress-default-backend  1/1    1           1          8s
+
+==&gt; v1beta1/Role
+NAME           AGE
+nginx-ingress  8s
+
+==&gt; v1beta1/RoleBinding
+NAME           AGE
+nginx-ingress  8s
+
+
+NOTES:
+The nginx-ingress controller has been installed.
+It may take a few minutes for the LoadBalancer IP to be available.
+You can watch the status by running 'kubectl --namespace nginx-ingress-system get services -o wide -w nginx-ingress-controller'
+
+An example Ingress that makes use of the controller:
+
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    name: example
+    namespace: foo
+  spec:
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - backend:
+                serviceName: exampleService
+                servicePort: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.example.com
+          secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: &amp;lt;base64 encoded cert&gt;
+    tls.key: &amp;lt;base64 encoded key&gt;
+  type: kubernetes.io/tls
+</code></pre></div><h2 id="create-dns-records"><a href="#create-dns-records" class="header-anchor">#</a> Create DNS records</h2> <p>nginx-ingress created the loadbalancer service. In case of AWS it is
+Classic Elastic Loadbalancer:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl get <span class="token function">service</span> <span class="token parameter variable">-n</span> nginx-ingress-system
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><div class="highlight-lines"><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP                                                                  PORT(S)                      AGE
+nginx-ingress-controller        LoadBalancer   10.100.37.102   a55fd2fadaa0a11e9bcf2026dca96845-1478956562.eu-central-1.elb.amazonaws.com   80:30958/TCP,443:31932/TCP   8s
+nginx-ingress-default-backend   ClusterIP      10.100.15.87    &amp;lt;none&gt;                                                                       80/TCP                       8s
+</code></pre></div><p>Create DNS record <code>mylabs.dev</code> for the loadbalancer created by nginx-ingress:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">LOADBALANCER_HOSTNAME</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>kubectl get svc nginx-ingress-controller <span class="token parameter variable">-n</span> nginx-ingress-system <span class="token parameter variable">-o</span> <span class="token assign-left variable">jsonpath</span><span class="token operator">=</span><span class="token string">&quot;{.status.loadBalancer.ingress[0].hostname}&quot;</span><span class="token variable">)</span></span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">CANONICAL_HOSTED_ZONE_NAME_ID</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>aws elb describe-load-balancers <span class="token parameter variable">--query</span> <span class="token string">&quot;LoadBalancerDescriptions[?DNSName==\<span class="token variable"><span class="token variable">`</span>$LOADBALANCER_HOSTNAME<span class="token punctuation">\</span><span class="token variable">`</span></span>].CanonicalHostedZoneNameID&quot;</span> <span class="token parameter variable">--output</span> text<span class="token variable">)</span></span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">HOSTED_ZONE_ID</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>aws route53 list-hosted-zones <span class="token parameter variable">--query</span> <span class="token string">&quot;HostedZones[?Name==\<span class="token variable"><span class="token variable">`</span>$<span class="token punctuation">{</span>MY_DOMAIN<span class="token punctuation">}</span>.<span class="token punctuation">\</span><span class="token variable">`</span></span>].Id&quot;</span> <span class="token parameter variable">--output</span> text<span class="token variable">)</span></span>
+
+envsubst <span class="token operator">&lt;</span> files/aws_route53-dns_change.json <span class="token operator">|</span> aws route53 change-resource-record-sets --hosted-zone-id <span class="token variable">${HOSTED_ZONE_ID}</span> --change-batch<span class="token operator">=</span>file:///dev/stdin <span class="token operator">|</span> jq
+</code></pre></div><p>Output:</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;ChangeInfo&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;Id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;/change/C2YV79SSX0CS95&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;Status&quot;</span><span class="token operator">:</span> <span class="token string">&quot;PENDING&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;SubmittedAt&quot;</span><span class="token operator">:</span> <span class="token string">&quot;2019-07-19T09:48:29.092Z&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;Comment&quot;</span><span class="token operator">:</span> <span class="token string">&quot;A new record set for the zone.&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Wait for completion of certificate create process:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token assign-left variable">COUNT</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token assign-left variable">OUTPUT</span><span class="token operator">=</span><span class="token string">&quot;&quot;</span><span class="token punctuation">;</span> <span class="token keyword">while</span> <span class="token punctuation">[</span> <span class="token string">&quot;<span class="token variable">${OUTPUT}</span>&quot;</span> <span class="token operator">!=</span> <span class="token string">&quot;True&quot;</span> <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">[</span> <span class="token string">&quot;<span class="token variable">${COUNT}</span>&quot;</span> <span class="token parameter variable">-lt</span> <span class="token number">100</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token assign-left variable">COUNT</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span>COUNT<span class="token operator">+</span><span class="token number">1</span><span class="token variable">))</span></span><span class="token punctuation">;</span> <span class="token assign-left variable">OUTPUT</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>kubectl get certificate ingress-cert-$<span class="token punctuation">{</span>LETSENCRYPT_ENVIRONMENT<span class="token punctuation">}</span> <span class="token parameter variable">-n</span> cert-manager <span class="token parameter variable">-o</span> <span class="token assign-left variable">jsonpath</span><span class="token operator">=</span><span class="token string">&quot;{.status.conditions[0].status}&quot;</span><span class="token variable">)</span></span><span class="token punctuation">;</span> <span class="token function">sleep</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token builtin class-name">echo</span> <span class="token parameter variable">-n</span> <span class="token string">&quot;<span class="token variable">${COUNT}</span> &quot;</span><span class="token punctuation">;</span> <span class="token keyword">done</span>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/aws-samples/eks-workshop/65b766c494a5b4f5420b2912d8373c4957163541/static/images/crystal.svg?sanitize=true" alt="Architecture" title="Architecture"></p> <p>You should see the following output form cert-manager when looking at
+certificates:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl describe certificates <span class="token parameter variable">-n</span> cert-manager ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span>
+</code></pre></div><p>Output</p> <div class="language-text extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>Name:         ingress-cert-production
+Namespace:    cert-manager
+Labels:       &amp;lt;none&gt;
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {&quot;apiVersion&quot;:&quot;certmanager.k8s.io/v1alpha1&quot;,&quot;kind&quot;:&quot;Certificate&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{},&quot;name&quot;:&quot;ingress-cert-production&quot;,&quot;namespace&quot;...
+API Version:  certmanager.k8s.io/v1alpha1
+Kind:         Certificate
+Metadata:
+  Creation Timestamp:  2019-07-19T09:48:10Z
+  Generation:          4
+  Resource Version:    2919
+  Self Link:           /apis/certmanager.k8s.io/v1alpha1/namespaces/cert-manager/certificates/ingress-cert-production
+  UID:                 5131721b-aa0a-11e9-bcf2-026dca968456
+Spec:
+  Acme:
+    Config:
+      Dns 01:
+        Provider:  aws-route53
+      Domains:
+        *.mylabs.dev
+  Common Name:  *.mylabs.dev
+  Dns Names:
+    *.mylabs.dev
+  Issuer Ref:
+    Kind:       ClusterIssuer
+    Name:       letsencrypt-production-dns
+  Secret Name:  ingress-cert-production
+Status:
+  Conditions:
+    Last Transition Time:  2019-07-19T09:49:54Z
+    Message:               Certificate is up to date and has not expired
+    Reason:                Ready
+    Status:                True
+    Type:                  Ready
+  Not After:               2019-10-17T08:49:53Z
+Events:
+  Type     Reason              Age                  From          Message
+  ----     ------              ----                 ----          -------
+  Warning  IssuerNotReady      105s (x2 over 105s)  cert-manager  Issuer letsencrypt-production-dns not ready
+  Normal   Generated           105s                 cert-manager  Generated new private key
+  Normal   GenerateSelfSigned  105s                 cert-manager  Generated temporary self signed certificate
+  Normal   OrderCreated        105s                 cert-manager  Created Order resource &quot;ingress-cert-production-20059064&quot;
+  Normal   OrderComplete       1s                   cert-manager  Order &quot;ingress-cert-production-20059064&quot; completed successfully
+  Normal   CertIssued          1s                   cert-manager  Certificate issued successfully
+</code></pre></div><p>The Kubernetes &quot;secret&quot; in <code>cert-manager</code> namespace should contain the
+certificates:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl describe secret <span class="token parameter variable">-n</span> cert-manager ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span>
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>Name:         ingress-cert-production
+Namespace:    cert-manager
+Labels:       certmanager.k8s.io/certificate-name=ingress-cert-production
+Annotations:  certmanager.k8s.io/alt-names: *.mylabs.dev
+              certmanager.k8s.io/common-name: *.mylabs.dev
+              certmanager.k8s.io/ip-sans:
+              certmanager.k8s.io/issuer-kind: ClusterIssuer
+              certmanager.k8s.io/issuer-name: letsencrypt-production-dns
+              kubed.appscode.com/sync: app=kubed
+
+Type:  kubernetes.io/tls
+
+Data
+====
+ca.crt:   0 bytes
+tls.crt:  3550 bytes
+tls.key:  1675 bytes
+</code></pre></div><p>Check the SSL certificate:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token keyword">while</span> <span class="token operator">!</span> <span class="token builtin class-name">echo</span> <span class="token operator">|</span> openssl s_client <span class="token parameter variable">-showcerts</span> <span class="token parameter variable">-connect</span> <span class="token variable">${MY_DOMAIN}</span>:443 <span class="token operator">&amp;&gt;</span> /dev/null<span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token function">sleep</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token builtin class-name">echo</span> <span class="token parameter variable">-n</span> <span class="token string">&quot;. &quot;</span><span class="token punctuation">;</span> <span class="token keyword">done</span>
+<span class="token builtin class-name">echo</span> <span class="token operator">|</span> openssl s_client <span class="token parameter variable">-showcerts</span> <span class="token parameter variable">-connect</span> <span class="token variable">${MY_DOMAIN}</span>:443 <span class="token operator">|</span> openssl x509 <span class="token parameter variable">-inform</span> pem <span class="token parameter variable">-noout</span> <span class="token parameter variable">-text</span>
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>depth=2 O = Digital Signature Trust Co., CN = DST Root CA X3
+verify return:1
+depth=1 C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+verify return:1
+depth=0 CN = *.mylabs.dev
+verify return:1
+DONE
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            03:cf:14:18:90:0e:c8:7f:c2:39:eb:e5:dc:42:d7:c6:7a:a6
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+        Validity
+            Not Before: Jul 19 08:49:53 2019 GMT
+            Not After : Oct 17 08:49:53 2019 GMT
+        Subject: CN = *.mylabs.dev
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+...
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                44:C9:D2:B1:71:D6:94:92:67:DB:8C:C9:7E:0C:68:10:C3:10:41:D9
+            X509v3 Authority Key Identifier:
+                keyid:A8:4A:6A:63:04:7D:DD:BA:E6:D1:39:B7:A6:45:65:EF:F3:A8:EC:A1
+
+            Authority Information Access:
+                OCSP - URI:http://ocsp.int-x3.letsencrypt.org
+                CA Issuers - URI:http://cert.int-x3.letsencrypt.org/
+
+            X509v3 Subject Alternative Name:
+                DNS:*.mylabs.dev
+            X509v3 Certificate Policies:
+                Policy: 2.23.140.1.2.1
+                Policy: 1.3.6.1.4.1.44947.1.1.1
+                  CPS: http://cps.letsencrypt.org
+...
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/ruzickap/k8s-harbor/edit/master/docs/part-03/README.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">6/30/2024, 4:10:08 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/k8s-harbor/part-02/" class="prev">
+        Install Helm
+      </a></span> <span class="next"><a href="/k8s-harbor/part-04/">
+        Install Harbor
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/k8s-harbor/assets/js/app.f7b38e4a.js" defer></script><script src="/k8s-harbor/assets/js/2.521d4de5.js" defer></script><script src="/k8s-harbor/assets/js/1.f0fb5331.js" defer></script><script src="/k8s-harbor/assets/js/29.d09a07de.js" defer></script>
+  </body>
+</html>

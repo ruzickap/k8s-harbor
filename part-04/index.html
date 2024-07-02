@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Install Harbor | Kubernetes and Harbor</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="icon" href="/k8s-harbor/favicon.ico">
+    <meta name="description" content="Kubernetes and Harbor">
+    
+    <link rel="preload" href="/k8s-harbor/assets/css/0.styles.c9a2aaca.css" as="style"><link rel="preload" href="/k8s-harbor/assets/js/app.f7b38e4a.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/2.521d4de5.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/1.f0fb5331.js" as="script"><link rel="preload" href="/k8s-harbor/assets/js/25.f7323b51.js" as="script"><link rel="prefetch" href="/k8s-harbor/assets/js/10.4c38d8c7.js"><link rel="prefetch" href="/k8s-harbor/assets/js/11.7e8c2753.js"><link rel="prefetch" href="/k8s-harbor/assets/js/12.7275a82a.js"><link rel="prefetch" href="/k8s-harbor/assets/js/13.20402ba3.js"><link rel="prefetch" href="/k8s-harbor/assets/js/14.dfba7a00.js"><link rel="prefetch" href="/k8s-harbor/assets/js/15.e1917aa1.js"><link rel="prefetch" href="/k8s-harbor/assets/js/16.86a83cf4.js"><link rel="prefetch" href="/k8s-harbor/assets/js/17.0662481b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/18.184ee69b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/19.669973b5.js"><link rel="prefetch" href="/k8s-harbor/assets/js/20.c0980bf6.js"><link rel="prefetch" href="/k8s-harbor/assets/js/21.307fb84e.js"><link rel="prefetch" href="/k8s-harbor/assets/js/22.66b4b5c7.js"><link rel="prefetch" href="/k8s-harbor/assets/js/23.e984e1a2.js"><link rel="prefetch" href="/k8s-harbor/assets/js/24.db412079.js"><link rel="prefetch" href="/k8s-harbor/assets/js/26.30631009.js"><link rel="prefetch" href="/k8s-harbor/assets/js/27.6981350f.js"><link rel="prefetch" href="/k8s-harbor/assets/js/28.49150c67.js"><link rel="prefetch" href="/k8s-harbor/assets/js/29.d09a07de.js"><link rel="prefetch" href="/k8s-harbor/assets/js/3.d9eaaa0b.js"><link rel="prefetch" href="/k8s-harbor/assets/js/30.7bad3658.js"><link rel="prefetch" href="/k8s-harbor/assets/js/31.b1273fb8.js"><link rel="prefetch" href="/k8s-harbor/assets/js/4.54426d1d.js"><link rel="prefetch" href="/k8s-harbor/assets/js/5.57e51451.js"><link rel="prefetch" href="/k8s-harbor/assets/js/6.ca1ab2fc.js"><link rel="prefetch" href="/k8s-harbor/assets/js/7.b9b9e65d.js"><link rel="prefetch" href="/k8s-harbor/assets/js/vendors~docsearch.89026c5a.js">
+    <link rel="stylesheet" href="/k8s-harbor/assets/css/0.styles.c9a2aaca.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/k8s-harbor/" class="home-link router-link-active"><img src="/k8s-harbor/harbor-horizontal-color.svg" alt="Kubernetes and Harbor" class="logo"> <span class="site-name can-hide">Kubernetes and Harbor</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/k8s-harbor/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Harbor links" class="dropdown-title"><span class="title">Harbor links</span> <span class="arrow down"></span></button> <button type="button" aria-label="Harbor links" class="mobile-dropdown-title"><span class="title">Harbor links</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://goharbor.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/blog/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/docs/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Docs
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/goharbor/harbor/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/community/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Community
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/ruzickap/k8s-harbor" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/k8s-harbor/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Harbor links" class="dropdown-title"><span class="title">Harbor links</span> <span class="arrow down"></span></button> <button type="button" aria-label="Harbor links" class="mobile-dropdown-title"><span class="title">Harbor links</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://goharbor.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/blog/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/docs/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Docs
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/goharbor/harbor/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://goharbor.io/community/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Harbor Community
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <a href="https://github.com/ruzickap/k8s-harbor" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/k8s-harbor/" aria-current="page" class="sidebar-link">Kubernetes + Harbor</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/#requirements" class="sidebar-link">Requirements</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#objectives" class="sidebar-link">Objectives</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#lab-architecture" class="sidebar-link">Lab Architecture</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#content" class="sidebar-link">Content</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/#links" class="sidebar-link">Links</a></li></ul></li><li><a href="/k8s-harbor/part-01/" class="sidebar-link">Create EKS cluster</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#prepare-the-local-working-environment" class="sidebar-link">Prepare the local working environment</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#configure-aws" class="sidebar-link">Configure AWS</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-01/#create-amazon-eks" class="sidebar-link">Create Amazon EKS</a></li></ul></li><li><a href="/k8s-harbor/part-02/" class="sidebar-link">Install Helm</a></li><li><a href="/k8s-harbor/part-03/" class="sidebar-link">Nginx + cert-manager + kubed installation</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-cert-manager" class="sidebar-link">Install cert-manager</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#generate-tls-certificate" class="sidebar-link">Generate TLS certificate</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-kubed" class="sidebar-link">Install kubed</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#install-nginx-ingress" class="sidebar-link">Install nginx-ingress</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-03/#create-dns-records" class="sidebar-link">Create DNS records</a></li></ul></li><li><a href="/k8s-harbor/part-04/" aria-current="page" class="active sidebar-link">Install Harbor</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-04/#install-harbor-using-helm" class="sidebar-link">Install Harbor using Helm</a></li></ul></li><li><a href="/k8s-harbor/part-05/" class="sidebar-link">Initial Harbor tasks</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-05/#ldap-authentication" class="sidebar-link">LDAP Authentication</a></li></ul></li><li><a href="/k8s-harbor/part-06/" class="sidebar-link">Harbor and Helm charts</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#add-project" class="sidebar-link">Add Project</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#upload-helm-chart-using-cli" class="sidebar-link">Upload Helm Chart using CLI</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#upload-signed-helm-chart-using-cli" class="sidebar-link">Upload signed Helm Chart using CLI</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-06/#use-harbor-helm-chart-repository" class="sidebar-link">Use Harbor Helm Chart repository</a></li></ul></li><li><a href="/k8s-harbor/part-07/" class="sidebar-link">Harbor and container images</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#upload-docker-image" class="sidebar-link">Upload docker image</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#signed-container-image" class="sidebar-link">Signed container image</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#vulnerability-scan" class="sidebar-link">Vulnerability scan</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-07/#replication" class="sidebar-link">Replication</a></li></ul></li><li><a href="/k8s-harbor/part-08/" class="sidebar-link">Project settings</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#automatically-scan-images-on-push" class="sidebar-link">Automatically scan images on push</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#scan-existing-application" class="sidebar-link">Scan existing application</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#prevent-vulnerable-images-from-running" class="sidebar-link">Prevent vulnerable images from running</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#use-image-hosted-by-harbor-in-k8s-deployment" class="sidebar-link">Use image hosted by Harbor in k8s deployment</a></li><li class="sidebar-sub-header"><a href="/k8s-harbor/part-08/#project-rbac-settings" class="sidebar-link">Project RBAC settings</a></li></ul></li><li><a href="/k8s-harbor/part-09/" class="sidebar-link">Clean-up</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="install-harbor"><a href="#install-harbor" class="header-anchor">#</a> Install Harbor</h1> <p><img src="https://raw.githubusercontent.com/cncf/artwork/c33a8386bce4eabc36e1d4972e0996db4630037b/projects/harbor/horizontal/color/harbor-horizontal-color.svg?sanitize=true" alt="Harbor logo" title="Harbor logo"></p> <h2 id="install-harbor-using-helm"><a href="#install-harbor-using-helm" class="header-anchor">#</a> Install Harbor using Helm</h2> <p>Lab architecture:</p> <p><img src="https://raw.githubusercontent.com/ruzickap/k8s-harbor-presentation/master/images/harbor_demo_architecture_diagram.svg?sanitize=true" alt="Lab architecture" title="Lab architecture"></p> <p>Label Harbor namespace and copy there the secret with certificates signed by
+Let's Encrypt certificate:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl get namespace harbor-system <span class="token operator">&amp;&gt;</span> /dev/null <span class="token operator">||</span> kubectl create namespace harbor-system
+kubectl label namespace <span class="token parameter variable">--overwrite</span> harbor-system <span class="token assign-left variable">app</span><span class="token operator">=</span>kubed
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>namespace/harbor-system labeled
+</code></pre></div><p>Check if the certificate generated by cert-manager in <code>cert-manager</code> namespace
+was successfully copied to <code>harbor-system</code> namespace:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl get secrets ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span> <span class="token parameter variable">-n</span> harbor-system <span class="token parameter variable">-o</span> json <span class="token operator">|</span> jq <span class="token string">&quot;.metadata | .annotations, .labels&quot;</span>
+</code></pre></div><p>Output:</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;certmanager.k8s.io/alt-names&quot;</span><span class="token operator">:</span> <span class="token string">&quot;*.mylabs.dev&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;certmanager.k8s.io/common-name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;*.mylabs.dev&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;certmanager.k8s.io/ip-sans&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;certmanager.k8s.io/issuer-kind&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ClusterIssuer&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;certmanager.k8s.io/issuer-name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;letsencrypt-production-dns&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;kubed.appscode.com/origin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;{\&quot;namespace\&quot;:\&quot;cert-manager\&quot;,\&quot;name\&quot;:\&quot;ingress-cert-production\&quot;,\&quot;uid\&quot;:\&quot;51b889ad-aa0a-11e9-8d10-06a66d4e34ba\&quot;,\&quot;resourceVersion\&quot;:\&quot;2916\&quot;}&quot;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">{</span>
+  <span class="token property">&quot;certmanager.k8s.io/certificate-name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ingress-cert-production&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;kubed.appscode.com/origin.cluster&quot;</span><span class="token operator">:</span> <span class="token string">&quot;my_k8s_cluster&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;kubed.appscode.com/origin.name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ingress-cert-production&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;kubed.appscode.com/origin.namespace&quot;</span><span class="token operator">:</span> <span class="token string">&quot;cert-manager&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Add Harbor Helm repository:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm repo <span class="token function">add</span> harbor https://helm.goharbor.io
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>&quot;harbor&quot; has been added to your repositories
+</code></pre></div><p>Install Harbor using Helm:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>helm <span class="token function">ls</span> <span class="token operator">|</span> <span class="token function">grep</span> harbor <span class="token operator">||</span> <span class="token punctuation">\</span>
+helm <span class="token function">install</span> <span class="token parameter variable">--wait</span> <span class="token parameter variable">--name</span> harbor <span class="token parameter variable">--namespace</span> harbor-system harbor/harbor <span class="token parameter variable">--version</span> v1.2.1 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">expose.ingress.hosts.core</span><span class="token operator">=</span>harbor.<span class="token variable">${MY_DOMAIN}</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">expose.ingress.hosts.notary</span><span class="token operator">=</span>notary.<span class="token variable">${MY_DOMAIN}</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">expose.tls.secretName</span><span class="token operator">=</span>ingress-cert-<span class="token variable">${LETSENCRYPT_ENVIRONMENT}</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">persistence.enabled</span><span class="token operator">=</span>false <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">externalURL</span><span class="token operator">=</span>https://harbor.<span class="token variable">${MY_DOMAIN}</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--set</span> <span class="token assign-left variable">harborAdminPassword</span><span class="token operator">=</span>admin
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><pre class="language-text"><code>NAME:   harbor
+LAST DEPLOYED: Fri Jul 19 11:49:59 2019
+NAMESPACE: harbor-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/ConfigMap
+NAME                         DATA  AGE
+harbor-harbor-chartmuseum    23    65s
+harbor-harbor-clair          1     65s
+harbor-harbor-core           34    65s
+harbor-harbor-jobservice     1     65s
+harbor-harbor-notary-server  5     65s
+harbor-harbor-registry       2     65s
+
+==&gt; v1/Deployment
+NAME                         READY  UP-TO-DATE  AVAILABLE  AGE
+harbor-harbor-chartmuseum    1/1    1           1          65s
+harbor-harbor-clair          1/1    1           1          65s
+harbor-harbor-core           1/1    1           1          65s
+harbor-harbor-jobservice     1/1    1           1          65s
+harbor-harbor-notary-server  1/1    1           1          65s
+harbor-harbor-notary-signer  1/1    1           1          65s
+harbor-harbor-portal         1/1    1           1          65s
+harbor-harbor-registry       1/1    1           1          65s
+
+==&gt; v1/Pod(related)
+NAME                                          READY  STATUS   RESTARTS  AGE
+harbor-harbor-chartmuseum-8647f45994-8nvd7    1/1    Running  0         65s
+harbor-harbor-clair-55c56ccf4-kjc67           1/1    Running  2         65s
+harbor-harbor-core-8554f8c5cd-n5dks           1/1    Running  0         65s
+harbor-harbor-database-0                      1/1    Running  0         64s
+harbor-harbor-jobservice-5989b8c6c4-nwxns     1/1    Running  0         65s
+harbor-harbor-notary-server-694d84d7-vwgdm    1/1    Running  0         65s
+harbor-harbor-notary-signer-749cbf5948-b7b6g  1/1    Running  0         65s
+harbor-harbor-portal-64899d584-gtr4x          1/1    Running  0         64s
+harbor-harbor-redis-0                         1/1    Running  0         64s
+harbor-harbor-registry-69bb76d7-8pcf9         2/2    Running  0         64s
+
+==&gt; v1/Secret
+NAME                       TYPE    DATA  AGE
+harbor-harbor-chartmuseum  Opaque  1     65s
+harbor-harbor-core         Opaque  7     65s
+harbor-harbor-database     Opaque  1     65s
+harbor-harbor-jobservice   Opaque  1     65s
+harbor-harbor-registry     Opaque  2     65s
+
+==&gt; v1/Service
+NAME                         TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
+harbor-harbor-chartmuseum    ClusterIP  10.100.188.79   &amp;lt;none&gt;       80/TCP             65s
+harbor-harbor-clair          ClusterIP  10.100.157.91   &amp;lt;none&gt;       6060/TCP,6061/TCP  65s
+harbor-harbor-core           ClusterIP  10.100.95.26    &amp;lt;none&gt;       80/TCP             65s
+harbor-harbor-database       ClusterIP  10.100.126.163  &amp;lt;none&gt;       5432/TCP           65s
+harbor-harbor-jobservice     ClusterIP  10.100.210.198  &amp;lt;none&gt;       80/TCP             65s
+harbor-harbor-notary-server  ClusterIP  10.100.249.4    &amp;lt;none&gt;       4443/TCP           65s
+harbor-harbor-notary-signer  ClusterIP  10.100.192.142  &amp;lt;none&gt;       7899/TCP           65s
+harbor-harbor-portal         ClusterIP  10.100.154.171  &amp;lt;none&gt;       80/TCP             65s
+harbor-harbor-redis          ClusterIP  10.100.156.84   &amp;lt;none&gt;       6379/TCP           65s
+harbor-harbor-registry       ClusterIP  10.100.27.218   &amp;lt;none&gt;       5000/TCP,8080/TCP  65s
+
+==&gt; v1/StatefulSet
+NAME                    READY  AGE
+harbor-harbor-database  1/1    65s
+harbor-harbor-redis     1/1    64s
+
+==&gt; v1beta1/Ingress
+NAME                   HOSTS                                ADDRESS      PORTS    AGE
+harbor-harbor-ingress  harbor.mylabs.dev,notary.mylabs.dev  54.93.96.15  80, 443  64s
+
+
+NOTES:
+Please wait for several minutes for Harbor deployment to complete.
+Then you should be able to visit the Harbor portal at https://harbor.mylabs.dev.
+For more details, please visit https://github.com/goharbor/harbor.
+</code></pre></div><p>Harbor architecture:</p> <p><img src="https://raw.githubusercontent.com/goharbor/harbor/5d31dd5b57d83f300907744aabf13ca60aac19b3/docs/img/harbor-arch.png" alt="Harbor Architecture" title="Harbor Architecture"></p> <p>Check how the Harbor Ingress looks like:</p> <div class="language-bash extra-class"><pre class="language-bash"><code>kubectl describe ingresses <span class="token parameter variable">-n</span> harbor-system harbor-harbor-ingress
+</code></pre></div><p>Output:</p> <div class="language-text extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>Name:             harbor-harbor-ingress
+Namespace:        harbor-system
+Address:          54.93.96.15
+Default backend:  default-http-backend:80 (&amp;lt;none&gt;)
+TLS:
+  ingress-cert-production terminates harbor.mylabs.dev
+  ingress-cert-production terminates notary.mylabs.dev
+Rules:
+  Host               Path  Backends
+  ----               ----  --------
+  harbor.mylabs.dev
+                     /             harbor-harbor-portal:80 (192.168.52.252:80)
+                     /api/         harbor-harbor-core:80 (192.168.34.28:8080)
+                     /service/     harbor-harbor-core:80 (192.168.34.28:8080)
+                     /v2/          harbor-harbor-core:80 (192.168.34.28:8080)
+                     /chartrepo/   harbor-harbor-core:80 (192.168.34.28:8080)
+                     /c/           harbor-harbor-core:80 (192.168.34.28:8080)
+  notary.mylabs.dev
+                     /   harbor-harbor-notary-server:4443 (192.168.47.135:4443)
+Annotations:
+  ingress.kubernetes.io/ssl-redirect:           true
+  nginx.ingress.kubernetes.io/proxy-body-size:  0
+  nginx.ingress.kubernetes.io/ssl-redirect:     true
+  ingress.kubernetes.io/proxy-body-size:        0
+Events:
+  Type    Reason  Age   From                      Message
+  ----    ------  ----  ----                      -------
+  Normal  CREATE  29m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+  Normal  UPDATE  29m   nginx-ingress-controller  Ingress harbor-system/harbor-harbor-ingress
+</code></pre></div><p>Open the <a href="https://harbor.mylabs.dev" target="_blank" rel="noopener noreferrer">https://harbor.mylabs.dev<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>:</p> <p><img src="/k8s-harbor/assets/img/harbor_login_page.703b5e90.png" alt="Harbor login page" title="Harbor login page"></p> <p>Log in:</p> <ul><li>User: <code>admin</code></li> <li>Password: <code>admin</code></li></ul> <p>You should see the Web UI:</p> <p><img src="/k8s-harbor/assets/img/harbor_projects.338db00b.png" alt="Harbor" title="Harbor"></p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/ruzickap/k8s-harbor/edit/master/docs/part-04/README.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">6/30/2024, 4:10:08 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/k8s-harbor/part-03/" class="prev">
+        Nginx + cert-manager + kubed installation
+      </a></span> <span class="next"><a href="/k8s-harbor/part-05/">
+        Initial Harbor tasks
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/k8s-harbor/assets/js/app.f7b38e4a.js" defer></script><script src="/k8s-harbor/assets/js/2.521d4de5.js" defer></script><script src="/k8s-harbor/assets/js/1.f0fb5331.js" defer></script><script src="/k8s-harbor/assets/js/25.f7323b51.js" defer></script>
+  </body>
+</html>
